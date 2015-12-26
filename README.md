@@ -5,6 +5,7 @@ Sonatra Mailer Bundle
 [![Build Status](https://img.shields.io/travis/sonatra/SonatraMailerBundle/master.svg)](https://travis-ci.org/sonatra/SonatraMailerBundle)
 [![Coverage Status](https://img.shields.io/coveralls/sonatra/SonatraMailerBundle/master.svg)](https://coveralls.io/r/sonatra/SonatraMailerBundle?branch=master)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sonatra/SonatraMailerBundle/master.svg)](https://scrutinizer-ci.com/g/sonatra/SonatraMailerBundle?branch=master)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/8e1937d0-1e2d-464f-88d8-076c3a6b8ec5.svg)](https://insight.sensiolabs.com/projects/8e1937d0-1e2d-464f-88d8-076c3a6b8ec5)
 
 The Sonatra MailerBundle is a manager for the HTML email templates.
 
