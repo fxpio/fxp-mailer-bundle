@@ -2,6 +2,7 @@ Sonatra Mailer Bundle
 =====================
 
 [![Latest Version](https://img.shields.io/packagist/v/sonatra/mailer-bundle.svg)](https://packagist.org/packages/sonatra/mailer-bundle)
+[![Build Status](https://img.shields.io/travis/sonatra/SonatraMailerBundle/master.svg)](https://travis-ci.org/sonatra/SonatraMailerBundle)
 
 The Sonatra MailerBundle is a manager for the HTML email templates.
 
