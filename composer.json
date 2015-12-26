@@ -1,0 +1,31 @@
+{
+    "name": "sonatra/mailer-bundle",
+    "type": "symfony-bundle",
+    "description": "A HTML email template manager stored in database",
+    "keywords": ["email", "template", "html", "mail", "manager", "switmailer", "doctrine", "twig", "bundle"],
+    "homepage": "https://github.com/sonatra/SonatraMailerBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "François Pluchino",
+            "email": "francois.pluchino@sonatra.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "symfony/framework-bundle": "~2.8|~3.0",
+        "symfony/icu": "~1.2",
+        "swiftmailer/swiftmailer": "~5.4",
+        "doctrine/orm": "~2.5",
+        "twig/twig": "~1.9"
+
+    },
+    "autoload": {
+        "psr-4": { "Sonatra\\Bundle\\MailerBundle\\": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
