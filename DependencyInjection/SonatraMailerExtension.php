@@ -11,8 +11,11 @@
 
 namespace Sonatra\Bundle\MailerBundle\DependencyInjection;
 
+use Sonatra\Bundle\MailerBundle\Loader\ConfigLayoutLoader;
+use Sonatra\Bundle\MailerBundle\Loader\ConfigMailLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -33,5 +36,38 @@ class SonatraMailerExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templater.xml');
+
+        $this->addLayoutTemplates($container, $config['layout_templates']);
+        $this->addMailTemplates($container, $config['mail_templates']);
+    }
+
+    /**
+     * Add the layout templates.
+     *
+     * @param ContainerBuilder $container The container
+     * @param array            $templates The template configs of layouts
+     */
+    protected function addLayoutTemplates(ContainerBuilder $container, array $templates)
+    {
+        $def = new Definition(ConfigLayoutLoader::class);
+        $def->setArguments(array($templates));
+        $def->addTag('sonatra_mailer.layout_loader');
+
+        $container->setDefinition('sonatra_mailer.loader.config_layout', $def);
+    }
+
+    /**
+     * Add the mail templates.
+     *
+     * @param ContainerBuilder $container The container
+     * @param array            $templates The template configs of mails
+     */
+    protected function addMailTemplates(ContainerBuilder $container, array $templates)
+    {
+        $def = new Definition(ConfigMailLoader::class);
+        $def->setArguments(array($templates));
+        $def->addTag('sonatra_mailer.mail_loader');
+
+        $container->setDefinition('sonatra_mailer.loader.config_mail', $def);
     }
 }
