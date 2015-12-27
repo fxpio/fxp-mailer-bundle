@@ -67,7 +67,7 @@ class Mail implements MailInterface
     protected $layout;
 
     /**
-     * @var array|Collection
+     * @var MailTranslationInterface[]|Collection
      */
     protected $translations = array();
 

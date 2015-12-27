@@ -46,12 +46,12 @@ class Layout implements LayoutInterface
     protected $body;
 
     /**
-     * @var array|Collection
+     * @var MailInterface[]|Collection
      */
     protected $mails = array();
 
     /**
-     * @var array|Collection
+     * @var LayoutTranslationInterface[]|Collection
      */
     protected $translations = array();
 
