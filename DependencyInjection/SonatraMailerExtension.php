@@ -43,37 +43,24 @@ class SonatraMailerExtension extends Extension
         $loader->load('templater.xml');
         $loader->load('doctrine_loader.xml');
 
-        $this->addLayoutTemplates($container, $config['layout_templates']);
-        $this->addMailTemplates($container, $config['mail_templates']);
+        $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
+        $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates']);
     }
 
     /**
-     * Add the layout templates.
+     * Add the templates.
      *
      * @param ContainerBuilder $container The container
+     * @param string           $type      The template type
+     * @param string           $class     The class name of config loader
      * @param array            $templates The template configs of layouts
      */
-    protected function addLayoutTemplates(ContainerBuilder $container, array $templates)
+    protected function addTemplates(ContainerBuilder $container, $type, $class, array $templates)
     {
-        $def = new Definition(ConfigLayoutLoader::class);
+        $def = new Definition($class);
         $def->setArguments(array($templates));
-        $def->addTag('sonatra_mailer.layout_loader');
+        $def->addTag(sprintf('sonatra_mailer.%s_loader', $type));
 
-        $container->setDefinition('sonatra_mailer.loader.config_layout', $def);
-    }
-
-    /**
-     * Add the mail templates.
-     *
-     * @param ContainerBuilder $container The container
-     * @param array            $templates The template configs of mails
-     */
-    protected function addMailTemplates(ContainerBuilder $container, array $templates)
-    {
-        $def = new Definition(ConfigMailLoader::class);
-        $def->setArguments(array($templates));
-        $def->addTag('sonatra_mailer.mail_loader');
-
-        $container->setDefinition('sonatra_mailer.loader.config_mail', $def);
+        $container->setDefinition(sprintf('sonatra_mailer.loader.config_%s', $type), $def);
     }
 }
