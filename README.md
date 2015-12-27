@@ -7,17 +7,22 @@ Sonatra Mailer Bundle
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sonatra/SonatraMailerBundle/master.svg)](https://scrutinizer-ci.com/g/sonatra/SonatraMailerBundle?branch=master)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/8e1937d0-1e2d-464f-88d8-076c3a6b8ec5.svg)](https://insight.sensiolabs.com/projects/8e1937d0-1e2d-464f-88d8-076c3a6b8ec5)
 
-The Sonatra MailerBundle is a manager for the HTML email templates.
+The Sonatra MailerBundle is a manager for render and send an mail template with different
+transport (email, mail, fax, ...).
 
 Features include:
 
 - Stored the templates in database with doctrine
 - Stored the templates in filesystem
-- Possibility to create your custom loaders of email templates
+- Stored the templates in config
 - Compatible with the localization
-- Sign your email with DKIM
-- Build your email template with Twig
+- Use twig for rendered the mail template and the layout template
 - Send your email with Switmailer
+- Sign your email with DKIM
+- Build your custom loaders of mail and layout templates
+- Build your custom renderer
+- Build your custom transporter
+- Twig function for use this templater with existing the templates defined in twig files of already existing systems
 
 Documentation
 -------------
