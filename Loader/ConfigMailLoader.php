@@ -37,12 +37,13 @@ class ConfigMailLoader extends ArrayMailLoader
     public function __construct(array $configs, LayoutLoaderInterface $layoutLoader)
     {
         $this->layoutLoader = $layoutLoader;
+        $mails = array();
 
-        foreach ($configs as $i => $config) {
-            $configs[$i] = $this->createMail($config);
+        foreach ($configs as $config) {
+            $mails[] = $this->createMail($config);
         }
 
-        parent::__construct($configs);
+        parent::__construct($mails);
     }
 
     /**
