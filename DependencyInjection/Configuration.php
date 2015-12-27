@@ -32,6 +32,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('layout_class')->defaultValue('Sonatra\Bundle\MailerBundle\Model\LayoutInterface')->end()
+                ->scalarNode('mail_class')->defaultValue('Sonatra\Bundle\MailerBundle\Model\MailInterface')->end()
                 ->append($this->getLayoutTemplatesNode())
                 ->append($this->getMailTemplatesNode())
             ->end()

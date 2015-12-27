@@ -35,7 +35,13 @@ class SonatraMailerExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        // model classes
+        $container->setParameter('sonatra_mailer.layout_class', $config['layout_class']);
+        $container->setParameter('sonatra_mailer.mail_class', $config['layout_class']);
+
         $loader->load('templater.xml');
+        $loader->load('doctrine_loader.xml');
 
         $this->addLayoutTemplates($container, $config['layout_templates']);
         $this->addMailTemplates($container, $config['mail_templates']);

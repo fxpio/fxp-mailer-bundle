@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="sonatra_mailer.loader.doctrine_layout.class">Sonatra\Bundle\MailerBundle\Doctrine\Loader\EntityLayoutLoader</parameter>
+        <parameter key="sonatra_mailer.loader.doctrine_mail.class">Sonatra\Bundle\MailerBundle\Doctrine\Loader\EntityMailLoader</parameter>
+    </parameters>
+
+    <services>
+        <!-- Doctrine Loaders -->
+        <service id="sonatra_mailer.loader.doctrine_layout" class="%sonatra_mailer.loader.doctrine_layout.class%">
+            <tag name="sonatra_mailer.layout_loader" priority="-100" />
+            <argument type="service" id="doctrine" />
+            <argument>%sonatra_mailer.layout_class%</argument>
+        </service>
+
+        <service id="sonatra_mailer.loader.doctrine_mail" class="%sonatra_mailer.loader.doctrine_mail.class%">
+            <tag name="sonatra_mailer.mail_loader" priority="-100" />
+            <argument type="service" id="doctrine" />
+            <argument>%sonatra_mailer.mail_class%</argument>
+        </service>
+    </services>
+</container>
