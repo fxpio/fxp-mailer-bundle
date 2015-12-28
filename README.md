@@ -13,17 +13,16 @@ transport (email, mail, fax, ...).
 Features include:
 
 - Stored the templates in database with doctrine
-- Stored the templates in filesystem
-- Stored the templates in config
+- Stored the templates in filesystem with yaml format
+- Stored the templates in app config
 - Compatible with the localization
-- Allow to use the Symfony translator
-- Use twig for rendered the mail template and the layout template
+- Allow to use the Symfony translator with the translation domain
+- Use twig for rendered the mail and layout templates
 - Send your email with Switmailer
 - Sign your email with DKIM
 - Build your custom loaders of mail and layout templates
-- Build your custom renderer
 - Build your custom transporter
-- Twig function for use this templater with existing the templates defined in twig files of already existing systems
+- Twig function for use this templater with existing templates defined in twig files of already existing systems
 
 Documentation
 -------------

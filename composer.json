@@ -1,7 +1,7 @@
 {
     "name": "sonatra/mailer-bundle",
     "type": "symfony-bundle",
-    "description": "A HTML email template manager stored in database",
+    "description": "A manager of HTML mail template stored in multiple systems and sent with different transports",
     "keywords": ["email", "template", "html", "mail", "manager", "switmailer", "doctrine", "twig", "bundle"],
     "homepage": "https://github.com/sonatra/SonatraMailerBundle",
     "license": "MIT",
