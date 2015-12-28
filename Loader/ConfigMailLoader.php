@@ -65,6 +65,7 @@ class ConfigMailLoader extends ArrayMailLoader
         $mail->setSubject(ConfigUtil::getValue($config, 'subject'));
         $mail->setHtmlBody(ConfigUtil::getValue($config, 'html_body'));
         $mail->setBody(ConfigUtil::getValue($config, 'body'));
+        $mail->setTranslationDomain(ConfigUtil::getValue($config, 'translation_domain'));
 
         if (isset($config['layout'])) {
             $mail->setLayout($this->layoutLoader->load($config['layout']));

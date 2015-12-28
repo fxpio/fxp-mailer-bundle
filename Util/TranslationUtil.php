@@ -13,6 +13,7 @@ namespace Sonatra\Bundle\MailerBundle\Util;
 
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Utils for translation.
@@ -21,6 +22,26 @@ use Sonatra\Bundle\MailerBundle\Model\MailInterface;
  */
 abstract class TranslationUtil
 {
+    /**
+     * Translate the template with the translator.
+     *
+     * @param LayoutInterface|MailInterface $template   The template
+     * @param string                        $locale     The locale
+     * @param TranslatorInterface|null      $translator The translator
+     *
+     * @return LayoutInterface|MailInterface
+     */
+    public static function translate($template, $locale, TranslatorInterface $translator = null)
+    {
+        if (null === $template->getTranslationDomain()) {
+            $template = $template->getTranslation($locale);
+        } elseif (null !== $translator) {
+            static::injectTranslatorValues($translator, $template);
+        }
+
+        return $template;
+    }
+
     /**
      * Find the translation and translate the template if translation is found.
      *
@@ -68,6 +89,46 @@ abstract class TranslationUtil
 
             if (null !== $val) {
                 $template->{$setter}($val);
+            }
+        }
+    }
+
+    /**
+     * Inject the translation values of translator in template.
+     *
+     * @param TranslatorInterface           $translator The translator
+     * @param LayoutInterface|MailInterface $template   The template instance
+     */
+    protected static function injectTranslatorValues(TranslatorInterface $translator, $template)
+    {
+        static::injectTranslatorValue($translator, $template, 'label');
+        static::injectTranslatorValue($translator, $template, 'description');
+        static::injectTranslatorValue($translator, $template, 'body');
+
+        if ($template instanceof MailInterface) {
+            static::injectTranslatorValue($translator, $template, 'subject');
+            static::injectTranslatorValue($translator, $template, 'htmlBody');
+        }
+    }
+
+    /**
+     * Inject the translation value of translator in template.
+     *
+     * @param TranslatorInterface           $translator The translator
+     * @param LayoutInterface|MailInterface $template   The template instance
+     * @param string                        $field      The field
+     */
+    protected static function injectTranslatorValue(TranslatorInterface $translator, $template, $field)
+    {
+        $setter = 'set'.ucfirst($field);
+        $getter = 'get'.ucfirst($field);
+        $refTpl = new \ReflectionClass($template);
+
+        if ($refTpl->hasMethod($getter) && $refTpl->hasMethod($setter)) {
+            $val = $template->{$getter}();
+
+            if (null !== $val) {
+                $template->{$setter}($translator->trans($val, array(), $template->getTranslationDomain()));
             }
         }
     }

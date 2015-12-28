@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\MailerBundle\Mailer;
 
 use Sonatra\Bundle\MailerBundle\MailTypes;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Interface for the mail templater.
@@ -20,6 +21,13 @@ use Sonatra\Bundle\MailerBundle\MailTypes;
  */
 interface MailTemplaterInterface
 {
+    /**
+     * Set the translator.
+     *
+     * @param TranslatorInterface $translator The translator
+     */
+    public function setTranslator(TranslatorInterface $translator);
+
     /**
      * Set the locale.
      *

@@ -13,6 +13,10 @@ namespace Sonatra\Bundle\MailerBundle\Mailer;
 
 use Sonatra\Bundle\MailerBundle\Loader\MailLoaderInterface;
 use Sonatra\Bundle\MailerBundle\MailTypes;
+use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
+use Sonatra\Bundle\MailerBundle\Model\MailInterface;
+use Sonatra\Bundle\MailerBundle\Util\TranslationUtil;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * The mail templater.
@@ -32,6 +36,11 @@ class MailTemplater implements MailTemplaterInterface
     protected $renderer;
 
     /**
+     * @var TranslatorInterface|null
+     */
+    protected $translator;
+
+    /**
      * @var string
      */
     protected $locale;
@@ -47,6 +56,14 @@ class MailTemplater implements MailTemplaterInterface
         $this->loader = $loader;
         $this->renderer = $renderer;
         $this->locale = \Locale::getDefault();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -72,7 +89,7 @@ class MailTemplater implements MailTemplaterInterface
      */
     public function render($template, array $variables = array(), $type = MailTypes::TYPE_ALL)
     {
-        $mail = $this->loader->load($template, $type)->getTranslation($this->getLocale());
+        $mail = $this->getTranslatedMail($template, $type);
         $variables['_mail_type'] = $mail->getType();
         $subject = $this->renderTemplate($mail->getSubject(), $variables);
         $variables['_subject'] = $subject;
@@ -81,12 +98,46 @@ class MailTemplater implements MailTemplaterInterface
         $body = $this->renderTemplate($mail->getBody(), $variables);
         $variables['_body'] = $body;
 
-        if (null !== $mail->getLayout()
-                && null !== ($lBody = $mail->getLayout()->getTranslation($this->getLocale())->getBody())) {
+        $layout = $this->getTranslatedLayout($mail);
+
+        if (null !== $layout && null !== ($lBody = $layout->getBody())) {
             $htmlBody = $this->renderTemplate($lBody, $variables);
         }
 
         return new MailRendered($mail, $subject, $htmlBody, $body);
+    }
+
+    /**
+     * Get the translated mail.
+     *
+     * @param string $template The mail template name
+     * @param string $type     The mail type defined in MailTypes::TYPE_*
+     *
+     * @return MailInterface
+     */
+    protected function getTranslatedMail($template, $type)
+    {
+        $mail = $this->loader->load($template, $type);
+
+        return TranslationUtil::translate($mail, $this->getLocale(), $this->translator);
+    }
+
+    /**
+     * Get the translated layout of mail.
+     *
+     * @param MailInterface $mail The mail
+     *
+     * @return LayoutInterface|null
+     */
+    protected function getTranslatedLayout(MailInterface $mail)
+    {
+        $layout = $mail->getLayout();
+
+        if (null !== $layout) {
+            $layout = TranslationUtil::translate($layout, $this->getLocale(), $this->translator);
+        }
+
+        return $layout;
     }
 
     /**

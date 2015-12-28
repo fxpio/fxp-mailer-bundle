@@ -54,6 +54,7 @@ class ConfigLayoutLoader extends ArrayLayoutLoader
         $layout->setDescription(ConfigUtil::getValue($config, 'description'));
         $layout->setEnabled(ConfigUtil::getValue($config, 'enabled', true));
         $layout->setBody(ConfigUtil::getValue($config, 'body'));
+        $layout->setTranslationDomain(ConfigUtil::getValue($config, 'translation_domain'));
 
         if (isset($config['translations']) && is_array($config['translations'])) {
             foreach ($config['translations'] as $translation) {

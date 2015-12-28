@@ -165,6 +165,22 @@ interface MailInterface
     public function getLayout();
 
     /**
+     * Set the translation domain to use the translator.
+     *
+     * @param string|null $domain The translation domain
+     *
+     * @return self
+     */
+    public function setTranslationDomain($domain);
+
+    /**
+     * Get the translation domain to use the translator.
+     *
+     * @return string|null
+     */
+    public function getTranslationDomain();
+
+    /**
      * Get the mail translations.
      *
      * @return MailTranslationInterface[]|Collection

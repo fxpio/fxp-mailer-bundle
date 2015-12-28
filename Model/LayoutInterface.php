@@ -106,6 +106,22 @@ interface LayoutInterface
     public function getMails();
 
     /**
+     * Set the translation domain to use the translator.
+     *
+     * @param string|null $domain The translation domain
+     *
+     * @return self
+     */
+    public function setTranslationDomain($domain);
+
+    /**
+     * Get the translation domain to use the translator.
+     *
+     * @return string|null
+     */
+    public function getTranslationDomain();
+
+    /**
      * Get the layout translations.
      *
      * @return LayoutTranslationInterface[]|Collection

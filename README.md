@@ -16,6 +16,7 @@ Features include:
 - Stored the templates in filesystem
 - Stored the templates in config
 - Compatible with the localization
+- Allow to use the Symfony translator
 - Use twig for rendered the mail template and the layout template
 - Send your email with Switmailer
 - Sign your email with DKIM

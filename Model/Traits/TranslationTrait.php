@@ -28,6 +28,11 @@ trait TranslationTrait
     protected $cacheTranslation = array();
 
     /**
+     * @var string|null
+     */
+    protected $translationDomain;
+
+    /**
      * {@inheritdoc}
      */
     public function getTranslation($locale)
@@ -46,5 +51,23 @@ trait TranslationTrait
         $this->cacheTranslation[$locale] = $self;
 
         return $self;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTranslationDomain($domain)
+    {
+        $this->translationDomain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTranslationDomain()
+    {
+        return $this->translationDomain;
     }
 }
