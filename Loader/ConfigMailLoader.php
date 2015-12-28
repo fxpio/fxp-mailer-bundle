@@ -58,7 +58,7 @@ class ConfigMailLoader extends ArrayMailLoader
         $mail = new Mail();
 
         $mail->setName(ConfigUtil::getValue($config, 'name'));
-        $mail->setLabel(ConfigUtil::getValue($config, 'label', ConfigUtil::getValue($config, 'name')));
+        $mail->setLabel(ConfigUtil::getValue($config, 'label'));
         $mail->setDescription(ConfigUtil::getValue($config, 'description'));
         $mail->setType(ConfigUtil::getValue($config, 'type', MailTypes::TYPE_ALL));
         $mail->setEnabled(ConfigUtil::getValue($config, 'enabled', true));

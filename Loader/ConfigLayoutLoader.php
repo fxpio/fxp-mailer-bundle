@@ -50,7 +50,7 @@ class ConfigLayoutLoader extends ArrayLayoutLoader
         $layout = new Layout();
 
         $layout->setName(ConfigUtil::getValue($config, 'name'));
-        $layout->setLabel(ConfigUtil::getValue($config, 'label', ConfigUtil::getValue($config, 'name')));
+        $layout->setLabel(ConfigUtil::getValue($config, 'label'));
         $layout->setDescription(ConfigUtil::getValue($config, 'description'));
         $layout->setEnabled(ConfigUtil::getValue($config, 'enabled', true));
         $layout->setBody(ConfigUtil::getValue($config, 'body'));
