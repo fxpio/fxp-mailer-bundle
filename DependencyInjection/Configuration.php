@@ -36,6 +36,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('mail_class')->defaultValue('Sonatra\Bundle\MailerBundle\Model\MailInterface')->end()
                 ->append($this->getLayoutTemplatesNode())
                 ->append($this->getMailTemplatesNode())
+                ->append($this->getYamlTemplatesNode('layout'))
+                ->append($this->getYamlTemplatesNode('mail'))
             ->end()
         ;
 
@@ -118,6 +120,19 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getYamlTemplatesNode($type)
+    {
+        $treeBuilder = new TreeBuilder();
+        /* @var ArrayNodeDefinition $node */
+        $node = $treeBuilder->root($type.'_file_templates');
+        $node
+            ->fixXmlConfig($type.'_file_template')
+            ->prototype('scalar')->end()
         ;
 
         return $node;
