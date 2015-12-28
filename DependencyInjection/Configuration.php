@@ -98,6 +98,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('subject')->defaultNull()->end()
                     ->scalarNode('html_body')->defaultNull()->end()
                     ->scalarNode('body')->defaultNull()->end()
+                    ->scalarNode('layout')->defaultNull()->end()
                     ->arrayNode('translations')
                         ->useAttributeAsKey('locale', false)
                         ->normalizeKeys(false)
