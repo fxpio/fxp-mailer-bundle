@@ -20,34 +20,14 @@ use Sonatra\Bundle\MailerBundle\Model\Traits\TranslationTrait;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class Mail implements MailInterface
+class Mail extends AbstractTemplate implements MailInterface
 {
     use TranslationTrait;
-
-    /**
-     * @var string|null
-     */
-    protected $name;
-
-    /**
-     * @var string|null
-     */
-    protected $label;
-
-    /**
-     * @var string|null
-     */
-    protected $description;
 
     /**
      * @var string
      */
     protected $type = MailTypes::TYPE_ALL;
-
-    /**
-     * @var bool
-     */
-    protected $enabled = true;
 
     /**
      * @var string|null
@@ -60,11 +40,6 @@ class Mail implements MailInterface
     protected $htmlBody;
 
     /**
-     * @var string|null
-     */
-    protected $body;
-
-    /**
      * @var LayoutInterface|null
      */
     protected $layout;
@@ -73,52 +48,6 @@ class Mail implements MailInterface
      * @var MailTranslationInterface[]|Collection
      */
     protected $translations = array();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
 
     /**
      * {@inheritdoc}
@@ -136,32 +65,6 @@ class Mail implements MailInterface
         $this->type = $type;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = (bool) $enabled;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isEnabled()
-    {
-        return $this->enabled;
     }
 
     /**
@@ -198,24 +101,6 @@ class Mail implements MailInterface
     public function getHtmlBody()
     {
         return $this->htmlBody;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBody($body)
-    {
-        $this->body = $body;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBody()
-    {
-        return $this->body;
     }
 
     /**

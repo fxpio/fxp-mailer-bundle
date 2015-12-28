@@ -16,56 +16,8 @@ namespace Sonatra\Bundle\MailerBundle\Model;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-interface MailInterface
+interface MailInterface extends TemplateInterface
 {
-    /**
-     * Sets the unique template name.
-     *
-     * @param string $name The name
-     *
-     * @return self
-     */
-    public function setName($name);
-
-    /**
-     * Gets the unique template name.
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * Set the label.
-     *
-     * @param string|null $label The label
-     *
-     * @return self
-     */
-    public function setLabel($label);
-
-    /**
-     * Get the label.
-     *
-     * @return string|null
-     */
-    public function getLabel();
-
-    /**
-     * Set the description.
-     *
-     * @param string|null $description The description
-     *
-     * @return self
-     */
-    public function setDescription($description);
-
-    /**
-     * Get the description.
-     *
-     * @return string|null
-     */
-    public function getDescription();
-
     /**
      * Set the mail type.
      *
@@ -81,22 +33,6 @@ interface MailInterface
      * @return string
      */
     public function getType();
-
-    /**
-     * Set if the model is enabled.
-     *
-     * @param bool $enabled The enabled value
-     *
-     * @return self
-     */
-    public function setEnabled($enabled);
-
-    /**
-     * Check if the model is enabled.
-     *
-     * @return bool
-     */
-    public function isEnabled();
 
     /**
      * Set the subject.
@@ -131,22 +67,6 @@ interface MailInterface
     public function getHtmlBody();
 
     /**
-     * Set the body.
-     *
-     * @param string|null $body The body
-     *
-     * @return self
-     */
-    public function setBody($body);
-
-    /**
-     * Get the body.
-     *
-     * @return string|null
-     */
-    public function getBody();
-
-    /**
      * Set the layout.
      *
      * @param LayoutInterface $layout The layout
@@ -161,22 +81,6 @@ interface MailInterface
      * @return LayoutInterface|null
      */
     public function getLayout();
-
-    /**
-     * Set the translation domain to use the translator.
-     *
-     * @param string|null $domain The translation domain
-     *
-     * @return self
-     */
-    public function setTranslationDomain($domain);
-
-    /**
-     * Get the translation domain to use the translator.
-     *
-     * @return string|null
-     */
-    public function getTranslationDomain();
 
     /**
      * Get the mail translations.

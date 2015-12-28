@@ -12,9 +12,9 @@
 namespace Sonatra\Bundle\MailerBundle\Util;
 
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
-use Sonatra\Bundle\MailerBundle\Model\LayoutTranslationInterface;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
-use Sonatra\Bundle\MailerBundle\Model\MailTranslationInterface;
+use Sonatra\Bundle\MailerBundle\Model\TemplateInterface;
+use Sonatra\Bundle\MailerBundle\Model\TemplateTranslationInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -75,11 +75,11 @@ abstract class TranslationUtil
     /**
      * Inject the translation value in template.
      *
-     * @param LayoutInterface|MailInterface                       $template    The template instance
-     * @param LayoutTranslationInterface|MailTranslationInterface $translation The template translation instance
-     * @param string                                              $field       The field
+     * @param TemplateInterface            $template    The template instance
+     * @param TemplateTranslationInterface $translation The template translation instance
+     * @param string                       $field       The field
      */
-    protected static function injectValue($template, $translation, $field)
+    protected static function injectValue(TemplateInterface $template, TemplateTranslationInterface $translation, $field)
     {
         $setter = 'set'.ucfirst($field);
         $getter = 'get'.ucfirst($field);
@@ -98,10 +98,10 @@ abstract class TranslationUtil
     /**
      * Inject the translation values of translator in template.
      *
-     * @param TranslatorInterface           $translator The translator
-     * @param LayoutInterface|MailInterface $template   The template instance
+     * @param TranslatorInterface $translator The translator
+     * @param TemplateInterface   $template   The template instance
      */
-    protected static function injectTranslatorValues(TranslatorInterface $translator, $template)
+    protected static function injectTranslatorValues(TranslatorInterface $translator, TemplateInterface $template)
     {
         static::injectTranslatorValue($translator, $template, 'label');
         static::injectTranslatorValue($translator, $template, 'description');
@@ -116,11 +116,11 @@ abstract class TranslationUtil
     /**
      * Inject the translation value of translator in template.
      *
-     * @param TranslatorInterface           $translator The translator
-     * @param LayoutInterface|MailInterface $template   The template instance
-     * @param string                        $field      The field
+     * @param TranslatorInterface $translator The translator
+     * @param TemplateInterface   $template   The template instance
+     * @param string              $field      The field
      */
-    protected static function injectTranslatorValue(TranslatorInterface $translator, $template, $field)
+    protected static function injectTranslatorValue(TranslatorInterface $translator, TemplateInterface $template, $field)
     {
         $setter = 'set'.ucfirst($field);
         $getter = 'get'.ucfirst($field);
