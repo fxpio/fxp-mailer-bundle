@@ -24,10 +24,10 @@ interface MailTemplaterInterface
      * Render the mail template.
      *
      * @param string $template  The mail template name
-     * @param string $type      The mail type defined in MailTypes::TYPE_*
      * @param array  $variables The variables of template
+     * @param string $type      The mail type defined in MailTypes::TYPE_*
      *
      * @return MailRenderedInterface
      */
-    public function render($template, $type = MailTypes::TYPE_ALL, array $variables = array());
+    public function render($template, array $variables = array(), $type = MailTypes::TYPE_ALL);
 }

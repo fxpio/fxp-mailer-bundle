@@ -40,7 +40,7 @@ class MailTemplater implements MailTemplaterInterface
     /**
      * {@inheritdoc}
      */
-    public function render($template, $type = MailTypes::TYPE_ALL, array $variables = array())
+    public function render($template, array $variables = array(), $type = MailTypes::TYPE_ALL)
     {
         $mail = $this->loader->load($template, $type);
         $variables['_mail_type'] = $mail->getType();
