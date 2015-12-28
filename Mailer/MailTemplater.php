@@ -44,15 +44,15 @@ class MailTemplater implements MailTemplaterInterface
     {
         $mail = $this->loader->load($template, $type);
         $variables['_mail_type'] = $mail->getType();
-
         $subject = $this->renderTemplate($mail->getSubject(), $variables);
+        $variables['_subject'] = $subject;
         $htmlBody = $this->renderTemplate($mail->getHtmlBody(), $variables);
+        $variables['_html_body'] = $htmlBody;
         $body = $this->renderTemplate($mail->getBody(), $variables);
+        $variables['_body'] = $body;
 
         if (null !== $mail->getLayout() && null !== ($lBody = $mail->getLayout()->getBody())) {
-            $htmlBody = $this->renderTemplate($lBody, array_merge($variables, array(
-                '_mail_content_body' => $htmlBody,
-            )));
+            $htmlBody = $this->renderTemplate($lBody, $variables);
         }
 
         return new MailRendered($mail, $subject, $htmlBody, $body);
