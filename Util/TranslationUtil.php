@@ -12,7 +12,9 @@
 namespace Sonatra\Bundle\MailerBundle\Util;
 
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
+use Sonatra\Bundle\MailerBundle\Model\LayoutTranslationInterface;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
+use Sonatra\Bundle\MailerBundle\Model\MailTranslationInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -73,9 +75,9 @@ abstract class TranslationUtil
     /**
      * Inject the translation value in template.
      *
-     * @param object $template    The template instance
-     * @param object $translation The template translation instance
-     * @param string $field       The field
+     * @param LayoutInterface|MailInterface                       $template    The template instance
+     * @param LayoutTranslationInterface|MailTranslationInterface $translation The template translation instance
+     * @param string                                              $field       The field
      */
     protected static function injectValue($template, $translation, $field)
     {
