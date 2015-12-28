@@ -72,7 +72,7 @@ class ConfigMailLoader extends ArrayMailLoader
 
         if (isset($config['translations']) && is_array($config['translations'])) {
             foreach ($config['translations'] as $translation) {
-                $mail->addTranslation($this->createLayoutTranslation($mail, $translation));
+                $mail->addTranslation($this->createMailTranslation($mail, $translation));
             }
         }
 
@@ -87,7 +87,7 @@ class ConfigMailLoader extends ArrayMailLoader
      *
      * @return MailTranslation
      */
-    protected function createLayoutTranslation(Mail $mail, array $config)
+    protected function createMailTranslation(Mail $mail, array $config)
     {
         $translation = new MailTranslation($mail);
         $translation->setLocale(ConfigUtil::getValue($config, 'locale'));
