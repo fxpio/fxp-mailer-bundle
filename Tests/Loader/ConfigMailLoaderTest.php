@@ -25,9 +25,6 @@ use Sonatra\Bundle\MailerBundle\Model\MailInterface;
  */
 class ConfigMailLoaderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @group fxp
-     */
     public function testLoad()
     {
         // layout
