@@ -12,7 +12,6 @@
 namespace Sonatra\Bundle\MailerBundle\Doctrine\Loader\Traits;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Trait for entity loader.
@@ -22,7 +21,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 trait EntityLoaderTrait
 {
     /**
-     * @var ObjectManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $om;
 

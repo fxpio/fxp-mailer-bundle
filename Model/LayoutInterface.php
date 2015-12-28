@@ -11,8 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Model;
 
-use Doctrine\Common\Collections\Collection;
-
 /**
  * Interface for the layout template.
  *
@@ -101,7 +99,7 @@ interface LayoutInterface
     public function getBody();
 
     /**
-     * @return MailInterface[]|Collection
+     * @return MailInterface[]|\Doctrine\Common\Collections\Collection
      */
     public function getMails();
 
@@ -124,7 +122,7 @@ interface LayoutInterface
     /**
      * Get the layout translations.
      *
-     * @return LayoutTranslationInterface[]|Collection
+     * @return LayoutTranslationInterface[]|\Doctrine\Common\Collections\Collection
      */
     public function getTranslations();
 

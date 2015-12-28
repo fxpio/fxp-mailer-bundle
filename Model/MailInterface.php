@@ -11,8 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Model;
 
-use Doctrine\Common\Collections\Collection;
-
 /**
  * Interface for the mail template.
  *
@@ -183,7 +181,7 @@ interface MailInterface
     /**
      * Get the mail translations.
      *
-     * @return MailTranslationInterface[]|Collection
+     * @return MailTranslationInterface[]|\Doctrine\Common\Collections\Collection
      */
     public function getTranslations();
 

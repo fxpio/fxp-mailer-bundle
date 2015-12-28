@@ -11,8 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Model\Traits;
 
-use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
-use Sonatra\Bundle\MailerBundle\Model\MailInterface;
 use Sonatra\Bundle\MailerBundle\Util\TranslationUtil;
 
 /**
@@ -41,7 +39,7 @@ trait TranslationTrait
             return $this->cacheTranslation[$locale];
         }
 
-        /* @var LayoutInterface|MailInterface|TranslationTrait $this */
+        /* @var \Sonatra\Bundle\MailerBundle\Model\LayoutInterface|\Sonatra\Bundle\MailerBundle\Model\MailInterface|TranslationTrait $this */
         $self = clone $this;
 
         if (!TranslationUtil::find($self, $locale) && false !== ($pos = strrpos($locale, '_'))) {
