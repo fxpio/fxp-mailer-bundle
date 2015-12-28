@@ -16,6 +16,7 @@ use Sonatra\Bundle\MailerBundle\Loader\ConfigMailLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -44,7 +45,7 @@ class SonatraMailerExtension extends Extension
         $loader->load('doctrine_loader.xml');
 
         $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
-        $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates']);
+        $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
     }
 
     /**
@@ -54,12 +55,17 @@ class SonatraMailerExtension extends Extension
      * @param string           $type      The template type
      * @param string           $class     The class name of config loader
      * @param array            $templates The template configs of layouts
+     * @param Reference        $reference The reference
      */
-    protected function addTemplates(ContainerBuilder $container, $type, $class, array $templates)
+    protected function addTemplates(ContainerBuilder $container, $type, $class, array $templates, $reference = null)
     {
         $def = new Definition($class);
         $def->setArguments(array($templates));
         $def->addTag(sprintf('sonatra_mailer.%s_loader', $type));
+
+        if (null !== $reference) {
+            $def->addArgument($reference);
+        }
 
         $container->setDefinition(sprintf('sonatra_mailer.loader.config_%s', $type), $def);
     }
