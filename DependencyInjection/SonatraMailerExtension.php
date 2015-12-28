@@ -38,7 +38,7 @@ class SonatraMailerExtension extends Extension
 
         // model classes
         $container->setParameter('sonatra_mailer.layout_class', $config['layout_class']);
-        $container->setParameter('sonatra_mailer.mail_class', $config['layout_class']);
+        $container->setParameter('sonatra_mailer.mail_class', $config['mail_class']);
 
         $loader->load('templater.xml');
         $loader->load('doctrine_loader.xml');
