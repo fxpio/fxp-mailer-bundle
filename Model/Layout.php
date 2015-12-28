@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\MailerBundle\Model;
 
 use Doctrine\Common\Collections\Collection;
+use Sonatra\Bundle\MailerBundle\Model\Traits\TranslationTrait;
 
 /**
  * Model for layout template.
@@ -20,6 +21,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class Layout implements LayoutInterface
 {
+    use TranslationTrait;
+
     /**
      * @var string|null
      */

@@ -21,6 +21,22 @@ use Sonatra\Bundle\MailerBundle\MailTypes;
 interface MailTemplaterInterface
 {
     /**
+     * Set the locale.
+     *
+     * @param string $locale The locale
+     *
+     * @return self
+     */
+    public function setLocale($locale);
+
+    /**
+     * Get the locale.
+     *
+     * @return string
+     */
+    public function getLocale();
+
+    /**
      * Render the mail template.
      *
      * @param string $template  The mail template name

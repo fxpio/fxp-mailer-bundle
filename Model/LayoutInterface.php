@@ -129,4 +129,13 @@ interface LayoutInterface
      * @return self
      */
     public function removeTranslation(LayoutTranslationInterface $translation);
+
+    /**
+     * Get the translated layout.
+     *
+     * @param string $locale The locale
+     *
+     * @return self
+     */
+    public function getTranslation($locale);
 }

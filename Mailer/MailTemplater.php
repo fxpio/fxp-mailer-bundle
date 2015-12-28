@@ -31,10 +31,40 @@ class MailTemplater implements MailTemplaterInterface
      */
     protected $renderer;
 
+    /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * Constructor.
+     *
+     * @param MailLoaderInterface $loader   The mail loader
+     * @param \Twig_Environment   $renderer The twig environment
+     */
     public function __construct(MailLoaderInterface $loader, \Twig_Environment $renderer)
     {
         $this->loader = $loader;
         $this->renderer = $renderer;
+        $this->locale = \Locale::getDefault();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     /**
@@ -42,7 +72,7 @@ class MailTemplater implements MailTemplaterInterface
      */
     public function render($template, array $variables = array(), $type = MailTypes::TYPE_ALL)
     {
-        $mail = $this->loader->load($template, $type);
+        $mail = $this->loader->load($template, $type)->getTranslation($this->getLocale());
         $variables['_mail_type'] = $mail->getType();
         $subject = $this->renderTemplate($mail->getSubject(), $variables);
         $variables['_subject'] = $subject;
@@ -51,7 +81,8 @@ class MailTemplater implements MailTemplaterInterface
         $body = $this->renderTemplate($mail->getBody(), $variables);
         $variables['_body'] = $body;
 
-        if (null !== $mail->getLayout() && null !== ($lBody = $mail->getLayout()->getBody())) {
+        if (null !== $mail->getLayout()
+                && null !== ($lBody = $mail->getLayout()->getTranslation($this->getLocale())->getBody())) {
             $htmlBody = $this->renderTemplate($lBody, $variables);
         }
 

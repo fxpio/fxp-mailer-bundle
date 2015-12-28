@@ -188,4 +188,13 @@ interface MailInterface
      * @return self
      */
     public function removeTranslation(MailTranslationInterface $translation);
+
+    /**
+     * Get the translated mail.
+     *
+     * @param string $locale The locale
+     *
+     * @return self
+     */
+    public function getTranslation($locale);
 }
