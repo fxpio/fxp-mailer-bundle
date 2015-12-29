@@ -50,6 +50,7 @@ class LayoutTranslation implements LayoutTranslationInterface
      */
     public function __construct(LayoutInterface $layout)
     {
+        $layout->addTranslation($this);
         $this->layout = $layout;
     }
 

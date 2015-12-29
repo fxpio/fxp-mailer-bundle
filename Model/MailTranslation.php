@@ -60,6 +60,7 @@ class MailTranslation implements MailTranslationInterface
      */
     public function __construct(MailInterface $mail)
     {
+        $mail->addTranslation($this);
         $this->mail = $mail;
     }
 
