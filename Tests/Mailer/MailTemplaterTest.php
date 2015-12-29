@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Tests\Util;
+namespace Sonatra\Bundle\MailerBundle\Tests\Mailer;
 
 use Sonatra\Bundle\MailerBundle\Loader\MailLoaderInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailTemplater;
