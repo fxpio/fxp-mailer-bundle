@@ -15,9 +15,13 @@
         "php": ">=5.5.0",
         "symfony/framework-bundle": "~2.8|~3.0",
         "symfony/icu": "~1.2",
-        "swiftmailer/swiftmailer": "~5.4",
+        "twig/twig": "~1.23"
+
+    },
+    "require-dev": {
+        "doctrine/doctrine-bundle": "~1.6",
         "doctrine/orm": "~2.5",
-        "twig/twig": "~1.9"
+        "swiftmailer/swiftmailer": "~5.4"
 
     },
     "autoload": {
