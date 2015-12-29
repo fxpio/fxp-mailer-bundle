@@ -12,7 +12,7 @@
 namespace Sonatra\Bundle\MailerBundle\Doctrine\Loader;
 
 use Sonatra\Bundle\MailerBundle\Doctrine\Loader\Traits\EntityLoaderTrait;
-use Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException;
+use Sonatra\Bundle\MailerBundle\Exception\UnknownMailException;
 use Sonatra\Bundle\MailerBundle\Loader\MailLoaderInterface;
 use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Util\MailUtil;
@@ -42,6 +42,6 @@ class EntityMailLoader implements MailLoaderInterface
             return $mail;
         }
 
-        throw new UnknownLayoutException($name);
+        throw new UnknownMailException($name, MailTypes::TYPE_ALL);
     }
 }
