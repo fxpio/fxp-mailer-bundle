@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\SonatraMailerExtension;
 use Sonatra\Bundle\MailerBundle\SonatraMailerBundle;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
@@ -58,12 +59,15 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
         )));
 
         $sfExt = new FrameworkExtension();
+        $doctrineExt = new DoctrineExtension();
         $extension = new SonatraMailerExtension();
 
         $container->registerExtension($sfExt);
+        $container->registerExtension($doctrineExt);
         $container->registerExtension($extension);
 
         $sfExt->load(array(array()), $container);
+        $doctrineExt->load(array($this->getDoctrineConfig()), $container);
         $extension->load($configs, $container);
 
         $bundle = new SonatraMailerBundle();
@@ -74,5 +78,28 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
         $container->compile();
 
         return $container;
+    }
+
+    protected function getDoctrineConfig()
+    {
+        return array(
+            'dbal' => array(
+                'default_connection' => 'default',
+                'connections' => array(
+                    'default' => array(
+                        'driver' => 'pdo_sqlite',
+                        'path' => '%kernel.cache_dir%/test.db',
+                    ),
+                ),
+            ),
+            'orm' => array(
+                'auto_generate_proxy_classes' => true,
+                'entity_managers' => array(
+                    'default' => array(
+                        'auto_mapping' => true,
+                    ),
+                ),
+            ),
+        );
     }
 }
