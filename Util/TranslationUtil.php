@@ -25,15 +25,35 @@ use Symfony\Component\Translation\TranslatorInterface;
 abstract class TranslationUtil
 {
     /**
-     * Translate the template with the translator.
+     * Translate the layout template with the translator.
      *
-     * @param LayoutInterface|MailInterface $template   The template
-     * @param string                        $locale     The locale
-     * @param TranslatorInterface|null      $translator The translator
+     * @param LayoutInterface          $template   The template
+     * @param string                   $locale     The locale
+     * @param TranslatorInterface|null $translator The translator
      *
-     * @return LayoutInterface|MailInterface
+     * @return LayoutInterface
      */
-    public static function translate($template, $locale, TranslatorInterface $translator = null)
+    public static function translateLayout(LayoutInterface $template, $locale, TranslatorInterface $translator = null)
+    {
+        if (null === $template->getTranslationDomain()) {
+            $template = $template->getTranslation($locale);
+        } elseif (null !== $translator) {
+            static::injectTranslatorValues($translator, $template);
+        }
+
+        return $template;
+    }
+
+    /**
+     * Translate the mail template with the translator.
+     *
+     * @param MailInterface            $template   The template
+     * @param string                   $locale     The locale
+     * @param TranslatorInterface|null $translator The translator
+     *
+     * @return LayoutInterface
+     */
+    public static function translateMail(MailInterface $template, $locale, TranslatorInterface $translator = null)
     {
         if (null === $template->getTranslationDomain()) {
             $template = $template->getTranslation($locale);

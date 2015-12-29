@@ -119,7 +119,7 @@ class MailTemplater implements MailTemplaterInterface
     {
         $mail = $this->loader->load($template, $type);
 
-        return TranslationUtil::translate($mail, $this->getLocale(), $this->translator);
+        return TranslationUtil::translateMail($mail, $this->getLocale(), $this->translator);
     }
 
     /**
@@ -134,7 +134,7 @@ class MailTemplater implements MailTemplaterInterface
         $layout = $mail->getLayout();
 
         if (null !== $layout) {
-            $layout = TranslationUtil::translate($layout, $this->getLocale(), $this->translator);
+            $layout = TranslationUtil::translateLayout($layout, $this->getLocale(), $this->translator);
         }
 
         return $layout;
