@@ -24,6 +24,8 @@ abstract class ConfigUtil
      * @param array      $config  The config
      * @param string     $field   The field
      * @param mixed|null $default The default value if the field does not exist
+     *
+     * @return mixed
      */
     public static function getValue(array $config, $field, $default = null)
     {
