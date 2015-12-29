@@ -16,7 +16,7 @@ namespace Sonatra\Bundle\MailerBundle\Exception;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class UnknownMailException extends InvalidArgumentException
+class UnknownMailException extends UnknownTemplateException
 {
     /**
      * Constructor.

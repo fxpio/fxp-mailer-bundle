@@ -12,19 +12,10 @@
 namespace Sonatra\Bundle\MailerBundle\Exception;
 
 /**
- * Unknown Layout Template Exception.
+ * Base for Unknown Template Exception.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class UnknownLayoutException extends UnknownTemplateException
+class UnknownTemplateException extends InvalidArgumentException
 {
-    /**
-     * Constructor.
-     *
-     * @param string $name The layout template name
-     */
-    public function __construct($name)
-    {
-        parent::__construct(sprintf('The "%s" layout template does not exist', $name));
-    }
 }
