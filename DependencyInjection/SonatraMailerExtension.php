@@ -43,6 +43,7 @@ class SonatraMailerExtension extends Extension
 
         $loader->load('templater.xml');
         $loader->load('doctrine_loader.xml');
+        $loader->load('twig.xml');
 
         $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
         $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
