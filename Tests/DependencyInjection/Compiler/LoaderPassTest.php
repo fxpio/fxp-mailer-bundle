@@ -14,7 +14,6 @@ namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\LoaderPass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -65,11 +64,9 @@ class LoaderPassTest extends KernelTestCase
     /**
      * Gets the container.
      *
-     * @param array $bundles
-     *
      * @return ContainerBuilder
      */
-    protected function getContainer(array $bundles = array())
+    protected function getContainer()
     {
         $container = new ContainerBuilder(new ParameterBag(array(
             'kernel.cache_dir' => $this->rootDir,
@@ -78,18 +75,8 @@ class LoaderPassTest extends KernelTestCase
             'kernel.name' => 'kernel',
             'kernel.root_dir' => $this->rootDir,
             'kernel.charset' => 'UTF-8',
-            'kernel.bundles' => $bundles,
+            'kernel.bundles' => array(),
         )));
-
-        if (count($bundles) > 0) {
-            $crDef = new Definition('Sonatra\Bundle\ResourceBundle\Converter\ConverterRegistry');
-            $crDef->addArgument(array());
-            $container->setDefinition('sonatra_resource.converter_registry', $crDef);
-
-            $jcDef = new Definition('Sonatra\Bundle\ResourceBundle\Converter\JsonConverter');
-            $jcDef->addTag('sonatra_resource.converter');
-            $container->setDefinition('sonatra_resource.converter.json', $jcDef);
-        }
 
         return $container;
     }
