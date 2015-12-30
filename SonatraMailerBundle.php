@@ -13,6 +13,8 @@ namespace Sonatra\Bundle\MailerBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\LoaderPass;
+use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\SignerPass;
+use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TransportPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -42,5 +44,7 @@ class SonatraMailerBundle extends Bundle
         }
 
         $container->addCompilerPass(new LoaderPass());
+        $container->addCompilerPass(new TransportPass());
+        $container->addCompilerPass(new SignerPass());
     }
 }

@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getMailTemplatesNode())
                 ->append($this->getYamlTemplatesNode('layout'))
                 ->append($this->getYamlTemplatesNode('mail'))
+                ->append($this->getTransportSignerNode())
             ->end()
         ;
 
@@ -133,6 +134,41 @@ class Configuration implements ConfigurationInterface
         $node
             ->fixXmlConfig($type.'_file_template')
             ->prototype('scalar')->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getTransportSignerNode()
+    {
+        $treeBuilder = new TreeBuilder();
+        /* @var ArrayNodeDefinition $node */
+        $node = $treeBuilder->root('transport_signers');
+        $node
+            ->fixXmlConfig('transport_signer')
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('signers')
+                    ->fixXmlConfig('signer')
+                    ->useAttributeAsKey('service_id', false)
+                    ->normalizeKeys(false)
+                    ->prototype('array')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('service_id')->isRequired()->end()
+                            ->scalarNode('signer')->isRequired()->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('swiftmailer_dkim')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('private_key_path')->defaultNull()->end()
+                        ->scalarNode('domain')->defaultNull()->end()
+                        ->scalarNode('selector')->defaultNull()->end()
+                    ->end()
+                ->end()
+            ->end()
         ;
 
         return $node;

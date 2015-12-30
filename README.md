@@ -21,7 +21,8 @@ Features include:
 - Send your email with Switmailer
 - Sign your email with DKIM
 - Build your custom loaders of mail and layout templates
-- Build your custom transporter
+- Build your custom transports
+- Build your custom transport signers
 - Twig function for use this templater with existing templates defined in twig files of already existing systems
 
 Documentation

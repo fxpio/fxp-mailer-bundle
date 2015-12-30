@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="sonatra_mailer.mailer.class">Sonatra\Bundle\MailerBundle\Mailer\Mailer</parameter>
+        <parameter key="sonatra_mailer.signer_registry.class">Sonatra\Bundle\MailerBundle\Transport\Signer\SignerRegistry</parameter>
+    </parameters>
+
+    <services>
+        <service id="sonatra_mailer.signer_registry" class="%sonatra_mailer.signer_registry.class%" public="true">
+            <argument type="collection" />
+        </service>
+
+        <service id="sonatra_mailer.mailer" class="%sonatra_mailer.mailer.class%" public="true">
+            <argument type="service" id="sonatra_mailer.mail_templater" />
+            <argument type="collection" />
+        </service>
+    </services>
+</container>

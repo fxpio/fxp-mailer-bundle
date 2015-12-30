@@ -41,9 +41,17 @@ class SonatraMailerExtension extends Extension
         $container->setParameter('sonatra_mailer.layout_class', $config['layout_class']);
         $container->setParameter('sonatra_mailer.mail_class', $config['mail_class']);
 
+        $loader->load('mailer.xml');
         $loader->load('templater.xml');
         $loader->load('doctrine_loader.xml');
         $loader->load('twig.xml');
+
+        $container->setParameter('sonatra_mailer.transport_signers', $config['transport_signers']['signers']);
+
+        if (class_exists('Swift_Message')) {
+            $loader->load('transport_swiftmailer.xml');
+            $this->addSwiftMailerDkimSigner($container, $config['transport_signers']['swiftmailer_dkim']);
+        }
 
         $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
         $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
@@ -85,5 +93,20 @@ class SonatraMailerExtension extends Extension
     {
         $def = $container->getDefinition(sprintf('sonatra_mailer.loader.%s_yaml', $type));
         $def->replaceArgument(0, $templates);
+    }
+
+    /**
+     * Add the config for swiftmailer dkim signer.
+     *
+     * @param ContainerBuilder $container The container
+     * @param array            $config    The config
+     */
+    protected function addSwiftMailerDkimSigner(ContainerBuilder $container, array $config)
+    {
+        $prefix = 'sonatra_mailer.transport.signer.swiftmailer_dkim.';
+
+        $container->setParameter($prefix.'private_key_path', $config['private_key_path']);
+        $container->setParameter($prefix.'domain', $config['domain']);
+        $container->setParameter($prefix.'selector', $config['selector']);
     }
 }
