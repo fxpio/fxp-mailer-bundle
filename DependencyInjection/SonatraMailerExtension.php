@@ -46,18 +46,30 @@ class SonatraMailerExtension extends Extension
         $loader->load('doctrine_loader.xml');
         $loader->load('twig.xml');
 
-        $container->setParameter('sonatra_mailer.transport_signers', $config['transport_signers']['signers']);
-
-        if (class_exists('Swift_Message')) {
-            $loader->load('transport_swiftmailer.xml');
-            $this->addSwiftMailerDkimSigner($container, $config['transport_signers']['swiftmailer_dkim']);
-        }
+        $this->configureTransport($container, $loader, $config);
 
         $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
         $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
 
         $this->addYamlTemplates($container, 'layout', $config['layout_file_templates']);
         $this->addYamlTemplates($container, 'mail', $config['mail_file_templates']);
+    }
+
+    /**
+     * Configure the transport.
+     *
+     * @param ContainerBuilder     $container The container
+     * @param Loader\XmlFileLoader $loader    The config loader
+     * @param array                $config    The config
+     */
+    protected function configureTransport(ContainerBuilder $container, Loader\XmlFileLoader $loader, array $config)
+    {
+        $container->setParameter('sonatra_mailer.transport_signers', $config['transport_signers']['signers']);
+
+        if (class_exists('Swift_Message')) {
+            $loader->load('transport_swiftmailer.xml');
+            $this->addSwiftMailerDkimSigner($container, $config['transport_signers']['swiftmailer_dkim']);
+        }
     }
 
     /**
