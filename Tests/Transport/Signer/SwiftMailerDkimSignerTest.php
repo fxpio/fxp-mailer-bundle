@@ -63,21 +63,12 @@ class SwiftMailerDkimSignerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\Swift_Signers_DKIMSigner::class, $signature);
     }
 
-    public function testCreateSignatureWithUnreadablePrivateKey()
-    {
-        $path = $this->cache.'/private_key';
-
-        $msg = 'The private key path of the DKIM swiftmailer signer "%s" does not exist or is not readable';
-        $this->setExpectedException(RuntimeException::class, sprintf($msg, $path));
-
-        $signer = new SwiftMailerDkimSigner($path, 'domain', 'selector');
-
-        $signer->createSignature();
-    }
-
+    /**
+     * @group fxp
+     */
     public function testCreateSignatureWithInvalidPrivateKey()
     {
-        $path = $this->cache.'/';
+        $path = $this->cache.'/private_key';
 
         $msg = 'Impossible to read the private key of the DKIM swiftmailer signer "%s"';
         $this->setExpectedException(RuntimeException::class, sprintf($msg, $path));

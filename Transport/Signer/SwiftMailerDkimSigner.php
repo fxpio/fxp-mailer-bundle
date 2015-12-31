@@ -74,11 +74,6 @@ class SwiftMailerDkimSigner implements SignerInterface
      */
     protected function getPrivateKey()
     {
-        if (!is_readable($this->privateKeyPath)) {
-            $msg = 'The private key path of the DKIM swiftmailer signer "%s" does not exist or is not readable';
-            throw new RuntimeException(sprintf($msg, $this->privateKeyPath));
-        }
-
         try {
             $privateKey = file_get_contents($this->privateKeyPath);
         } catch (\Exception $e) {
