@@ -47,6 +47,16 @@ class SonatraMailerBundle extends Bundle
             );
         }
 
+        $this->addCompilerPasses($container);
+    }
+
+    /**
+     * Add the compiler passes.
+     *
+     * @param ContainerBuilder $container The container
+     */
+    protected function addCompilerPasses(ContainerBuilder $container)
+    {
         $container->addCompilerPass(new LoaderPass());
         $container->addCompilerPass(new TransportPass());
         $container->addCompilerPass(new SignerPass());
