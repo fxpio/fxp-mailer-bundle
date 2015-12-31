@@ -7,6 +7,8 @@
     <parameters>
         <parameter key="sonatra_mailer.loader.layout_yaml.class">Sonatra\Bundle\MailerBundle\Loader\YamlLayoutLoader</parameter>
         <parameter key="sonatra_mailer.loader.mail_yaml.class">Sonatra\Bundle\MailerBundle\Loader\YamlMailLoader</parameter>
+        <parameter key="sonatra_mailer.loader.layout_array.class">Sonatra\Bundle\MailerBundle\Loader\ArrayLayoutLoader</parameter>
+        <parameter key="sonatra_mailer.loader.mail_array.class">Sonatra\Bundle\MailerBundle\Loader\ArrayMailLoader</parameter>
         <parameter key="sonatra_mailer.loader.layout_chain.class">Sonatra\Bundle\MailerBundle\Loader\LayoutLoaderChain</parameter>
         <parameter key="sonatra_mailer.loader.mail_chain.class">Sonatra\Bundle\MailerBundle\Loader\MailLoaderChain</parameter>
         <parameter key="sonatra_mailer.mail_templater.class">Sonatra\Bundle\MailerBundle\Mailer\MailTemplater</parameter>
@@ -14,17 +16,28 @@
 
     <services>
         <!-- File Loaders -->
+        <!-- Not attached with tag because removing on the optimization -->
         <service id="sonatra_mailer.loader.layout_yaml" class="%sonatra_mailer.loader.layout_yaml.class%">
-            <tag name="sonatra_mailer.layout_loader" priority="-50" />
             <argument type="collection" />
             <argument type="service" id="kernel" />
         </service>
 
+        <!-- Not attached with tag because removing on the optimization -->
         <service id="sonatra_mailer.loader.mail_yaml" class="%sonatra_mailer.loader.mail_yaml.class%">
-            <tag name="sonatra_mailer.mail_loader" priority="-50" />
             <argument type="collection" />
             <argument type="service" id="sonatra_mailer.loader.layout_chain" />
             <argument type="service" id="kernel" />
+        </service>
+
+        <service id="sonatra_mailer.loader.layout_array" class="%sonatra_mailer.loader.layout_array.class%">
+            <tag name="sonatra_mailer.layout_loader" priority="-25" />
+            <argument type="collection" />
+        </service>
+
+        <service id="sonatra_mailer.loader.mail_array" class="%sonatra_mailer.loader.mail_array.class%">
+            <tag name="sonatra_mailer.mail_loader" priority="-25" />
+            <argument type="collection" />
+            <argument type="service" id="sonatra_mailer.loader.layout_chain" />
         </service>
 
         <!-- Chain Loaders -->

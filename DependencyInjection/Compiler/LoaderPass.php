@@ -28,7 +28,8 @@ class LoaderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra_mailer.mail_templater')) {
+        if (!$container->hasDefinition('sonatra_mailer.loader.layout_chain')
+                || !$container->hasDefinition('sonatra_mailer.loader.mail_chain')) {
             return;
         }
 

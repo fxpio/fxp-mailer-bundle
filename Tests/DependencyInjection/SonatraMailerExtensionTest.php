@@ -39,8 +39,10 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($container->hasDefinition('sonatra_mailer.mail_templater'));
         $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.layout_chain'));
         $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.mail_chain'));
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.layout_yaml'));
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.mail_yaml'));
+        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.config_layout'));
+        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.config_mail'));
+        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.layout_yaml'));
+        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.mail_yaml'));
     }
 
     protected function createContainer(array $configs = array())
@@ -73,7 +75,15 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
         $bundle = new SonatraMailerBundle();
         $bundle->build($container);
 
-        $container->getCompilerPassConfig()->setOptimizationPasses(array());
+        $optimizationPasses = array();
+
+        foreach ($container->getCompilerPassConfig()->getOptimizationPasses() as $pass) {
+            if (0 === strpos(get_class($pass), 'Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler')) {
+                $optimizationPasses[] = $pass;
+            }
+        }
+
+        $container->getCompilerPassConfig()->setOptimizationPasses($optimizationPasses);
         $container->getCompilerPassConfig()->setRemovingPasses(array());
         $container->compile();
 

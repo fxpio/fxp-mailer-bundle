@@ -75,6 +75,8 @@ class SonatraMailerExtension extends Extension
     /**
      * Add the templates.
      *
+     * Not attached with tag because removing on the optimization.
+     *
      * @param ContainerBuilder $container The container
      * @param string           $type      The template type
      * @param string           $class     The class name of config loader
@@ -85,7 +87,6 @@ class SonatraMailerExtension extends Extension
     {
         $def = new Definition($class);
         $def->setArguments(array($templates));
-        $def->addTag(sprintf('sonatra_mailer.%s_loader', $type));
 
         if (null !== $reference) {
             $def->addArgument($reference);
