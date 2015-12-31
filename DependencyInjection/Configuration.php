@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\MailerBundle\DependencyInjection;
 
+use Sonatra\Bundle\MailerBundle\MailTypes;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -98,6 +99,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('name')->isRequired()->end()
                     ->scalarNode('label')->defaultNull()->end()
                     ->scalarNode('description')->defaultNull()->end()
+                    ->scalarNode('type')->defaultValue(MailTypes::TYPE_ALL)->end()
                     ->scalarNode('enabled')->defaultTrue()->end()
                     ->scalarNode('subject')->defaultNull()->end()
                     ->scalarNode('html_body')->defaultNull()->end()
