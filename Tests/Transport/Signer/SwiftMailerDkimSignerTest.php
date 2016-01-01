@@ -63,9 +63,6 @@ class SwiftMailerDkimSignerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\Swift_Signers_DKIMSigner::class, $signature);
     }
 
-    /**
-     * @group fxp
-     */
     public function testCreateSignatureWithInvalidPrivateKey()
     {
         $path = $this->cache.'/private_key';
