@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\MailerBundle\Loader;
 
+use Sonatra\Bundle\MailerBundle\Util\ConfigUtil;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -34,8 +35,8 @@ class YamlLayoutLoader extends ConfigLayoutLoader
     /**
      * Constructor.
      *
-     * @param string|string[] $resources The resources
-     * @param KernelInterface $kernel    The kernel
+     * @param string|string[]|array[] $resources The resources
+     * @param KernelInterface         $kernel    The kernel
      */
     public function __construct($resources, KernelInterface $kernel)
     {
@@ -52,9 +53,10 @@ class YamlLayoutLoader extends ConfigLayoutLoader
     {
         if (is_array($this->resources)) {
             foreach ($this->resources as $resource) {
-                $filename = $this->kernel->locateResource($resource);
-                $config = Yaml::parse(file_get_contents($filename));
-                $this->addLayout($this->createLayout($config));
+                $config = ConfigUtil::formatConfig($resource);
+                $filename = $this->kernel->locateResource($config['file']);
+                $loadedConfig = Yaml::parse(file_get_contents($filename));
+                $this->addLayout($this->createLayout(array_replace($loadedConfig, $config)));
             }
 
             $this->resources = null;

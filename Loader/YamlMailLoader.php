@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\MailerBundle\Loader;
 
 use Sonatra\Bundle\MailerBundle\MailTypes;
+use Sonatra\Bundle\MailerBundle\Util\ConfigUtil;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -54,9 +55,10 @@ class YamlMailLoader extends ConfigMailLoader
     {
         if (is_array($this->resources)) {
             foreach ($this->resources as $resource) {
+                $config = ConfigUtil::formatConfig($resource);
                 $filename = $this->kernel->locateResource($resource);
-                $config = Yaml::parse(file_get_contents($filename));
-                $this->addMail($this->createMail($config));
+                $loadedConfig = Yaml::parse(file_get_contents($filename));
+                $this->addMail($this->createMail(array_replace($loadedConfig, $config)));
             }
 
             $this->resources = null;

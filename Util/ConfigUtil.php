@@ -11,6 +11,9 @@
 
 namespace Sonatra\Bundle\MailerBundle\Util;
 
+use Sonatra\Bundle\MailerBundle\Exception\InvalidConfigurationException;
+use Sonatra\Bundle\MailerBundle\Exception\UnexpectedTypeException;
+
 /**
  * Utils for config.
  *
@@ -32,5 +35,30 @@ abstract class ConfigUtil
         return isset($config[$field])
             ? $config[$field]
             : $default;
+    }
+
+    /**
+     * Format the string config to array config with "file" attribute.
+     *
+     * @param string|array $config The config
+     *
+     * @return array
+     */
+    public static function formatConfig($config)
+    {
+        if (is_string($config)) {
+            $config = array('file' => $config);
+        }
+
+        if (!is_array($config)) {
+            throw new UnexpectedTypeException($config, 'array');
+        }
+
+        if (!isset($config['file'])) {
+            $msg = 'The "file" attribute must be defined in config of layout template';
+            throw new InvalidConfigurationException($msg);
+        }
+
+        return $config;
     }
 }

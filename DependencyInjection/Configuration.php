@@ -37,8 +37,6 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('mail_class')->defaultValue('Sonatra\Bundle\MailerBundle\Model\MailInterface')->end()
                 ->append($this->getLayoutTemplatesNode())
                 ->append($this->getMailTemplatesNode())
-                ->append($this->getYamlTemplatesNode('layout'))
-                ->append($this->getYamlTemplatesNode('mail'))
                 ->append($this->getTransportSignerNode())
             ->end()
         ;
@@ -59,6 +57,8 @@ class Configuration implements ConfigurationInterface
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('name')->isRequired()->end()
+                    ->scalarNode('loader')->defaultValue('config')->end()
+                    ->scalarNode('file')->defaultNull()->end()
                     ->scalarNode('label')->defaultNull()->end()
                     ->scalarNode('description')->defaultNull()->end()
                     ->scalarNode('enabled')->defaultTrue()->end()
@@ -71,6 +71,8 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('locale')->isRequired()->end()
+                                ->scalarNode('file')->defaultNull()->end()
+                                ->scalarNode('loader')->defaultValue('config')->end()
                                 ->scalarNode('label')->defaultNull()->end()
                                 ->scalarNode('description')->defaultNull()->end()
                                 ->scalarNode('body')->defaultNull()->end()
@@ -97,6 +99,8 @@ class Configuration implements ConfigurationInterface
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('name')->isRequired()->end()
+                    ->scalarNode('loader')->defaultValue('config')->end()
+                    ->scalarNode('file')->defaultNull()->end()
                     ->scalarNode('label')->defaultNull()->end()
                     ->scalarNode('description')->defaultNull()->end()
                     ->scalarNode('type')->defaultValue(MailTypes::TYPE_ALL)->end()
@@ -113,6 +117,8 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('locale')->isRequired()->end()
+                                ->scalarNode('loader')->defaultValue('config')->end()
+                                ->scalarNode('file')->defaultNull()->end()
                                 ->scalarNode('label')->defaultNull()->end()
                                 ->scalarNode('description')->defaultNull()->end()
                                 ->scalarNode('subject')->defaultNull()->end()
@@ -123,19 +129,6 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
-        ;
-
-        return $node;
-    }
-
-    protected function getYamlTemplatesNode($type)
-    {
-        $treeBuilder = new TreeBuilder();
-        /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root($type.'_file_templates');
-        $node
-            ->fixXmlConfig($type.'_file_template')
-            ->prototype('scalar')->end()
         ;
 
         return $node;

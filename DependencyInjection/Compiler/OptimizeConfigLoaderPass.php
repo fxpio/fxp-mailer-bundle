@@ -16,8 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
- * Replace all services with the tags "sonatra_mailer.loader.config_layout" and
- * "sonatra_mailer.loader.config_mail" by "sonatra_mailer.loader.layout_array" service
+ * Replace all services with the tags "sonatra_mailer.loader.layout_config" and
+ * "sonatra_mailer.loader.mail_config" by "sonatra_mailer.loader.layout_array" service
  * and "sonatra_mailer.loader.mail_array" service.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -29,16 +29,16 @@ class OptimizeConfigLoaderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra_mailer.loader.config_layout')
-                || !$container->hasDefinition('sonatra_mailer.loader.config_mail')) {
+        if (!$container->hasDefinition('sonatra_mailer.loader.layout_config')
+                || !$container->hasDefinition('sonatra_mailer.loader.mail_config')) {
             return;
         }
 
         $this->optimize($container, 'layout');
         $this->optimize($container, 'mail');
 
-        $container->removeDefinition('sonatra_mailer.loader.config_mail');
-        $container->removeDefinition('sonatra_mailer.loader.config_layout');
+        $container->removeDefinition('sonatra_mailer.loader.mail_config');
+        $container->removeDefinition('sonatra_mailer.loader.layout_config');
     }
 
     /**
@@ -49,7 +49,7 @@ class OptimizeConfigLoaderPass implements CompilerPassInterface
      */
     protected function optimize(ContainerBuilder $container, $type)
     {
-        $serviceId = sprintf('sonatra_mailer.loader.config_%s', $type);
+        $serviceId = sprintf('sonatra_mailer.loader.%s_config', $type);
         $def = $container->getDefinition($serviceId);
 
         ContainerUtil::addTemplates($container, $type, $def->getArgument(0));

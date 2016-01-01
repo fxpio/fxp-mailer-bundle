@@ -94,10 +94,16 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
 
         // add mocks
         $layoutLoaderDef->replaceArgument(0, array(
-            __DIR__.'/../../Fixtures/loaders/layout.yml',
+            array(
+                'name' => 'layout-test',
+                'file' => __DIR__.'/../../Fixtures/loaders/layout.yml',
+            ),
         ));
         $mailLoaderDef->replaceArgument(0, array(
-            __DIR__.'/../../Fixtures/loaders/mail.yml',
+            array(
+                'name' => 'mail-test',
+                'file' => __DIR__.'/../../Fixtures/loaders/mail.yml',
+            ),
         ));
 
         // test

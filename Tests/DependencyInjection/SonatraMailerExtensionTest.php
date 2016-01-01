@@ -39,10 +39,44 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($container->hasDefinition('sonatra_mailer.mail_templater'));
         $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.layout_chain'));
         $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.mail_chain'));
-        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.config_layout'));
-        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.config_mail'));
+        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.layout_array'));
+        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.mail_array'));
+        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.layout_config'));
+        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.mail_config'));
         $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.layout_yaml'));
         $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.mail_yaml'));
+    }
+
+    public function testAddTemplates()
+    {
+        $container = $this->createContainer(array(
+            array(
+                'layout_templates' => array(
+                    array(
+                        'name' => 'layout-test',
+                        'loader' => 'config',
+                    ),
+                ),
+                'mail_templates' => array(
+                    array(
+                        'name' => 'mail-test',
+                        'loader' => 'config',
+                        'layout' => 'layout-test',
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.layout_array'));
+        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.mail_array'));
+
+        $layout = $container->getDefinition('sonatra_mailer.loader.layout_array');
+        $this->assertCount(1, $layout->getArguments());
+        $this->assertCount(1, $layout->getArgument(0));
+
+        $mail = $container->getDefinition('sonatra_mailer.loader.mail_array');
+        $this->assertCount(2, $mail->getArguments());
+        $this->assertCount(1, $mail->getArgument(0));
     }
 
     protected function createContainer(array $configs = array())

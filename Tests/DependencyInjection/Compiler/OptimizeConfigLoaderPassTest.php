@@ -41,7 +41,7 @@ class OptimizeConfigLoaderPassTest extends KernelTestCase
 
     protected function setUp()
     {
-        $this->rootDir = sys_get_temp_dir().'/sonatra_mailer_bundle_optimize_config_loader_pass';
+        $this->rootDir = sys_get_temp_dir().'/sonatra_mailer_bundle_optimize_loader_config_pass';
         $this->fs = new Filesystem();
         $this->pass = new OptimizeConfigLoaderPass();
     }
@@ -57,8 +57,8 @@ class OptimizeConfigLoaderPassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $this->pass->process($container);
-        $this->assertFalse($container->has('sonatra_mailer.loader.config_layout'));
-        $this->assertFalse($container->has('sonatra_mailer.loader.config_mail'));
+        $this->assertFalse($container->has('sonatra_mailer.loader.layout_config'));
+        $this->assertFalse($container->has('sonatra_mailer.loader.mail_config'));
     }
 
     /**

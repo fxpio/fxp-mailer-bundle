@@ -50,9 +50,6 @@ class SonatraMailerExtension extends Extension
 
         $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
         $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
-
-        $this->addYamlTemplates($container, 'layout', $config['layout_file_templates']);
-        $this->addYamlTemplates($container, 'mail', $config['mail_file_templates']);
     }
 
     /**
@@ -85,27 +82,23 @@ class SonatraMailerExtension extends Extension
      */
     protected function addTemplates(ContainerBuilder $container, $type, $class, array $templates, $reference = null)
     {
-        $def = new Definition($class);
-        $def->setArguments(array($templates));
+        $loaderTypes = array();
 
-        if (null !== $reference) {
-            $def->addArgument($reference);
+        foreach ($templates as $template) {
+            $loader = isset($template['loader']) ? $template['loader'] : 'config';
+            $loaderTypes[$loader][] = $template;
         }
 
-        $container->setDefinition(sprintf('sonatra_mailer.loader.config_%s', $type), $def);
-    }
+        foreach ($loaderTypes as $loader => $loaderTemplate) {
+            $def = new Definition($class);
+            $def->setArguments(array($loaderTemplate));
 
-    /**
-     * Add the file templates.
-     *
-     * @param ContainerBuilder $container The container
-     * @param string           $type      The template type
-     * @param array            $templates The template files of layouts
-     */
-    protected function addYamlTemplates(ContainerBuilder $container, $type, array $templates)
-    {
-        $def = $container->getDefinition(sprintf('sonatra_mailer.loader.%s_yaml', $type));
-        $def->replaceArgument(0, $templates);
+            if (null !== $reference) {
+                $def->addArgument($reference);
+            }
+
+            $container->setDefinition(sprintf('sonatra_mailer.loader.%s_%s', $type, $loader), $def);
+        }
     }
 
     /**

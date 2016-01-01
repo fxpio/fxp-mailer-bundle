@@ -57,10 +57,29 @@ class OptimizeYamlLoaderPass implements CompilerPassInterface
         $configs = array();
 
         foreach ($templates as $template) {
-            $template = ContainerUtil::getRealFile($container, $template);
-            $configs[] = Yaml::parse(file_get_contents($template));
+            $configs[] = $this->createConfig($container, $template);
         }
 
         ContainerUtil::addTemplates($container, $type, $configs);
+    }
+
+    /**
+     * Create the config.
+     *
+     * @param ContainerBuilder $container
+     * @param array            $templateConfig
+     *
+     * @return array
+     */
+    protected function createConfig(ContainerBuilder $container, array $templateConfig)
+    {
+        $file = ContainerUtil::getRealFile($container, $templateConfig['file']);
+        $config = Yaml::parse(file_get_contents($file));
+
+        if (isset($templateConfig['name'])) {
+            $config['name'] = $templateConfig['name'];
+        }
+
+        return $config;
     }
 }
