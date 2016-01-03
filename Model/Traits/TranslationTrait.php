@@ -35,6 +35,8 @@ trait TranslationTrait
      */
     public function getTranslation($locale)
     {
+        $locale = strtolower($locale);
+
         if (isset($this->cacheTranslation[$locale])) {
             return $this->cacheTranslation[$locale];
         }

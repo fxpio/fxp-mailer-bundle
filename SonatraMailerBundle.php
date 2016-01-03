@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\MailerBundle;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\LoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
+use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigLoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\SignerPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
@@ -62,6 +63,7 @@ class SonatraMailerBundle extends Bundle
         $container->addCompilerPass(new SignerPass());
         $container->addCompilerPass(new OptimizeConfigLoaderPass(), PassConfig::TYPE_OPTIMIZE);
         $container->addCompilerPass(new OptimizeYamlLoaderPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new OptimizeTwigLoaderPass(), PassConfig::TYPE_OPTIMIZE);
         $container->addCompilerPass(new TemplatePass(), PassConfig::TYPE_OPTIMIZE);
     }
 }

@@ -12,7 +12,6 @@
 namespace Sonatra\Bundle\MailerBundle\Loader;
 
 use Sonatra\Bundle\MailerBundle\Util\ConfigUtil;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -20,32 +19,8 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class YamlLayoutLoader extends ConfigLayoutLoader
+class YamlLayoutLoader extends AbstractFileLayoutLoader
 {
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    /**
-     * @var string[]|null
-     */
-    protected $resources;
-
-    /**
-     * Constructor.
-     *
-     * @param string|string[]|array[] $resources The resources
-     * @param KernelInterface         $kernel    The kernel
-     */
-    public function __construct($resources, KernelInterface $kernel)
-    {
-        parent::__construct(array());
-
-        $this->kernel = $kernel;
-        $this->resources = (array) $resources;
-    }
-
     /**
      * {@inheritdoc}
      */

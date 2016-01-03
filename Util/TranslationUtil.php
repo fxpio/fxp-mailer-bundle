@@ -13,6 +13,7 @@ namespace Sonatra\Bundle\MailerBundle\Util;
 
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
+use Sonatra\Bundle\MailerBundle\Model\TemplateFileInterface;
 use Sonatra\Bundle\MailerBundle\Model\TemplateInterface;
 use Sonatra\Bundle\MailerBundle\Model\TemplateTranslationInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -74,11 +75,14 @@ abstract class TranslationUtil
      */
     public static function find($template, $locale)
     {
+        $locale = strtolower($locale);
+
         foreach ($template->getTranslations() as $translation) {
-            if ($locale === $translation->getLocale()) {
+            if ($locale === strtolower($translation->getLocale())) {
                 static::injectValue($template, $translation, 'label');
                 static::injectValue($template, $translation, 'description');
                 static::injectValue($template, $translation, 'body');
+                static::injectFile($template, $translation);
 
                 if ($template instanceof MailInterface) {
                     static::injectValue($template, $translation, 'subject');
@@ -112,6 +116,21 @@ abstract class TranslationUtil
             if (null !== $val) {
                 $template->{$setter}($val);
             }
+        }
+    }
+
+    /**
+     * Inject the translation file in template.
+     *
+     * @param TemplateInterface            $template    The template instance
+     * @param TemplateTranslationInterface $translation The template translation instance
+     */
+    public static function injectFile(TemplateInterface $template, TemplateTranslationInterface $translation)
+    {
+        if ($template instanceof TemplateFileInterface && $translation instanceof TemplateFileInterface) {
+            /* @var TemplateInterface $template */
+            /* @var TemplateTranslationInterface $translation */
+            static::injectValue($template, $translation, 'file');
         }
     }
 

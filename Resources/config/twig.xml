@@ -12,6 +12,8 @@
         <service id="twig.extension.sonatra_mailer.templater" class="%twig.extension.sonatra_mailer.templater.class%" public="false">
             <tag name="twig.extension" />
             <argument type="service" id="sonatra_mailer.mail_templater" />
+            <argument type="service" id="sonatra_mailer.loader.layout_chain" />
+            <argument type="service" id="translator" />
         </service>
     </services>
 </container>

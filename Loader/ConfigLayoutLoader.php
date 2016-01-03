@@ -12,7 +12,9 @@
 namespace Sonatra\Bundle\MailerBundle\Loader;
 
 use Sonatra\Bundle\MailerBundle\Model\Layout;
+use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Sonatra\Bundle\MailerBundle\Model\LayoutTranslation;
+use Sonatra\Bundle\MailerBundle\Model\LayoutTranslationInterface;
 use Sonatra\Bundle\MailerBundle\Util\ConfigUtil;
 
 /**
@@ -43,11 +45,11 @@ class ConfigLayoutLoader extends ArrayLayoutLoader
      *
      * @param array $config The config of layout.
      *
-     * @return Layout
+     * @return LayoutInterface
      */
     protected function createLayout(array $config)
     {
-        $layout = new Layout();
+        $layout = $this->newLayoutInstance();
 
         $layout->setName(ConfigUtil::getValue($config, 'name'));
         $layout->setLabel(ConfigUtil::getValue($config, 'label'));
@@ -68,19 +70,41 @@ class ConfigLayoutLoader extends ArrayLayoutLoader
     /**
      * Create a layout translation.
      *
-     * @param Layout $layout The layout
-     * @param array  $config The config of layout translation
+     * @param LayoutInterface $layout The layout
+     * @param array           $config The config of layout translation
      *
      * @return LayoutTranslation
      */
-    protected function createLayoutTranslation(Layout $layout, array $config)
+    protected function createLayoutTranslation(LayoutInterface $layout, array $config)
     {
-        $translation = new LayoutTranslation($layout);
+        $translation = $this->newLayoutTranslationInstance($layout);
         $translation->setLocale(ConfigUtil::getValue($config, 'locale'));
         $translation->setLabel(ConfigUtil::getValue($config, 'label'));
         $translation->setDescription(ConfigUtil::getValue($config, 'description'));
         $translation->setBody(ConfigUtil::getValue($config, 'body'));
 
         return $translation;
+    }
+
+    /**
+     * Create a new instance of layout.
+     *
+     * @return LayoutInterface
+     */
+    protected function newLayoutInstance()
+    {
+        return new Layout();
+    }
+
+    /**
+     * Create a new instance of layout translation.
+     *
+     * @param LayoutInterface $layout The layout
+     *
+     * @return LayoutTranslationInterface
+     */
+    protected function newLayoutTranslationInstance(LayoutInterface $layout)
+    {
+        return new LayoutTranslation($layout);
     }
 }

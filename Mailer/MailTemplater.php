@@ -15,6 +15,8 @@ use Sonatra\Bundle\MailerBundle\Loader\MailLoaderInterface;
 use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
+use Sonatra\Bundle\MailerBundle\Model\TwigTemplateInterface;
+use Sonatra\Bundle\MailerBundle\Util\MailUtil;
 use Sonatra\Bundle\MailerBundle\Util\TranslationUtil;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -91,17 +93,18 @@ class MailTemplater implements MailTemplaterInterface
     {
         $mail = $this->getTranslatedMail($template, $type);
         $variables['_mail_type'] = $mail->getType();
-        $subject = $this->renderTemplate($mail->getSubject(), $variables);
+        $variables['_layout'] = null !== $mail->getLayout() ? $mail->getLayout()->getName() : null;
+        $subject = $this->renderTemplate($mail->getSubject(), $mail, $variables);
         $variables['_subject'] = $subject;
-        $htmlBody = $this->renderTemplate($mail->getHtmlBody(), $variables);
+        $htmlBody = $this->renderTemplate($mail->getHtmlBody(), $mail, $variables);
         $variables['_html_body'] = $htmlBody;
-        $body = $this->renderTemplate($mail->getBody(), $variables);
+        $body = $this->renderTemplate($mail->getBody(), $mail, $variables);
         $variables['_body'] = $body;
 
         $layout = $this->getTranslatedLayout($mail);
 
-        if (null !== $layout && null !== ($lBody = $layout->getBody())) {
-            $htmlBody = $this->renderTemplate($lBody, $variables);
+        if (null !== $layout && null !== ($lBody = $layout->getBody()) && !MailUtil::isRootBody($htmlBody)) {
+            $htmlBody = $this->renderTemplate($lBody, $layout, $variables);
         }
 
         return new MailRendered($mail, $subject, $htmlBody, $body);
@@ -143,18 +146,28 @@ class MailTemplater implements MailTemplaterInterface
     /**
      * Render the template.
      *
-     * @param string $template  The template string
-     * @param array  $variables The variables of template
+     * @param string                        $template         The template string
+     * @param LayoutInterface|MailInterface $templateInstance The template instance
+     * @param array                         $variables        The variables of template
      *
      * @return string The rendered template
      *
      * @throws \Exception
      */
-    protected function renderTemplate($template, array $variables = array())
+    protected function renderTemplate($template, $templateInstance, array $variables = array())
     {
         if (null !== $template) {
-            $tpl = $this->renderer->createTemplate($template);
-            $template = $tpl->render($variables);
+            if ($templateInstance instanceof TwigTemplateInterface) {
+                $tpl = $this->renderer->loadTemplate($templateInstance->getFile());
+
+                if ($tpl instanceof \Twig_Template) {
+                    $template = $tpl->renderBlock($template, $variables);
+                    $template = '' === $template ? null : $template;
+                }
+            } else {
+                $tpl = $this->renderer->createTemplate($template);
+                $template = $tpl->render($variables);
+            }
         }
 
         return $template;

@@ -13,7 +13,9 @@ namespace Sonatra\Bundle\MailerBundle\Loader;
 
 use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Model\Mail;
+use Sonatra\Bundle\MailerBundle\Model\MailInterface;
 use Sonatra\Bundle\MailerBundle\Model\MailTranslation;
+use Sonatra\Bundle\MailerBundle\Model\MailTranslationInterface;
 use Sonatra\Bundle\MailerBundle\Util\ConfigUtil;
 
 /**
@@ -51,11 +53,11 @@ class ConfigMailLoader extends ArrayMailLoader
      *
      * @param array $config
      *
-     * @return Mail
+     * @return MailInterface
      */
     protected function createMail(array $config)
     {
-        $mail = new Mail();
+        $mail = $this->newMailInstance();
 
         $mail->setName(ConfigUtil::getValue($config, 'name'));
         $mail->setLabel(ConfigUtil::getValue($config, 'label'));
@@ -83,14 +85,14 @@ class ConfigMailLoader extends ArrayMailLoader
     /**
      * Create a mail translation.
      *
-     * @param Mail  $mail   The mail
-     * @param array $config The config of mail translation
+     * @param MailInterface $mail   The mail
+     * @param array         $config The config of mail translation
      *
-     * @return MailTranslation
+     * @return MailTranslationInterface
      */
-    protected function createMailTranslation(Mail $mail, array $config)
+    protected function createMailTranslation(MailInterface $mail, array $config)
     {
-        $translation = new MailTranslation($mail);
+        $translation = $this->newMailTranslationInstance($mail);
         $translation->setLocale(ConfigUtil::getValue($config, 'locale'));
         $translation->setLabel(ConfigUtil::getValue($config, 'label'));
         $translation->setDescription(ConfigUtil::getValue($config, 'description'));
@@ -99,5 +101,27 @@ class ConfigMailLoader extends ArrayMailLoader
         $translation->setBody(ConfigUtil::getValue($config, 'body'));
 
         return $translation;
+    }
+
+    /**
+     * Create a new instance of mail.
+     *
+     * @return MailInterface
+     */
+    protected function newMailInstance()
+    {
+        return new Mail();
+    }
+
+    /**
+     * Create a new instance of mail translation.
+     *
+     * @param MailInterface $mail The mail
+     *
+     * @return MailTranslationInterface
+     */
+    protected function newMailTranslationInstance(MailInterface $mail)
+    {
+        return new MailTranslation($mail);
     }
 }

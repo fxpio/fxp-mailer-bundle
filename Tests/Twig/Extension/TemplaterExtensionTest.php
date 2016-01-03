@@ -11,10 +11,15 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Twig\Extension;
 
+use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
+use Sonatra\Bundle\MailerBundle\Loader\LayoutLoaderInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailTemplaterInterface;
 use Sonatra\Bundle\MailerBundle\MailTypes;
+use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
+use Sonatra\Bundle\MailerBundle\Model\TwigLayout;
 use Sonatra\Bundle\MailerBundle\Twig\Extension\TemplaterExtension;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Tests for twig templater extension.
@@ -29,6 +34,16 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
     protected $templater;
 
     /**
+     * @var LayoutLoaderInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $layoutLoader;
+
+    /**
+     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $translator;
+
+    /**
      * @var TemplaterExtension
      */
     protected $ext;
@@ -36,7 +51,9 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->templater = $this->getMock(MailTemplaterInterface::class);
-        $this->ext = new TemplaterExtension($this->templater);
+        $this->layoutLoader = $this->getMock(LayoutLoaderInterface::class);
+        $this->translator = $this->getMock(TranslatorInterface::class);
+        $this->ext = new TemplaterExtension($this->templater, $this->layoutLoader, $this->translator);
     }
 
     public function testBasic()
@@ -55,6 +72,8 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf(\Twig_SimpleFunction::class, $function);
             $this->assertTrue(in_array($function->getName(), $valid));
         }
+
+        $this->assertCount(1, $this->ext->getTokenParsers());
     }
 
     public function testGetMailRendered()
@@ -103,6 +122,52 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
         $plainText = $this->ext->renderPlainText($template, $variables);
 
         $this->assertSame($validPlainText, $plainText);
+    }
+
+    public function testGetTranslatedLayout()
+    {
+        $layout = $this->getMockBuilder(TwigLayout::class)->disableOriginalConstructor()->getMock();
+
+        $layout->expects($this->once())
+            ->method('getTranslation')
+            ->will($this->returnValue(clone $layout));
+
+        $this->templater->expects($this->once())
+            ->method('getLocale')
+            ->will($this->returnValue('fr'));
+
+        $this->layoutLoader->expects($this->once())
+            ->method('load')
+            ->with('test')
+            ->will($this->returnValue($layout));
+
+        $res = $this->ext->getTranslatedLayout('test');
+
+        $this->assertInstanceOf(TwigLayout::class, $res);
+        $this->assertNotSame($layout, $res);
+    }
+
+    public function testGetTranslatedLayoutWithInvalidLayout()
+    {
+        $msg = 'The "test" layout is not a twig layout';
+        $this->setExpectedException(InvalidArgumentException::class, $msg);
+
+        $layout = $this->getMock(LayoutInterface::class);
+
+        $layout->expects($this->once())
+            ->method('getTranslation')
+            ->will($this->returnValue(clone $layout));
+
+        $this->templater->expects($this->once())
+            ->method('getLocale')
+            ->will($this->returnValue('fr'));
+
+        $this->layoutLoader->expects($this->once())
+            ->method('load')
+            ->with('test')
+            ->will($this->returnValue($layout));
+
+        $this->ext->getTranslatedLayout('test');
     }
 
     /**

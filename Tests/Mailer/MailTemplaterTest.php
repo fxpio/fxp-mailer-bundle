@@ -18,6 +18,10 @@ use Sonatra\Bundle\MailerBundle\Model\Layout;
 use Sonatra\Bundle\MailerBundle\Model\LayoutTranslation;
 use Sonatra\Bundle\MailerBundle\Model\Mail;
 use Sonatra\Bundle\MailerBundle\Model\MailTranslation;
+use Sonatra\Bundle\MailerBundle\Model\TwigLayout;
+use Sonatra\Bundle\MailerBundle\Model\TwigLayoutTranslation;
+use Sonatra\Bundle\MailerBundle\Model\TwigMail;
+use Sonatra\Bundle\MailerBundle\Model\TwigMailTranslation;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -57,6 +61,10 @@ class MailTemplaterTest extends \PHPUnit_Framework_TestCase
         $this->twig->expects($this->any())
             ->method('createTemplate')
             ->will($this->returnValue($this->twigTemplate));
+
+        $this->twig->expects($this->any())
+            ->method('loadTemplate')
+            ->will($this->returnValue($this->twigTemplate));
     }
 
     public function testLocale()
@@ -76,6 +84,7 @@ class MailTemplaterTest extends \PHPUnit_Framework_TestCase
         $htmlRendered = $mail->getLayout()->getTranslation('fr')->getBody().' | '.$trans->getHtmlBody();
         $twigVariables = array(
             '_mail_type' => MailTypes::TYPE_ALL,
+            '_layout' => 'test',
         );
 
         $this->assertNull($mail->getTranslationDomain());
@@ -137,6 +146,7 @@ class MailTemplaterTest extends \PHPUnit_Framework_TestCase
         $mail = $this->createMail(true, false, true);
         $twigVariables = array(
             '_mail_type' => MailTypes::TYPE_ALL,
+            '_layout' => 'test',
         );
 
         $this->assertSame('domain', $mail->getTranslationDomain());
@@ -238,6 +248,75 @@ class MailTemplaterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($mailTransSubject, $rendered->getSubject());
         $this->assertSame($mailTransBody, $rendered->getBody());
+        $this->assertSame($htmlRendered, $rendered->getHtmlBody());
+    }
+
+    public function testRenderWithTwig()
+    {
+        $this->templater->setLocale('fr');
+
+        $layout = new TwigLayout(__DIR__.'/../Fixtures/loaders/layout.html.twig');
+        $layout->setName('test');
+        $layoutTrans = new TwigLayoutTranslation($layout, __DIR__.'/../Fixtures/loaders/layout.fr.html.twig');
+        $layoutTrans->setLocale('fr');
+
+        $mail = new TwigMail(__DIR__.'/../Fixtures/loaders/mail.html.twig');
+        $mailTrans = new TwigMailTranslation($mail, __DIR__.'/../Fixtures/loaders/mail.fr.html.twig');
+        $mailTrans->setLocale('fr');
+        $mail->setLayout($layout);
+
+        $trans = $mail->getTranslation('fr');
+        $htmlRendered = $mail->getLayout()->getTranslation('fr')->getBody().' | '.$trans->getHtmlBody();
+        $twigVariables = array(
+            '_mail_type' => MailTypes::TYPE_ALL,
+            '_layout' => 'test',
+        );
+
+        $this->assertNull($mail->getTranslationDomain());
+        $this->assertCount(1, $mail->getTranslations());
+        $this->assertNotNull($mail->getLayout());
+        $this->assertNull($mail->getLayout()->getTranslationDomain());
+        $this->assertCount(1, $mail->getLayout()->getTranslations());
+
+        $this->loader->expects($this->once())
+            ->method('load')
+            ->with('test', MailTypes::TYPE_ALL)
+            ->will($this->returnValue($mail));
+
+        // render subject
+        $this->twigTemplate->expects($this->at(0))
+            ->method('renderBlock')
+            ->with('subject', $twigVariables)
+            ->will($this->returnValue($trans->getSubject()));
+
+        $twigVariables['_subject'] = $trans->getSubject();
+
+        // render html body
+        $this->twigTemplate->expects($this->at(1))
+            ->method('renderBlock')
+            ->with('html_body', $twigVariables)
+            ->will($this->returnValue($trans->getHtmlBody()));
+
+        $twigVariables['_html_body'] = $trans->getHtmlBody();
+
+        // render body
+        $this->twigTemplate->expects($this->at(2))
+            ->method('renderBlock')
+            ->with('body', $twigVariables)
+            ->will($this->returnValue($trans->getBody()));
+
+        $twigVariables['_body'] = $trans->getBody();
+
+        // render layout
+        $this->twigTemplate->expects($this->at(3))
+            ->method('renderBlock')
+            ->with('body', $twigVariables)
+            ->will($this->returnValue($htmlRendered));
+
+        $rendered = $this->templater->render('test', array(), MailTypes::TYPE_ALL);
+
+        $this->assertSame($trans->getSubject(), $rendered->getSubject());
+        $this->assertSame($trans->getBody(), $rendered->getBody());
         $this->assertSame($htmlRendered, $rendered->getHtmlBody());
     }
 

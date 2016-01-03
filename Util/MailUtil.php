@@ -53,4 +53,16 @@ abstract class MailUtil
 
         return array(MailTypes::TYPE_ALL, MailTypes::TYPE_PRINT, MailTypes::TYPE_SCREEN);
     }
+
+    /**
+     * Check if the html body has already a layout template.
+     *
+     * @param string $htmlBody The HTML body
+     *
+     * @return bool
+     */
+    public static function isRootBody($htmlBody)
+    {
+        return preg_match('%(<html[^>]*>)%im', $htmlBody, $regs);
+    }
 }

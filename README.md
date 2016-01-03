@@ -13,7 +13,9 @@ transport (email, mail, fax, ...).
 Features include:
 
 - Stored the templates in database with doctrine
-- Stored the templates in filesystem with yaml format
+- Stored the templates in filesystem with:
+  - twig format
+  - yaml format
 - Stored the templates in app config
 - Compatible with the localization
 - Allow to use the Symfony translator with the translation domain

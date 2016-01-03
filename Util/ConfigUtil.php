@@ -13,6 +13,7 @@ namespace Sonatra\Bundle\MailerBundle\Util;
 
 use Sonatra\Bundle\MailerBundle\Exception\InvalidConfigurationException;
 use Sonatra\Bundle\MailerBundle\Exception\UnexpectedTypeException;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Utils for config.
@@ -57,6 +58,29 @@ abstract class ConfigUtil
         if (!isset($config['file'])) {
             $msg = 'The "file" attribute must be defined in config of layout template';
             throw new InvalidConfigurationException($msg);
+        }
+
+        return $config;
+    }
+
+    /**
+     * Format the string config to array config with "file" attribute and translations.
+     *
+     * @param string|array    $config The config
+     * @param KernelInterface $kernel The kernel
+     *
+     * @return array
+     */
+    public static function formatTranslationConfig($config, KernelInterface $kernel)
+    {
+        $config = static::formatConfig($config);
+        $config['file'] = $kernel->locateResource($config['file']);
+
+        if (isset($config['translations']) && is_array($config['translations'])) {
+            /* @var array $translation */
+            foreach ($config['translations'] as &$translation) {
+                $translation['file'] = $kernel->locateResource($translation['file']);
+            }
         }
 
         return $config;

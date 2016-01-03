@@ -5,6 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="sonatra_mailer.loader.layout_twig.class">Sonatra\Bundle\MailerBundle\Loader\TwigLayoutLoader</parameter>
+        <parameter key="sonatra_mailer.loader.mail_twig.class">Sonatra\Bundle\MailerBundle\Loader\TwigMailLoader</parameter>
         <parameter key="sonatra_mailer.loader.layout_yaml.class">Sonatra\Bundle\MailerBundle\Loader\YamlLayoutLoader</parameter>
         <parameter key="sonatra_mailer.loader.mail_yaml.class">Sonatra\Bundle\MailerBundle\Loader\YamlMailLoader</parameter>
         <parameter key="sonatra_mailer.loader.layout_array.class">Sonatra\Bundle\MailerBundle\Loader\ArrayLayoutLoader</parameter>
@@ -16,6 +18,19 @@
 
     <services>
         <!-- File Loaders -->
+        <!-- Not attached with tag because removing on the optimization -->
+        <service id="sonatra_mailer.loader.layout_twig" class="%sonatra_mailer.loader.layout_twig.class%">
+            <argument type="collection" />
+            <argument type="service" id="kernel" />
+        </service>
+
+        <!-- Not attached with tag because removing on the optimization -->
+        <service id="sonatra_mailer.loader.mail_twig" class="%sonatra_mailer.loader.mail_twig.class%">
+            <argument type="collection" />
+            <argument type="service" id="sonatra_mailer.loader.layout_chain" />
+            <argument type="service" id="kernel" />
+        </service>
+
         <!-- Not attached with tag because removing on the optimization -->
         <service id="sonatra_mailer.loader.layout_yaml" class="%sonatra_mailer.loader.layout_yaml.class%">
             <argument type="collection" />
@@ -29,6 +44,7 @@
             <argument type="service" id="kernel" />
         </service>
 
+        <!-- Loaders -->
         <service id="sonatra_mailer.loader.layout_array" class="%sonatra_mailer.loader.layout_array.class%">
             <tag name="sonatra_mailer.layout_loader" priority="-25" />
             <argument type="collection" />

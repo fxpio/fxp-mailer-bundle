@@ -11,9 +11,16 @@
 
 namespace Sonatra\Bundle\MailerBundle\Twig\Extension;
 
+use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
+use Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException;
+use Sonatra\Bundle\MailerBundle\Loader\LayoutLoaderInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailTemplaterInterface;
 use Sonatra\Bundle\MailerBundle\MailTypes;
+use Sonatra\Bundle\MailerBundle\Model\TwigLayout;
+use Sonatra\Bundle\MailerBundle\Twig\TokenParser\LayoutTokenParser;
+use Sonatra\Bundle\MailerBundle\Util\TranslationUtil;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Use the mail templater directly in twig template.
@@ -28,13 +35,28 @@ class TemplaterExtension extends \Twig_Extension
     protected $templater;
 
     /**
+     * @var LayoutLoaderInterface
+     */
+    protected $layoutLoader;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * Constructor.
      *
-     * @param MailTemplaterInterface $templater The templater
+     * @param MailTemplaterInterface $templater    The templater
+     * @param LayoutLoaderInterface  $layoutLoader The layout loader
+     * @param TranslatorInterface    $translator   The translator
      */
-    public function __construct(MailTemplaterInterface $templater)
+    public function __construct(MailTemplaterInterface $templater, LayoutLoaderInterface $layoutLoader,
+                                TranslatorInterface $translator)
     {
         $this->templater = $templater;
+        $this->layoutLoader = $layoutLoader;
+        $this->translator = $translator;
     }
 
     /**
@@ -46,6 +68,16 @@ class TemplaterExtension extends \Twig_Extension
             new \Twig_SimpleFunction('sonatra_mailer_render', array($this, 'renderHtml'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('sonatra_mailer_render_plain', array($this, 'renderPlainText')),
             new \Twig_SimpleFunction('sonatra_mailer_mail_rendered', array($this, 'getMailRendered')),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTokenParsers()
+    {
+        return array(
+            new LayoutTokenParser(),
         );
     }
 
@@ -97,5 +129,28 @@ class TemplaterExtension extends \Twig_Extension
     public function getMailRendered($template, array $variables = array(), $type = MailTypes::TYPE_ALL)
     {
         return $this->templater->render($template, $variables, $type);
+    }
+
+    /**
+     * Get the translated layout.
+     *
+     * @param string $layout The name of layout
+     *
+     * @return TwigLayout
+     *
+     * @throws UnknownLayoutException   When the layout template does not exist
+     * @throws InvalidArgumentException When the layout is not a twig layout
+     */
+    public function getTranslatedLayout($layout)
+    {
+        $template = $this->layoutLoader->load($layout);
+        $template = TranslationUtil::translateLayout($template, $this->templater->getLocale(), $this->translator);
+
+        if (!$template instanceof TwigLayout) {
+            $msg = 'The "%s" layout is not a twig layout';
+            throw new InvalidArgumentException(sprintf($msg, $layout));
+        }
+
+        return $template;
     }
 }
