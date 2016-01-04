@@ -22,6 +22,9 @@ Features include:
 - Use twig for rendered the mail and layout templates
 - Send your email with Switmailer
 - Sign your email with DKIM
+- Add your event listeners for:
+  - template pre render
+  - template post render
 - Build your custom loaders of mail and layout templates
 - Build your custom transports
 - Build your custom transport signers

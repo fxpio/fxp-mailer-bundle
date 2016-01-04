@@ -11,13 +11,17 @@
 
 namespace Sonatra\Bundle\MailerBundle\Mailer;
 
+use Sonatra\Bundle\MailerBundle\Event\FilterPostRenderEvent;
+use Sonatra\Bundle\MailerBundle\Event\FilterPreRenderEvent;
 use Sonatra\Bundle\MailerBundle\Loader\MailLoaderInterface;
+use Sonatra\Bundle\MailerBundle\MailerEvents;
 use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
 use Sonatra\Bundle\MailerBundle\Model\TwigTemplateInterface;
 use Sonatra\Bundle\MailerBundle\Util\MailUtil;
 use Sonatra\Bundle\MailerBundle\Util\TranslationUtil;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -38,6 +42,11 @@ class MailTemplater implements MailTemplaterInterface
     protected $renderer;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
      * @var TranslatorInterface|null
      */
     protected $translator;
@@ -50,14 +59,17 @@ class MailTemplater implements MailTemplaterInterface
     /**
      * Constructor.
      *
-     * @param MailLoaderInterface $loader   The mail loader
-     * @param \Twig_Environment   $renderer The twig environment
+     * @param MailLoaderInterface      $loader     The mail loader
+     * @param \Twig_Environment        $renderer   The twig environment
+     * @param EventDispatcherInterface $dispatcher The event dispatcher
      */
-    public function __construct(MailLoaderInterface $loader, \Twig_Environment $renderer)
+    public function __construct(MailLoaderInterface $loader, \Twig_Environment $renderer,
+                                EventDispatcherInterface $dispatcher)
     {
         $this->loader = $loader;
         $this->renderer = $renderer;
         $this->locale = \Locale::getDefault();
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -91,7 +103,29 @@ class MailTemplater implements MailTemplaterInterface
      */
     public function render($template, array $variables = array(), $type = MailTypes::TYPE_ALL)
     {
-        $mail = $this->getTranslatedMail($template, $type);
+        $preEvent = new FilterPreRenderEvent($template, $variables, $type);
+        $this->dispatcher->dispatch(MailerEvents::TEMPLATE_PRE_RENDER, $preEvent);
+
+        $mail = $this->getTranslatedMail($preEvent->getTemplate(), $preEvent->getType());
+        $mailerBuilder = $this->doRender($preEvent, $mail);
+
+        $postEvent = new FilterPostRenderEvent($mailerBuilder);
+        $this->dispatcher->dispatch(MailerEvents::TEMPLATE_POST_RENDER, $postEvent);
+
+        return $postEvent->getMailRenderedBuilder()->build();
+    }
+
+    /**
+     * Render the mail.
+     *
+     * @param FilterPreRenderEvent $preEvent The template pre event
+     * @param MailInterface        $mail     The mail
+     *
+     * @return MailRenderedBuilder
+     */
+    protected function doRender(FilterPreRenderEvent $preEvent, MailInterface $mail)
+    {
+        $variables = $preEvent->getVariables();
         $variables['_mail_type'] = $mail->getType();
         $variables['_layout'] = null !== $mail->getLayout() ? $mail->getLayout()->getName() : null;
         $subject = $this->renderTemplate($mail->getSubject(), $mail, $variables);
@@ -107,7 +141,7 @@ class MailTemplater implements MailTemplaterInterface
             $htmlBody = $this->renderTemplate($lBody, $layout, $variables);
         }
 
-        return new MailRendered($mail, $subject, $htmlBody, $body);
+        return new MailRenderedBuilder($mail, $subject, $htmlBody, $body);
     }
 
     /**

@@ -22,6 +22,7 @@ use Sonatra\Bundle\MailerBundle\Model\TwigLayout;
 use Sonatra\Bundle\MailerBundle\Model\TwigLayoutTranslation;
 use Sonatra\Bundle\MailerBundle\Model\TwigMail;
 use Sonatra\Bundle\MailerBundle\Model\TwigMailTranslation;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -47,6 +48,11 @@ class MailTemplaterTest extends \PHPUnit_Framework_TestCase
     protected $twigTemplate;
 
     /**
+     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $dispatcher;
+
+    /**
      * @var MailTemplater
      */
     protected $templater;
@@ -56,7 +62,8 @@ class MailTemplaterTest extends \PHPUnit_Framework_TestCase
         $this->loader = $this->getMock(MailLoaderInterface::class);
         $this->twig = $this->getMock(\Twig_Environment::class);
         $this->twigTemplate = $this->getMockBuilder(\Twig_Template::class)->disableOriginalConstructor()->getMock();
-        $this->templater = new MailTemplater($this->loader, $this->twig);
+        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
+        $this->templater = new MailTemplater($this->loader, $this->twig, $this->dispatcher);
 
         $this->twig->expects($this->any())
             ->method('createTemplate')

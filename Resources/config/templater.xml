@@ -69,6 +69,7 @@
         <service id="sonatra_mailer.mail_templater" class="%sonatra_mailer.mail_templater.class%">
             <argument type="service" id="sonatra_mailer.loader.mail_chain" />
             <argument type="service" id="twig" />
+            <argument type="service" id="event_dispatcher" />
             <call method="setTranslator">
                 <argument type="service" id="translator" on-invalid="ignore" />
             </call>
