@@ -43,6 +43,7 @@ class SonatraMailerExtension extends Extension
 
         $loader->load('mailer.xml');
         $loader->load('templater.xml');
+        $loader->load('filter.xml');
         $loader->load('doctrine_loader.xml');
         $loader->load('twig.xml');
 

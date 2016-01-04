@@ -27,7 +27,12 @@ Features include:
   - template post render
   - transport pre send
   - transport post send
-- Build your custom loaders of mail and layout templates
+- Register your filters for:
+  - template mail
+  - transport
+- Build your custom loaders for:
+  - template mails
+  - template layouts
 - Build your custom transports
 - Build your custom transport signers
 - Twig function for use this templater with existing templates defined in twig files of already existing systems
