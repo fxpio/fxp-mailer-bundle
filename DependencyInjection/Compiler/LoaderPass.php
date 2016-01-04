@@ -56,8 +56,10 @@ class LoaderPass implements CompilerPassInterface
         }
 
         // sort by priority and flatten
-        krsort($loaders);
-        $loaders = call_user_func_array('array_merge', $loaders);
+        if (count($loaders) > 0) {
+            krsort($loaders);
+            $loaders = call_user_func_array('array_merge', $loaders);
+        }
 
         $container->getDefinition($chainLoaderName)->replaceArgument(0, $loaders);
     }
