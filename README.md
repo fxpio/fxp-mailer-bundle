@@ -12,16 +12,16 @@ transport (email, mail, fax, ...).
 
 Features include:
 
-- Stored the templates in database with doctrine
 - Stored the templates in filesystem with:
   - twig format
   - yaml format
 - Stored the templates in app config
+- Stored the templates in database with doctrine (optional)
 - Compatible with the localization
 - Allow to use the Symfony translator with the translation domain
 - Use twig for rendered the mail and layout templates
-- Send your email with Switmailer
-- Sign your email with DKIM
+- Send your email with SwiftMailer
+- Sign your email with SwiftMailer DKIM
 - Add your event listeners for:
   - template pre render
   - template post render
