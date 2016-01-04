@@ -17,6 +17,7 @@ use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailTemplaterInterface;
 use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Transport\TransportInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Tests for mailer.
@@ -36,6 +37,11 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     protected $transport;
 
     /**
+     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $dispatcher;
+
+    /**
      * @var Mailer
      */
     protected $mailer;
@@ -43,12 +49,13 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->templater = $this->getMock(MailTemplaterInterface::class);
+        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
         $this->transport = $this->getMock(TransportInterface::class);
         $this->transport->expects($this->atLeastOnce())
             ->method('getName')
             ->will($this->returnValue('test'));
 
-        $this->mailer = new Mailer($this->templater, array($this->transport));
+        $this->mailer = new Mailer($this->templater, array($this->transport), $this->dispatcher);
     }
 
     public function testGetTransport()

@@ -11,9 +11,13 @@
 
 namespace Sonatra\Bundle\MailerBundle\Mailer;
 
+use Sonatra\Bundle\MailerBundle\Event\FilterPostSendEvent;
+use Sonatra\Bundle\MailerBundle\Event\FilterPreSendEvent;
 use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
+use Sonatra\Bundle\MailerBundle\MailerEvents;
 use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Transport\TransportInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * The mailer.
@@ -28,17 +32,25 @@ class Mailer implements MailerInterface
     protected $templater;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
      * @var TransportInterface[]
      */
     protected $transports;
 
     /**
-     * @param MailTemplaterInterface $templater  The mail templater
-     * @param TransportInterface[]   $transports The transports
+     * @param MailTemplaterInterface   $templater  The mail templater
+     * @param TransportInterface[]     $transports The transports
+     * @param EventDispatcherInterface $dispatcher The event dispatcher
      */
-    public function __construct(MailTemplaterInterface $templater, array $transports)
+    public function __construct(MailTemplaterInterface $templater, array $transports,
+                                EventDispatcherInterface $dispatcher)
     {
         $this->templater = $templater;
+        $this->dispatcher = $dispatcher;
 
         foreach ($transports as $transport) {
             $this->addTransport($transport);
@@ -79,13 +91,23 @@ class Mailer implements MailerInterface
     /**
      * {@inheritdoc}
      */
-    public function send($transport, $message, $template = null, array $variables = array(), $type = MailTypes::TYPE_ALL)
+    public function send($transport, $message, $template = null, array $variables = array(),
+                         $type = MailTypes::TYPE_ALL)
     {
+        $transportName = $transport;
         $transport = $this->getTransport($transport);
         $mailRendered = null !== $template
             ? $this->templater->render($template, $variables, $type)
             : null;
 
-        return $transport->send($message, $mailRendered);
+        $preEvent = new FilterPreSendEvent($transportName, $message, $mailRendered);
+        $this->dispatcher->dispatch(MailerEvents::TRANSPORT_PRE_SEND, $preEvent);
+
+        $res = $transport->send($preEvent->getMessage(), $preEvent->getMailRendered());
+
+        $postEvent = new FilterPostSendEvent($res, $transportName, $message, $mailRendered);
+        $this->dispatcher->dispatch(MailerEvents::TRANSPORT_POST_SEND, $postEvent);
+
+        return $res;
     }
 }

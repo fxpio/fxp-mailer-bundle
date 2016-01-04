@@ -35,4 +35,25 @@ final class MailerEvents
      * @var string
      */
     const TEMPLATE_POST_RENDER = 'sonatra_mailer.template.post_render';
+
+    /**
+     * The transport.pre_send event is thrown before that an mail must be sent
+     * but after a render of mail.
+     *
+     * The event listener receives an
+     * Sonatra\Bundle\MailerBundle\Event\FilterPreSendEvent instance.
+     *
+     * @var string
+     */
+    const TRANSPORT_PRE_SEND = 'sonatra_mailer.transport.pre_send';
+
+    /**
+     * The transport.post_send event is thrown after that an mail is sent.
+     *
+     * The event listener receives an
+     * Sonatra\Bundle\MailerBundle\Event\FilterPostSendEvent instance.
+     *
+     * @var string
+     */
+    const TRANSPORT_POST_SEND = 'sonatra_mailer.transport.post_send';
 }
