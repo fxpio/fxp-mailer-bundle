@@ -32,8 +32,21 @@ class MailRenderedTest extends \PHPUnit_Framework_TestCase
         $rendered = new MailRendered($template, $subject, $htmlBody, $body);
 
         $this->assertSame($template, $rendered->getTemplate());
-        $this->assertSame('Subject of mail', $rendered->getSubject());
-        $this->assertSame('HTML body of mail', $rendered->getHtmlBody());
-        $this->assertSame('Body of mail', $rendered->getBody());
+        $this->assertSame($subject, $rendered->getSubject());
+        $this->assertSame($htmlBody, $rendered->getHtmlBody());
+        $this->assertSame($body, $rendered->getBody());
+
+        $subject2 = 'Subject of mail 2';
+        $htmlBody2 = 'HTML body of mail 2';
+        $body2 = 'Body of mail 2';
+
+        $rendered->setSubject($subject2);
+        $rendered->setHtmlBody($htmlBody2);
+        $rendered->setBody($body2);
+
+        $this->assertSame($template, $rendered->getTemplate());
+        $this->assertSame($subject2, $rendered->getSubject());
+        $this->assertSame($htmlBody2, $rendered->getHtmlBody());
+        $this->assertSame($body2, $rendered->getBody());
     }
 }

@@ -67,6 +67,16 @@ class MailRendered implements MailRenderedInterface
     /**
      * {@inheritdoc}
      */
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSubject()
     {
         return $this->subject;
@@ -75,9 +85,29 @@ class MailRendered implements MailRenderedInterface
     /**
      * {@inheritdoc}
      */
+    public function setHtmlBody($htmlBody)
+    {
+        $this->htmlBody = $htmlBody;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getHtmlBody()
     {
         return $this->htmlBody;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+
+        return $this;
     }
 
     /**

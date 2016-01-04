@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\MailerBundle\Event;
 
-use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedBuilderInterface;
+use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -22,27 +22,27 @@ use Symfony\Component\EventDispatcher\Event;
 class FilterPostRenderEvent extends Event
 {
     /**
-     * @var MailRenderedBuilderInterface
+     * @var MailRenderedInterface
      */
-    protected $mailRenderedBuilder;
+    protected $mailRendered;
 
     /**
      * Constructor.
      *
-     * @param MailRenderedBuilderInterface $mailRenderedBuilder The mail rendered builder
+     * @param MailRenderedInterface $mailRendered The mail rendered
      */
-    public function __construct(MailRenderedBuilderInterface $mailRenderedBuilder)
+    public function __construct(MailRenderedInterface $mailRendered)
     {
-        $this->mailRenderedBuilder = $mailRenderedBuilder;
+        $this->mailRendered = $mailRendered;
     }
 
     /**
-     * Get the mail rendered builder.
+     * Get the mail rendered.
      *
-     * @return MailRenderedBuilderInterface
+     * @return MailRenderedInterface
      */
-    public function getMailRenderedBuilder()
+    public function getMailRendered()
     {
-        return $this->mailRenderedBuilder;
+        return $this->mailRendered;
     }
 }

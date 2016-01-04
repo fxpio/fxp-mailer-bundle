@@ -12,7 +12,7 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\Mailer;
 
 use Sonatra\Bundle\MailerBundle\Event\FilterPostRenderEvent;
-use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedBuilderInterface;
+use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 
 /**
  * Tests for filter post render event.
@@ -23,10 +23,10 @@ class FilterPostRenderEventTest extends \PHPUnit_Framework_TestCase
 {
     public function testModel()
     {
-        /* @var MailRenderedBuilderInterface $mailRenderedBuilder */
-        $mailRenderedBuilder = $this->getMock(MailRenderedBuilderInterface::class);
-        $event = new FilterPostRenderEvent($mailRenderedBuilder);
+        /* @var MailRenderedInterface $mailRendered */
+        $mailRendered = $this->getMock(MailRenderedInterface::class);
+        $event = new FilterPostRenderEvent($mailRendered);
 
-        $this->assertSame($mailRenderedBuilder, $event->getMailRenderedBuilder());
+        $this->assertSame($mailRendered, $event->getMailRendered());
     }
 }

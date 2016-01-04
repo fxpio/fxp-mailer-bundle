@@ -28,6 +28,15 @@ interface MailRenderedInterface
     public function getTemplate();
 
     /**
+     * Set the rendered subject.
+     *
+     * @param string|null $subject The rendered subject
+     *
+     * @return self
+     */
+    public function setSubject($subject);
+
+    /**
      * Get the rendered subject.
      *
      * @return string|null
@@ -35,11 +44,29 @@ interface MailRenderedInterface
     public function getSubject();
 
     /**
+     * Set the rendered HTML body.
+     *
+     * @param string|null $htmlBody The rendered HTML body
+     *
+     * @return self
+     */
+    public function setHtmlBody($htmlBody);
+
+    /**
      * Get the rendered HTML body.
      *
      * @return string|null
      */
     public function getHtmlBody();
+
+    /**
+     * Set the rendered body.
+     *
+     * @param string|null $body The rendered body
+     *
+     * @return self
+     */
+    public function setBody($body);
 
     /**
      * Get the rendered body.

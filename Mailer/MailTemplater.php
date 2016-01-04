@@ -107,12 +107,12 @@ class MailTemplater implements MailTemplaterInterface
         $this->dispatcher->dispatch(MailerEvents::TEMPLATE_PRE_RENDER, $preEvent);
 
         $mail = $this->getTranslatedMail($preEvent->getTemplate(), $preEvent->getType());
-        $mailerBuilder = $this->doRender($preEvent, $mail);
+        $mailRendered = $this->doRender($preEvent, $mail);
 
-        $postEvent = new FilterPostRenderEvent($mailerBuilder);
+        $postEvent = new FilterPostRenderEvent($mailRendered);
         $this->dispatcher->dispatch(MailerEvents::TEMPLATE_POST_RENDER, $postEvent);
 
-        return $postEvent->getMailRenderedBuilder()->build();
+        return $postEvent->getMailRendered();
     }
 
     /**
@@ -121,7 +121,7 @@ class MailTemplater implements MailTemplaterInterface
      * @param FilterPreRenderEvent $preEvent The template pre event
      * @param MailInterface        $mail     The mail
      *
-     * @return MailRenderedBuilder
+     * @return MailRendered
      */
     protected function doRender(FilterPreRenderEvent $preEvent, MailInterface $mail)
     {
@@ -141,7 +141,7 @@ class MailTemplater implements MailTemplaterInterface
             $htmlBody = $this->renderTemplate($lBody, $layout, $variables);
         }
 
-        return new MailRenderedBuilder($mail, $subject, $htmlBody, $body);
+        return new MailRendered($mail, $subject, $htmlBody, $body);
     }
 
     /**
