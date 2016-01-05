@@ -30,9 +30,9 @@ interface TemplateFilterInterface
     /**
      * Check if the filter is compatible with the mail rendered.
      *
-     * @param MailRenderedInterface|null $mailRendered The mail rendered
+     * @param MailRenderedInterface $mailRendered The mail rendered
      *
      * @return bool
      */
-    public function supports(MailRenderedInterface $mailRendered = null);
+    public function supports(MailRenderedInterface $mailRendered);
 }
