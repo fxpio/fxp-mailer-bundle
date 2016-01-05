@@ -41,18 +41,26 @@ class SonatraMailerExtension extends Extension
         $container->setParameter('sonatra_mailer.layout_class', $config['layout_class']);
         $container->setParameter('sonatra_mailer.mail_class', $config['mail_class']);
 
+        $this->loadConfigs($loader);
+        $this->configureTransport($container, $loader, $config);
+        $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
+        $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
+        $this->addFilters($container, $loader, 'template', $config['filters']['templates']);
+        $this->addFilters($container, $loader, 'transport', $config['filters']['transports']);
+    }
+
+    /**
+     * Load the configs.
+     *
+     * @param Loader\XmlFileLoader $loader The loader
+     */
+    protected function loadConfigs(Loader\XmlFileLoader $loader)
+    {
         $loader->load('mailer.xml');
         $loader->load('templater.xml');
         $loader->load('filter.xml');
         $loader->load('doctrine_loader.xml');
         $loader->load('twig.xml');
-
-        $this->configureTransport($container, $loader, $config);
-
-        $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
-        $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
-        $this->addFilters($container, $loader, 'template', $config['filters']['templates']);
-        $this->addFilters($container, $loader, 'transport', $config['filters']['transports']);
     }
 
     /**
