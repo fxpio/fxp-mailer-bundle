@@ -34,5 +34,5 @@ interface TemplateFilterInterface
      *
      * @return bool
      */
-    public function supports(MailRenderedInterface $mailRendered);
+    public function supports(MailRenderedInterface $mailRendered = null);
 }
