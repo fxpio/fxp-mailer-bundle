@@ -36,6 +36,9 @@ class FilterRegistry implements FilterRegistryInterface
      */
     public function __construct(array $templateFilters = array(), array $transportFilters = array())
     {
+        $this->templateFilters = array();
+        $this->transportFilters = array();
+
         foreach ($templateFilters as $filter) {
             $this->addTemplateFilter($filter);
         }
