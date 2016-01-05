@@ -37,7 +37,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $valid = array(
             'filters' => array(
                 'templates' => array(
-                    'csstostyles' => array(),
+                    'css_to_styles' => array(),
                 ),
                 'transports' => array(),
             ),
@@ -45,7 +45,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = array(
             'filters' => array(
                 'templates' => array(
-                    'csstostyles' => array(),
+                    'css_to_styles' => array(),
                 ),
             ),
         );
@@ -64,7 +64,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = array(
             'filters' => array(
                 'templates' => array(
-                    'csstostyles' => 42,
+                    'css_to_styles' => 42,
                 ),
             ),
         );

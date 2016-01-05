@@ -23,7 +23,7 @@ Features include:
 - Send your email with SwiftMailer
 - Sign your email with SwiftMailer DKIM
 - Template filters:
-  - Inline CSS to inline styles (`csstostyles`) with [CssToInlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles)
+  - Inline CSS to inline styles (`css_to_styles`) with [CssToInlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles)
 - Add your event listeners for:
   - template pre render
   - template post render

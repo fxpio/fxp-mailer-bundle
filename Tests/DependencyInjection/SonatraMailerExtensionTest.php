@@ -85,7 +85,7 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
             array(
                 'filters' => array(
                     'templates' => array(
-                        'csstostyles' => array(
+                        'css_to_styles' => array(
                             'foo' => 'bar',
                             'bar' => 'foo',
                         ),
@@ -94,9 +94,9 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.filter.template.csstostyles'));
-        $this->assertTrue($container->hasParameter('sonatra_mailer.filter.template.csstostyles.foo'));
-        $this->assertTrue($container->hasParameter('sonatra_mailer.filter.template.csstostyles.bar'));
+        $this->assertTrue($container->hasDefinition('sonatra_mailer.filter.template.css_to_styles'));
+        $this->assertTrue($container->hasParameter('sonatra_mailer.filter.template.css_to_styles.foo'));
+        $this->assertTrue($container->hasParameter('sonatra_mailer.filter.template.css_to_styles.bar'));
     }
 
     protected function createContainer(array $configs = array())
