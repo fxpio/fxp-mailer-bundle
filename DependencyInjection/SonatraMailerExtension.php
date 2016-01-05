@@ -51,6 +51,8 @@ class SonatraMailerExtension extends Extension
 
         $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
         $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
+        $this->addFilters($container, $loader, 'template', $config['filters']['templates']);
+        $this->addFilters($container, $loader, 'transport', $config['filters']['transports']);
     }
 
     /**
@@ -115,5 +117,25 @@ class SonatraMailerExtension extends Extension
         $container->setParameter($prefix.'private_key_path', $config['private_key_path']);
         $container->setParameter($prefix.'domain', $config['domain']);
         $container->setParameter($prefix.'selector', $config['selector']);
+    }
+
+    /**
+     * Add the filters.
+     *
+     * @param ContainerBuilder     $container The container
+     * @param Loader\XmlFileLoader $loader    The xml loader
+     * @param string               $type      The filter type
+     * @param array[]              $filters   The filters configs
+     */
+    protected function addFilters(ContainerBuilder $container, Loader\XmlFileLoader $loader,
+                                  $type, array $filters)
+    {
+        foreach ($filters as $name => $filter) {
+            $loader->load('filters/'.$type.'s/'.$name.'.xml');
+
+            foreach ($filter as $key => $value) {
+                $container->setParameter('sonatra_mailer.filter.'.$type.'.'.$name.'.'.$key, $value);
+            }
+        }
     }
 }

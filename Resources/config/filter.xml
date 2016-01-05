@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="sonatra_mailer.filter_registry.class">Sonatra\Bundle\MailerBundle\Filter\FilterRegistry</parameter>
+        <parameter key="sonatra_mailer.listener.filter.class">Sonatra\Bundle\MailerBundle\Listener\FilterSubscriber</parameter>
     </parameters>
 
     <services>
@@ -13,6 +14,12 @@
         <service id="sonatra_mailer.filter_registry" class="%sonatra_mailer.filter_registry.class%">
             <argument type="collection" />
             <argument type="collection" />
+        </service>
+
+        <!-- Filter Event Listener -->
+        <service id="sonatra_mailer.listener.filter" class="%sonatra_mailer.listener.filter.class%">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="sonatra_mailer.filter_registry" />
         </service>
     </services>
 </container>

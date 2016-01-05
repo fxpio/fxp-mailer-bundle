@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getLayoutTemplatesNode())
                 ->append($this->getMailTemplatesNode())
                 ->append($this->getTransportSignerNode())
+                ->append($this->getFilterNode())
             ->end()
         ;
 
@@ -160,6 +161,46 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('domain')->defaultNull()->end()
                         ->scalarNode('selector')->defaultNull()->end()
                     ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getFilterNode()
+    {
+        $treeBuilder = new TreeBuilder();
+        /* @var ArrayNodeDefinition $node */
+        $node = $treeBuilder->root('filters');
+        $node
+            ->fixXmlConfig('filter')
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->append($this->getFilterTypeNode('template'))
+                ->append($this->getFilterTypeNode('transport'))
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getFilterTypeNode($type)
+    {
+        $treeBuilder = new TreeBuilder();
+        /* @var ArrayNodeDefinition $node */
+        $node = $treeBuilder->root($type.'s');
+        $node
+            ->fixXmlConfig($type)
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('name')
+            ->prototype('variable')
+                ->treatNullLike(array())
+                ->validate()
+                    ->ifTrue(function ($v) {
+                        return !is_array($v);
+                    })
+                    ->thenInvalid('The sonatra_mailer.filters.'.$type.'s config %s must be either null or an array.')
                 ->end()
             ->end()
         ;
