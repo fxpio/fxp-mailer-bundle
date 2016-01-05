@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class FilterListener implements EventSubscriberInterface
+class FilterSubscriber implements EventSubscriberInterface
 {
     /**
      * @var FilterRegistryInterface

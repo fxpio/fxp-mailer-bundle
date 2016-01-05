@@ -16,16 +16,16 @@ use Sonatra\Bundle\MailerBundle\Event\FilterPreSendEvent;
 use Sonatra\Bundle\MailerBundle\Filter\FilterRegistryInterface;
 use Sonatra\Bundle\MailerBundle\Filter\TemplateFilterInterface;
 use Sonatra\Bundle\MailerBundle\Filter\TransportFilterInterface;
-use Sonatra\Bundle\MailerBundle\Listener\FilterListener;
+use Sonatra\Bundle\MailerBundle\Listener\FilterSubscriber;
 use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 use Sonatra\Bundle\MailerBundle\MailerEvents;
 
 /**
- * Tests for filter listener.
+ * Tests for filter subscriber.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class FilterListenerTest extends \PHPUnit_Framework_TestCase
+class FilterSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var FilterRegistryInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -33,14 +33,14 @@ class FilterListenerTest extends \PHPUnit_Framework_TestCase
     protected $registry;
 
     /**
-     * @var FilterListener
+     * @var FilterSubscriber
      */
     protected $listener;
 
     protected function setUp()
     {
         $this->registry = $this->getMock(FilterRegistryInterface::class);
-        $this->listener = new FilterListener($this->registry);
+        $this->listener = new FilterSubscriber($this->registry);
     }
 
     public function testGetSubscribedEvents()
