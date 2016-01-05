@@ -21,7 +21,8 @@
         "symfony/yaml": "~2.8|~3.0",
         "doctrine/doctrine-bundle": "~1.6",
         "doctrine/orm": "~2.5",
-        "swiftmailer/swiftmailer": "~5.4"
+        "swiftmailer/swiftmailer": "~5.4",
+        "tijsverkoyen/css-to-inline-styles": "~1.5"
 
     },
     "autoload": {
