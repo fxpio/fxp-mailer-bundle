@@ -17,6 +17,7 @@
         <service id="sonatra_mailer.mailer" class="%sonatra_mailer.mailer.class%" public="true">
             <argument type="service" id="sonatra_mailer.mail_templater" />
             <argument type="collection" />
+            <argument type="service" id="event_dispatcher" />
         </service>
     </services>
 </container>
