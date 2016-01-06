@@ -90,9 +90,6 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($mail, $rendered);
     }
 
-    /**
-     * @group fxp
-     */
     public function testGetMailRenderedCache()
     {
         /* @var string $template */
