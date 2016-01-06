@@ -45,6 +45,11 @@ class TemplaterExtension extends \Twig_Extension
     protected $translator;
 
     /**
+     * @var array[]
+     */
+    protected $cache;
+
+    /**
      * Constructor.
      *
      * @param MailTemplaterInterface $templater    The templater
@@ -57,6 +62,7 @@ class TemplaterExtension extends \Twig_Extension
         $this->templater = $templater;
         $this->layoutLoader = $layoutLoader;
         $this->translator = $translator;
+        $this->cache = array();
     }
 
     /**
@@ -65,9 +71,11 @@ class TemplaterExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('sonatra_mailer_render', array($this, 'renderHtml'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('sonatra_mailer_render_plain', array($this, 'renderPlainText')),
+            new \Twig_SimpleFunction('sonatra_mailer_render_subject', array($this, 'renderSubject')),
+            new \Twig_SimpleFunction('sonatra_mailer_render_html', array($this, 'renderHtml'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('sonatra_mailer_render_text', array($this, 'renderPlainText')),
             new \Twig_SimpleFunction('sonatra_mailer_mail_rendered', array($this, 'getMailRendered')),
+            new \Twig_SimpleFunction('sonatra_mailer_clean', array($this, 'cleanRendered')),
         );
     }
 
@@ -87,6 +95,20 @@ class TemplaterExtension extends \Twig_Extension
     public function getName()
     {
         return 'sonatra_mailer_templater';
+    }
+
+    /**
+     * Render the subject of mail template.
+     *
+     * @param string $template  The mail template name
+     * @param array  $variables The variables of template
+     * @param string $type      The mail type defined in MailTypes::TYPE_*
+     *
+     * @return string
+     */
+    public function renderSubject($template, array $variables = array(), $type = MailTypes::TYPE_ALL)
+    {
+        return $this->getMailRendered($template, $variables, $type)->getSubject();
     }
 
     /**
@@ -128,7 +150,21 @@ class TemplaterExtension extends \Twig_Extension
      */
     public function getMailRendered($template, array $variables = array(), $type = MailTypes::TYPE_ALL)
     {
-        return $this->templater->render($template, $variables, $type);
+        $id = $this->getCacheId($template, $variables, $type);
+
+        if (!isset($this->cache[$template][$id])) {
+            $this->cache[$template][$id] = $this->templater->render($template, $variables, $type);
+        }
+
+        return $this->cache[$template][$id];
+    }
+
+    /**
+     * @param string $template The mail template name
+     */
+    public function cleanRendered($template)
+    {
+        unset($this->cache[$template]);
     }
 
     /**
@@ -152,5 +188,21 @@ class TemplaterExtension extends \Twig_Extension
         }
 
         return $template;
+    }
+
+    /**
+     * Get the id for the cache.
+     *
+     * @param string $template  The mail template name
+     * @param array  $variables The variables of template
+     * @param string $type      The mail type defined in MailTypes::TYPE_*
+     *
+     * @return string
+     */
+    protected function getCacheId($template, array $variables = array(), $type = MailTypes::TYPE_ALL)
+    {
+        $serialize = serialize($variables);
+
+        return sha1($template.'&&'.$serialize.'&&'.$type);
     }
 }

@@ -59,12 +59,14 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
     public function testBasic()
     {
         $this->assertSame('sonatra_mailer_templater', $this->ext->getName());
-        $this->assertCount(3, $this->ext->getFunctions());
+        $this->assertCount(5, $this->ext->getFunctions());
 
         $valid = array(
-            'sonatra_mailer_render',
-            'sonatra_mailer_render_plain',
+            'sonatra_mailer_render_subject',
+            'sonatra_mailer_render_html',
+            'sonatra_mailer_render_text',
             'sonatra_mailer_mail_rendered',
+            'sonatra_mailer_clean',
         );
 
         /* @var \Twig_SimpleFunction $function */
@@ -86,6 +88,49 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
         $rendered = $this->ext->getMailRendered($template, $variables);
 
         $this->assertSame($mail, $rendered);
+    }
+
+    /**
+     * @group fxp
+     */
+    public function testGetMailRenderedCache()
+    {
+        /* @var string $template */
+        /* @var array $variables */
+        /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mail */
+        list($template, $variables, $mail) = $this->getConfig(true);
+
+        $rendered = $this->ext->getMailRendered($template, $variables);
+
+        $this->assertSame($mail, $rendered);
+
+        $rendered2 = $this->ext->getMailRendered($template, $variables);
+
+        $this->assertSame($rendered, $rendered2);
+
+        $this->ext->cleanRendered($template);
+
+        $rendered3 = $this->ext->getMailRendered($template, $variables);
+
+        $this->assertNotSame($rendered, $rendered3);
+    }
+
+    public function testRenderSubject()
+    {
+        /* @var string $template */
+        /* @var array $variables */
+        /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mail */
+        list($template, $variables, $mail) = $this->getConfig();
+        $validSubject = 'Subject';
+
+        $mail->expects($this->at(0))
+            ->method('getSubject')
+            ->with()
+            ->will($this->returnValue($validSubject));
+
+        $subject = $this->ext->renderSubject($template, $variables);
+
+        $this->assertSame($validSubject, $subject);
     }
 
     public function testRenderHtml()
@@ -171,9 +216,11 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param bool $clone
+     *
      * @return array
      */
-    public function getConfig()
+    public function getConfig($clone = false)
     {
         $template = 'test';
         $variables = array(
@@ -182,10 +229,17 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
 
         $mail = $this->getMock(MailRenderedInterface::class);
 
-        $this->templater->expects($this->once())
+        $this->templater->expects($this->at(0))
             ->method('render')
             ->with($template, $variables, MailTypes::TYPE_ALL)
             ->will($this->returnValue($mail));
+
+        if ($clone) {
+            $this->templater->expects($this->at(1))
+                ->method('render')
+                ->with($template, $variables, MailTypes::TYPE_ALL)
+                ->will($this->returnValue(clone $mail));
+        }
 
         return array($template, $variables, $mail);
     }
