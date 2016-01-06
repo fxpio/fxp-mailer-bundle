@@ -95,7 +95,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'templates' => array(),
                 'transports' => array(),
             ),
-
+            'transports' => array(
+                'swiftmailer' => array(
+                    'embed_image' => array(
+                        'enabled' => false,
+                    ),
+                ),
+            ),
         );
     }
 }

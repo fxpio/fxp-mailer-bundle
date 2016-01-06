@@ -24,8 +24,8 @@ Features include:
 - Sign your email with SwiftMailer DKIM
 - Template filters:
   - Inline CSS to inline styles (`css_to_styles`) with [CssToInlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles)
-- Transport filters:
-  - SwiftMailer embed image (`swiftmailer_embed_image`)
+- SwiftMailer plugins:
+  - Embed link images in email
 - Add your event listeners for:
   - template pre render
   - template post render

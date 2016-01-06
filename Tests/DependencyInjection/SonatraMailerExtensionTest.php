@@ -99,6 +99,21 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($container->hasParameter('sonatra_mailer.filter.template.css_to_styles.bar'));
     }
 
+    public function testEnableSwiftMailerEmbedImagePlugin()
+    {
+        $container = $this->createContainer(array(
+            array(
+                'transports' => array(
+                    'swiftmailer' => array(
+                        'embed_image' => true,
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertTrue($container->hasDefinition('sonatra_mailer.transport.swiftmailer.embed_image_plugin'));
+    }
+
     protected function createContainer(array $configs = array())
     {
         $container = new ContainerBuilder(new ParameterBag(array(

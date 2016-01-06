@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('mail_class')->defaultValue('Sonatra\Bundle\MailerBundle\Model\MailInterface')->end()
                 ->append($this->getLayoutTemplatesNode())
                 ->append($this->getMailTemplatesNode())
+                ->append($this->getTransportNode())
                 ->append($this->getTransportSignerNode())
                 ->append($this->getFilterNode())
             ->end()
@@ -128,6 +129,40 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getTransportNode()
+    {
+        $treeBuilder = new TreeBuilder();
+        /* @var ArrayNodeDefinition $node */
+        $node = $treeBuilder->root('transports');
+        $node
+            ->fixXmlConfig('transport')
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('swiftmailer')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->append($this->getSwiftMailerEmbedImageNode())
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    protected function getSwiftMailerEmbedImageNode()
+    {
+        $treeBuilder = new TreeBuilder();
+        /* @var ArrayNodeDefinition $node */
+        $node = $treeBuilder->root('embed_image');
+        $node
+            ->addDefaultsIfNotSet()
+            ->canBeEnabled()
         ;
 
         return $node;

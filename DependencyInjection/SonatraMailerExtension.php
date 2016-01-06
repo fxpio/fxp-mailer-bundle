@@ -77,6 +77,10 @@ class SonatraMailerExtension extends Extension
         if (class_exists('Swift_Message')) {
             $loader->load('transport_swiftmailer.xml');
             $this->addSwiftMailerDkimSigner($container, $config['transport_signers']['swiftmailer_dkim']);
+
+            if ($config['transports']['swiftmailer']['embed_image']['enabled']) {
+                $loader->load('transport_swiftmailer_embed_image.xml');
+            }
         }
     }
 
