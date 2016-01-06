@@ -12,12 +12,11 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TransportPass;
-use Sonatra\Bundle\MailerBundle\Transport\Signer\TransportSignerInterface;
+use Sonatra\Bundle\MailerBundle\Transport\TransportInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -63,7 +62,7 @@ class TransportPassTest extends KernelTestCase
         $this->assertFalse($container->has('sonatra_mailer.transport_registry'));
     }
 
-    public function testProcessAddSignerRegistryInTransport()
+    public function testProcessAddTransport()
     {
         $container = $this->getContainer();
 
@@ -71,31 +70,17 @@ class TransportPassTest extends KernelTestCase
         $defMailer->setArguments(array(null, array()));
         $container->setDefinition('sonatra_mailer.mailer', $defMailer);
 
-        $transportMock = $this->getMock(TransportSignerInterface::class);
+        $transportMock = $this->getMock(TransportInterface::class);
 
         $defTransport = new Definition(get_class($transportMock));
         $defTransport->addTag('sonatra_mailer.transport');
         $container->setDefinition('test.transport', $defTransport);
 
-        $signerConfig = array(
-            'service_id' => 'test.transport',
-            'signer' => 'test',
-        );
-        $container->setParameter('sonatra_mailer.transport_signers', array('test.transport' => $signerConfig));
-
         $this->assertCount(0, $defTransport->getMethodCalls());
         $this->pass->process($container);
 
         $methods = $defTransport->getMethodCalls();
-        $this->assertCount(2, $methods);
-
-        $this->assertSame('setSignerRegistry', $methods[0][0]);
-        $this->assertCount(1, $methods[0][1]);
-        $this->assertInstanceOf(Reference::class, $methods[0][1][0]);
-
-        $this->assertSame('setSigner', $methods[1][0]);
-        $this->assertCount(1, $methods[1][1]);
-        $this->assertSame('test', $methods[1][1][0]);
+        $this->assertCount(0, $methods);
     }
 
     /**

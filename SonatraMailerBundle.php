@@ -16,7 +16,6 @@ use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\LoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigLoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\SignerPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\FilterPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TransportPass;
@@ -61,7 +60,6 @@ class SonatraMailerBundle extends Bundle
     {
         $container->addCompilerPass(new LoaderPass());
         $container->addCompilerPass(new TransportPass());
-        $container->addCompilerPass(new SignerPass());
         $container->addCompilerPass(new FilterPass());
         $container->addCompilerPass(new OptimizeConfigLoaderPass(), PassConfig::TYPE_OPTIMIZE);
         $container->addCompilerPass(new OptimizeYamlLoaderPass(), PassConfig::TYPE_OPTIMIZE);

@@ -114,6 +114,26 @@ class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($container->hasDefinition('sonatra_mailer.transport.swiftmailer.embed_image_plugin'));
     }
 
+    public function testEnableSwiftMailerDkimSignerPlugin()
+    {
+        $container = $this->createContainer(array(
+            array(
+                'transports' => array(
+                    'swiftmailer' => array(
+                        'dkim_signer' => array(
+                            'enabled' => true,
+                            'private_key_path' => 'private_key_path',
+                            'domain' => 'domain',
+                            'selector' => 'selector',
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertTrue($container->hasDefinition('sonatra_mailer.transport.swiftmailer.dkim_signer_plugin'));
+    }
+
     protected function createContainer(array $configs = array())
     {
         $container = new ContainerBuilder(new ParameterBag(array(

@@ -38,7 +38,6 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getLayoutTemplatesNode())
                 ->append($this->getMailTemplatesNode())
                 ->append($this->getTransportNode())
-                ->append($this->getTransportSignerNode())
                 ->append($this->getFilterNode())
             ->end()
         ;
@@ -147,6 +146,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->append($this->getSwiftMailerEmbedImageNode())
+                        ->append($this->getSwiftMailerDkimSignerNode())
                     ->end()
                 ->end()
             ->end()
@@ -168,35 +168,18 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function getTransportSignerNode()
+    protected function getSwiftMailerDkimSignerNode()
     {
         $treeBuilder = new TreeBuilder();
         /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root('transport_signers');
+        $node = $treeBuilder->root('dkim_signer');
         $node
-            ->fixXmlConfig('transport_signer')
             ->addDefaultsIfNotSet()
+            ->canBeEnabled()
             ->children()
-                ->arrayNode('signers')
-                    ->fixXmlConfig('signer')
-                    ->useAttributeAsKey('service_id', false)
-                    ->normalizeKeys(false)
-                    ->prototype('array')
-                        ->addDefaultsIfNotSet()
-                        ->children()
-                            ->scalarNode('service_id')->isRequired()->end()
-                            ->scalarNode('signer')->isRequired()->end()
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('swiftmailer_dkim')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('private_key_path')->defaultNull()->end()
-                        ->scalarNode('domain')->defaultNull()->end()
-                        ->scalarNode('selector')->defaultNull()->end()
-                    ->end()
-                ->end()
+                ->scalarNode('private_key_path')->defaultNull()->end()
+                ->scalarNode('domain')->defaultNull()->end()
+                ->scalarNode('selector')->defaultNull()->end()
             ->end()
         ;
 

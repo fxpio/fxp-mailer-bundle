@@ -6,20 +6,12 @@
 
     <parameters>
         <parameter key="sonatra_mailer.transport.swiftmailer.class">Sonatra\Bundle\MailerBundle\Transport\SwiftMailerTransport</parameter>
-        <parameter key="sonatra_mailer.transport.signer.swiftmailer_dkim.class">Sonatra\Bundle\MailerBundle\Transport\Signer\SwiftMailerDkimSigner</parameter>
     </parameters>
 
     <services>
         <service id="sonatra_mailer.transport.swiftmailer" class="%sonatra_mailer.transport.swiftmailer.class%" public="false">
             <tag name="sonatra_mailer.transport" />
             <argument type="service" id="swiftmailer.mailer" />
-        </service>
-
-        <service id="sonatra_mailer.transport.signer.swiftmailer_dkim" class="%sonatra_mailer.transport.signer.swiftmailer_dkim.class%" public="false">
-            <tag name="sonatra_mailer.signer" />
-            <argument>%sonatra_mailer.transport.signer.swiftmailer_dkim.private_key_path%</argument>
-            <argument>%sonatra_mailer.transport.signer.swiftmailer_dkim.domain%</argument>
-            <argument>%sonatra_mailer.transport.signer.swiftmailer_dkim.selector%</argument>
         </service>
     </services>
 </container>

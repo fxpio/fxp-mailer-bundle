@@ -72,11 +72,17 @@ class SonatraMailerExtension extends Extension
      */
     protected function configureTransport(ContainerBuilder $container, Loader\XmlFileLoader $loader, array $config)
     {
-        $container->setParameter('sonatra_mailer.transport_signers', $config['transport_signers']['signers']);
-
         if (class_exists('Swift_Message')) {
             $loader->load('transport_swiftmailer.xml');
-            $this->addSwiftMailerDkimSigner($container, $config['transport_signers']['swiftmailer_dkim']);
+
+            if ($config['transports']['swiftmailer']['dkim_signer']['enabled']) {
+                $loader->load('transport_swiftmailer_dkim_signer.xml');
+                $dkimConfig = $config['transports']['swiftmailer']['dkim_signer'];
+                $prefix = 'sonatra_mailer.transport.swiftmailer.dkim_signer.';
+                $container->setParameter($prefix.'private_key_path', $dkimConfig['private_key_path']);
+                $container->setParameter($prefix.'domain', $dkimConfig['domain']);
+                $container->setParameter($prefix.'selector', $dkimConfig['selector']);
+            }
 
             if ($config['transports']['swiftmailer']['embed_image']['enabled']) {
                 $loader->load('transport_swiftmailer_embed_image.xml');
@@ -114,21 +120,6 @@ class SonatraMailerExtension extends Extension
 
             $container->setDefinition(sprintf('sonatra_mailer.loader.%s_%s', $type, $loader), $def);
         }
-    }
-
-    /**
-     * Add the config for swiftmailer dkim signer.
-     *
-     * @param ContainerBuilder $container The container
-     * @param array            $config    The config
-     */
-    protected function addSwiftMailerDkimSigner(ContainerBuilder $container, array $config)
-    {
-        $prefix = 'sonatra_mailer.transport.signer.swiftmailer_dkim.';
-
-        $container->setParameter($prefix.'private_key_path', $config['private_key_path']);
-        $container->setParameter($prefix.'domain', $config['domain']);
-        $container->setParameter($prefix.'selector', $config['selector']);
     }
 
     /**

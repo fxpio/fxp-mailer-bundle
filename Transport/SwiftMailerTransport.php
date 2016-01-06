@@ -11,21 +11,16 @@
 
 namespace Sonatra\Bundle\MailerBundle\Transport;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
 use Sonatra\Bundle\MailerBundle\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
-use Sonatra\Bundle\MailerBundle\Transport\Signer\Traits\TransportSignerTrait;
-use Sonatra\Bundle\MailerBundle\Transport\Signer\TransportSignerInterface;
 
 /**
  * SwiftMailer transport.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class SwiftMailerTransport implements TransportSignerInterface
+class SwiftMailerTransport implements TransportInterface
 {
-    use TransportSignerTrait;
-
     /**
      * @var \Swift_Mailer
      */
@@ -61,10 +56,6 @@ class SwiftMailerTransport implements TransportSignerInterface
         if (null !== $mailRendered) {
             $message->setSubject($mailRendered->getSubject());
             $this->addBodies($message, $mailRendered);
-        }
-
-        if (null !== $signature = $this->getSignature()) {
-            $message->attachSigner($signature);
         }
 
         $sent = $this->swiftMailer->send($message);
@@ -104,27 +95,5 @@ class SwiftMailerTransport implements TransportSignerInterface
         if (null !== $textPlain) {
             $message->addPart($textPlain, 'text/plain');
         }
-    }
-
-    /**
-     * Get the signature.
-     *
-     * @return \Swift_Signers_DKIMSigner|null
-     */
-    protected function getSignature()
-    {
-        $signature = null;
-
-        if (null !== $this->signerRegistry && null !== $this->signer) {
-            $signer = $this->signerRegistry->getSigner($this->signer);
-            $signature = $signer->createSignature();
-
-            if (!$signature instanceof \Swift_Signers_DKIMSigner) {
-                $msg = 'The signer "%s" must create a signature with an instance of Swift_Signers_DKIMSigner';
-                throw new InvalidArgumentException(sprintf($msg, $signer->getName()));
-            }
-        }
-
-        return $signature;
     }
 }

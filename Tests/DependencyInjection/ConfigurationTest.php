@@ -83,14 +83,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'mail_class' => MailInterface::class,
             'layout_templates' => array(),
             'mail_templates' => array(),
-            'transport_signers' => array(
-                'signers' => array(),
-                'swiftmailer_dkim' => array(
-                    'private_key_path' => null,
-                    'domain' => null,
-                    'selector' => null,
-                ),
-            ),
             'filters' => array(
                 'templates' => array(),
                 'transports' => array(),
@@ -99,6 +91,12 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'swiftmailer' => array(
                     'embed_image' => array(
                         'enabled' => false,
+                    ),
+                    'dkim_signer' => array(
+                        'enabled' => false,
+                        'private_key_path' => null,
+                        'domain' => null,
+                        'selector' => null,
                     ),
                 ),
             ),

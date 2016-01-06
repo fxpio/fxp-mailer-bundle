@@ -9,32 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Transport\Signer;
+namespace Sonatra\Bundle\MailerBundle\Transport\SwiftMailer;
 
 use Sonatra\Bundle\MailerBundle\Exception\RuntimeException;
 
 /**
- * The signer for the swiftmailer DKIM signature.
+ * SwiftMailer DKIM Signer Plugin.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class SwiftMailerDkimSigner implements SignerInterface
+class DkimSignerPlugin extends AbstractPlugin
 {
     /**
      * @var string
      */
     protected $privateKeyPath;
-
     /**
      * @var string
      */
     protected $domain;
-
     /**
      * @var string
      */
     protected $selector;
-
     /**
      * Constructor.
      *
@@ -52,25 +49,34 @@ class SwiftMailerDkimSigner implements SignerInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function beforeSendPerformed(\Swift_Events_SendEvent $event)
     {
-        return 'swiftmailer_dkim';
+        $message = $event->getMessage();
+
+        if (!$this->isEnabled() || !$message instanceof \Swift_Message
+                || in_array($message->getId(), $this->performed)) {
+            return;
+        }
+
+        $signature = new \Swift_Signers_DKIMSigner($this->getPrivateKey(), $this->domain, $this->selector);
+        $message->attachSigner($signature);
+        $this->performed[] = $message->getId();
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return \Swift_Signers_DKIMSigner
      */
-    public function createSignature()
+    public function sendPerformed(\Swift_Events_SendEvent $event)
     {
-        return new \Swift_Signers_DKIMSigner($this->getPrivateKey(), $this->domain, $this->selector);
+        // not used
     }
 
     /**
      * Get the private key.
      *
      * @return string
+     *
+     * @throws RuntimeException When the private key cannot be read
      */
     protected function getPrivateKey()
     {

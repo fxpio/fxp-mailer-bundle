@@ -21,11 +21,11 @@ Features include:
 - Allow to use the Symfony translator with the translation domain
 - Use twig for rendered the mail and layout templates
 - Send your email with SwiftMailer
-- Sign your email with SwiftMailer DKIM
 - Template filters:
   - Inline CSS to inline styles (`css_to_styles`) with [CssToInlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles)
 - SwiftMailer plugins:
   - Embed link images in email
+  - DKIM signer
 - Add your event listeners for:
   - template pre render
   - template post render
@@ -38,7 +38,6 @@ Features include:
   - template mails
   - template layouts
 - Build your custom transports
-- Build your custom transport signers
 - Twig function for use this templater with existing templates defined in twig files of already existing systems
 
 Documentation

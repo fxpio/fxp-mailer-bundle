@@ -11,11 +11,8 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Transport;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
 use Sonatra\Bundle\MailerBundle\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
-use Sonatra\Bundle\MailerBundle\Transport\Signer\SignerInterface;
-use Sonatra\Bundle\MailerBundle\Transport\Signer\SignerRegistryInterface;
 use Sonatra\Bundle\MailerBundle\Transport\SwiftMailerTransport;
 
 /**
@@ -102,69 +99,5 @@ class SwiftMailerTransportTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(1));
 
         $this->assertTrue($this->transport->send($message, $mail));
-    }
-
-    public function testSendWithSignature()
-    {
-        $message = $this->getMockBuilder(\Swift_Message::class)->disableOriginalConstructor()->getMock();
-
-        /* @var \Swift_Signers_DKIMSigner|\PHPUnit_Framework_MockObject_MockObject $signature */
-        $signature = $this->getMockBuilder(\Swift_Signers_DKIMSigner::class)->disableOriginalConstructor()->getMock();
-
-        /* @var SignerInterface|\PHPUnit_Framework_MockObject_MockObject $signer */
-        $signer = $this->getMock(SignerInterface::class);
-        $signer->expects($this->once())
-            ->method('createSignature')
-            ->with()
-            ->will($this->returnValue($signature));
-
-        /* @var SignerRegistryInterface|\PHPUnit_Framework_MockObject_MockObject $signerRegistry */
-        $signerRegistry = $this->getMock(SignerRegistryInterface::class);
-        $signerRegistry->expects($this->once())
-            ->method('getSigner')
-            ->with('test')
-            ->will($this->returnValue($signer));
-
-        $this->transport->setSignerRegistry($signerRegistry);
-        $this->transport->setSigner('test');
-
-        $this->swiftMailer->expects($this->at(0))
-            ->method('send')
-            ->with($message)
-            ->will($this->returnValue(1));
-
-        $this->assertTrue($this->transport->send($message));
-    }
-
-    public function testSendWithInvalidSignature()
-    {
-        $msg = 'The signer "test" must create a signature with an instance of Swift_Signers_DKIMSigner';
-        $this->setExpectedException(InvalidArgumentException::class, $msg);
-
-        $message = $this->getMockBuilder(\Swift_Message::class)->disableOriginalConstructor()->getMock();
-
-        /* @var SignerInterface|\PHPUnit_Framework_MockObject_MockObject $signer */
-        $signer = $this->getMock(SignerInterface::class);
-        $signer->expects($this->once())
-            ->method('createSignature')
-            ->with()
-            ->will($this->returnValue(42));
-
-        $signer->expects($this->once())
-            ->method('getName')
-            ->with()
-            ->will($this->returnValue('test'));
-
-        /* @var SignerRegistryInterface|\PHPUnit_Framework_MockObject_MockObject $signerRegistry */
-        $signerRegistry = $this->getMock(SignerRegistryInterface::class);
-        $signerRegistry->expects($this->once())
-            ->method('getSigner')
-            ->with('test')
-            ->will($this->returnValue($signer));
-
-        $this->transport->setSignerRegistry($signerRegistry);
-        $this->transport->setSigner('test');
-
-        $this->transport->send($message);
     }
 }
