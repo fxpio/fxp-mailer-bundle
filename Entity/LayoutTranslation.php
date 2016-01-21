@@ -21,14 +21,14 @@ use Sonatra\Bundle\MailerBundle\Model\LayoutTranslation as BaseLayoutTranslation
 class LayoutTranslation extends BaseLayoutTranslation
 {
     /**
-     * @var int|null
+     * @var int|string|null
      */
     protected $id;
 
     /**
      * Get the id.
      *
-     * @return int|null
+     * @return int|string|null
      */
     public function getId()
     {

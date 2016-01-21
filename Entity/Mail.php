@@ -22,14 +22,14 @@ use Sonatra\Bundle\MailerBundle\Model\Mail as BaseMail;
 class Mail extends BaseMail
 {
     /**
-     * @var int|null
+     * @var int|string|null
      */
     protected $id;
 
     /**
      * Get the id.
      *
-     * @return int|null
+     * @return int|string|null
      */
     public function getId()
     {

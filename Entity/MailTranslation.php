@@ -21,14 +21,14 @@ use Sonatra\Bundle\MailerBundle\Model\MailTranslation as BaseMailTranslation;
 class MailTranslation extends BaseMailTranslation
 {
     /**
-     * @var int|null
+     * @var int|string|null
      */
     protected $id;
 
     /**
      * Get the id.
      *
-     * @return int|null
+     * @return int|string|null
      */
     public function getId()
     {
