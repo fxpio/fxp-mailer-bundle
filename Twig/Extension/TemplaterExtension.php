@@ -20,6 +20,7 @@ use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Model\TwigLayout;
 use Sonatra\Bundle\MailerBundle\Twig\TokenParser\LayoutTokenParser;
 use Sonatra\Bundle\MailerBundle\Util\TranslationUtil;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -30,7 +31,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 class TemplaterExtension extends \Twig_Extension
 {
     /**
-     * @var MailTemplaterInterface
+     * @var ContainerInterface
+     */
+    public $container;
+
+    /**
+     * @var MailTemplaterInterface|null
      */
     protected $templater;
 
@@ -52,14 +58,11 @@ class TemplaterExtension extends \Twig_Extension
     /**
      * Constructor.
      *
-     * @param MailTemplaterInterface $templater    The templater
-     * @param LayoutLoaderInterface  $layoutLoader The layout loader
-     * @param TranslatorInterface    $translator   The translator
+     * @param LayoutLoaderInterface $layoutLoader The layout loader
+     * @param TranslatorInterface   $translator   The translator
      */
-    public function __construct(MailTemplaterInterface $templater, LayoutLoaderInterface $layoutLoader,
-                                TranslatorInterface $translator)
+    public function __construct(LayoutLoaderInterface $layoutLoader, TranslatorInterface $translator)
     {
-        $this->templater = $templater;
         $this->layoutLoader = $layoutLoader;
         $this->translator = $translator;
         $this->cache = array();
@@ -153,7 +156,7 @@ class TemplaterExtension extends \Twig_Extension
         $id = $this->getCacheId($template, $variables, $type);
 
         if (!isset($this->cache[$template][$id])) {
-            $this->cache[$template][$id] = $this->templater->render($template, $variables, $type);
+            $this->cache[$template][$id] = $this->getTemplater()->render($template, $variables, $type);
         }
 
         return $this->cache[$template][$id];
@@ -180,7 +183,7 @@ class TemplaterExtension extends \Twig_Extension
     public function getTranslatedLayout($layout)
     {
         $template = $this->layoutLoader->load($layout);
-        $template = TranslationUtil::translateLayout($template, $this->templater->getLocale(), $this->translator);
+        $template = TranslationUtil::translateLayout($template, $this->getTemplater()->getLocale(), $this->translator);
 
         if (!$template instanceof TwigLayout) {
             $msg = 'The "%s" layout is not a twig layout';
@@ -204,5 +207,20 @@ class TemplaterExtension extends \Twig_Extension
         $serialize = serialize($variables);
 
         return sha1($template.'&&'.$serialize.'&&'.$type);
+    }
+
+    /**
+     * Get the templater.
+     *
+     * @return MailTemplaterInterface
+     */
+    protected function getTemplater()
+    {
+        if (null !== $this->container) {
+            $this->templater = $this->container->get('sonatra_mailer.mail_templater');
+            $this->container = null;
+        }
+
+        return $this->templater;
     }
 }

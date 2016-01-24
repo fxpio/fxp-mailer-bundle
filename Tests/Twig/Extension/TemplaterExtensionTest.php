@@ -19,6 +19,7 @@ use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Sonatra\Bundle\MailerBundle\Model\TwigLayout;
 use Sonatra\Bundle\MailerBundle\Twig\Extension\TemplaterExtension;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -53,7 +54,16 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
         $this->templater = $this->getMock(MailTemplaterInterface::class);
         $this->layoutLoader = $this->getMock(LayoutLoaderInterface::class);
         $this->translator = $this->getMock(TranslatorInterface::class);
-        $this->ext = new TemplaterExtension($this->templater, $this->layoutLoader, $this->translator);
+        $this->ext = new TemplaterExtension($this->layoutLoader, $this->translator);
+
+        /* @var ContainerInterface|\PHPUnit_Framework_MockObject_MockObject $container */
+        $container = $this->getMock(ContainerInterface::class);
+        $container->expects($this->any())
+            ->method('get')
+            ->with('sonatra_mailer.mail_templater')
+            ->will($this->returnValue($this->templater));
+
+        $this->ext->container = $container;
     }
 
     public function testBasic()
