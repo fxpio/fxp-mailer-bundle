@@ -61,6 +61,10 @@ class EmbedImagePlugin extends AbstractPlugin
      */
     protected function embedImage(\Swift_Message $message, \DOMAttr $node, array &$images)
     {
+        if (0 === strpos($node->nodeValue, 'cid:')) {
+            return;
+        }
+
         if (isset($images[$node->nodeValue])) {
             $cid = $images[$node->nodeValue];
         } else {

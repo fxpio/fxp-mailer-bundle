@@ -54,7 +54,7 @@ class EmbedImagePluginTest extends \PHPUnit_Framework_TestCase
     {
         $messageId = 'message_id';
         $html = '<html><body><img src="test.png"><p>Test.</p><img src="test.png"></body></html>';
-        $htmlConverted = '<html><body><img src="EMBED_CID"><p>Test.</p><img src="EMBED_CID"></body></html>';
+        $htmlConverted = '<html><body><img src="cid:EMBED_CID"><p>Test.</p><img src="cid:EMBED_CID"></body></html>';
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadHTML($htmlConverted);
         $htmlConverted = $document->saveHTML();
@@ -69,7 +69,35 @@ class EmbedImagePluginTest extends \PHPUnit_Framework_TestCase
 
         $this->message->expects($this->once())
             ->method('embed')
-            ->will($this->returnValue('EMBED_CID'));
+            ->will($this->returnValue('cid:EMBED_CID'));
+
+        $this->message->expects($this->once())
+            ->method('setBody')
+            ->with($htmlConverted);
+
+        $this->plugin->beforeSendPerformed($this->event);
+    }
+
+    public function testBeforeSendPerformedWithAlreadyEmbeddedImage()
+    {
+        $messageId = 'message_id';
+        $html = '<html><body><img src="cid:ALREADY_EMBED_CID"><p>Test.</p><img src="test.png"></body></html>';
+        $htmlConverted = '<html><body><img src="cid:ALREADY_EMBED_CID"><p>Test.</p><img src="cid:EMBED_CID"></body></html>';
+        $document = new \DOMDocument('1.0', 'utf-8');
+        $document->loadHTML($htmlConverted);
+        $htmlConverted = $document->saveHTML();
+
+        $this->message->expects($this->atLeastOnce())
+            ->method('getBody')
+            ->will($this->returnValue($html));
+
+        $this->message->expects($this->atLeastOnce())
+            ->method('getId')
+            ->will($this->returnValue($messageId));
+
+        $this->message->expects($this->once())
+            ->method('embed')
+            ->will($this->returnValue('cid:EMBED_CID'));
 
         $this->message->expects($this->once())
             ->method('setBody')
