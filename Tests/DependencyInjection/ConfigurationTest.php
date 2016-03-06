@@ -91,6 +91,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'swiftmailer' => array(
                     'embed_image' => array(
                         'enabled' => false,
+                        'host_pattern' => '/(.*)+/',
                     ),
                     'dkim_signer' => array(
                         'enabled' => false,

@@ -11,6 +11,8 @@
 
 namespace Sonatra\Bundle\MailerBundle\Transport\SwiftMailer;
 
+use Sonatra\Bundle\MailerBundle\Util\EmbedImageUtil;
+
 /**
  * SwiftMailer Embed Image Plugin.
  *
@@ -18,6 +20,28 @@ namespace Sonatra\Bundle\MailerBundle\Transport\SwiftMailer;
  */
 class EmbedImagePlugin extends AbstractPlugin
 {
+    /**
+     * @var string
+     */
+    protected $webDir;
+
+    /**
+     * @var string
+     */
+    protected $hostPattern;
+
+    /**
+     * Constructor.
+     *
+     * @param string|null $webDir      The web directory
+     * @param string      $hostPattern The pattern of allowed host
+     */
+    public function __construct($webDir = null, $hostPattern = '/(.*)+/')
+    {
+        $this->webDir = (string) $webDir;
+        $this->hostPattern = $hostPattern;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -66,12 +90,12 @@ class EmbedImagePlugin extends AbstractPlugin
         }
 
         if (isset($images[$node->nodeValue])) {
-            $cid = $images[$node->nodeValue];
+            $node->nodeValue = $images[$node->nodeValue];
         } else {
+            $node->nodeValue = EmbedImageUtil::getLocalPath($node->nodeValue, $this->webDir, $this->hostPattern);
             $cid = $message->embed(\Swift_Image::fromPath($node->nodeValue));
             $images[$node->nodeValue] = $cid;
+            $node->nodeValue = $cid;
         }
-
-        $node->nodeValue = $cid;
     }
 }

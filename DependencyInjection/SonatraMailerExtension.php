@@ -86,6 +86,9 @@ class SonatraMailerExtension extends Extension
 
             if ($config['transports']['swiftmailer']['embed_image']['enabled']) {
                 $loader->load('transport_swiftmailer_embed_image.xml');
+                $embedConfig = $config['transports']['swiftmailer']['embed_image'];
+                $prefix = 'sonatra_mailer.transport.swiftmailer.embed_image.';
+                $container->setParameter($prefix.'host_pattern', $embedConfig['host_pattern']);
             }
         }
     }

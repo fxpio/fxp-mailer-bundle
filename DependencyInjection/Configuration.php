@@ -163,6 +163,9 @@ class Configuration implements ConfigurationInterface
         $node
             ->addDefaultsIfNotSet()
             ->canBeEnabled()
+            ->children()
+                ->scalarNode('host_pattern')->defaultValue('/(.*)+/')->end()
+            ->end()
         ;
 
         return $node;
