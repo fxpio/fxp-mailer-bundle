@@ -6,27 +6,11 @@
 
     <parameters>
         <parameter key="sonatra_mailer.filter.template.css_to_styles.class">Sonatra\Bundle\MailerBundle\Filter\Template\CssToStylesFilter</parameter>
-        <parameter key="sonatra_mailer.filter.template.css_to_styles.cleanup">false</parameter>
-        <parameter key="sonatra_mailer.filter.template.css_to_styles.use_inline_styles_block">true</parameter>
-        <parameter key="sonatra_mailer.filter.template.css_to_styles.strip_original_style_tags">false</parameter>
-        <parameter key="sonatra_mailer.filter.template.css_to_styles.exclude_media_queries">false</parameter>
     </parameters>
 
     <services>
         <service id="sonatra_mailer.filter.template.css_to_styles" class="%sonatra_mailer.filter.template.css_to_styles.class%">
             <tag name="sonatra_mailer.template_filter" />
-            <call method="setCleanup">
-                <argument>%sonatra_mailer.filter.template.css_to_styles.cleanup%</argument>
-            </call>
-            <call method="setUseInlineStylesBlock">
-                <argument>%sonatra_mailer.filter.template.css_to_styles.use_inline_styles_block%</argument>
-            </call>
-            <call method="setStripOriginalStyleTags">
-                <argument>%sonatra_mailer.filter.template.css_to_styles.strip_original_style_tags%</argument>
-            </call>
-            <call method="setExcludeMediaQueries">
-                <argument>%sonatra_mailer.filter.template.css_to_styles.exclude_media_queries%</argument>
-            </call>
         </service>
     </services>
 </container>
