@@ -25,43 +25,13 @@ use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 class CssToStylesFilter implements TemplateFilterInterface
 {
     /**
-     * @var bool
-     */
-    protected $cleanup = false;
-
-    /**
-     * @var bool
-     */
-    protected $useInlineStylesBlock = true;
-
-    /**
-     * @var bool
-     */
-    protected $stripOriginalStyleTags = false;
-
-    /**
-     * @var bool
-     */
-    protected $excludeMediaQueries = false;
-
-    /**
-     * @var bool
-     */
-    protected $outputXhtml = false;
-
-    /**
      * {@inheritdoc}
      */
     public function filter(MailRenderedInterface $mailRendered)
     {
         $cssToInlineStyles = new CssToInlineStyles();
-        $cssToInlineStyles->setHTML($mailRendered->getHtmlBody());
-        $cssToInlineStyles->setCleanup($this->cleanup);
-        $cssToInlineStyles->setUseInlineStylesBlock($this->useInlineStylesBlock);
-        $cssToInlineStyles->setStripOriginalStyleTags($this->stripOriginalStyleTags);
-        $cssToInlineStyles->setExcludeMediaQueries($this->excludeMediaQueries);
 
-        $mailRendered->setHtmlBody($cssToInlineStyles->convert($this->outputXhtml));
+        $mailRendered->setHtmlBody($cssToInlineStyles->convert($mailRendered->getHtmlBody()));
     }
 
     /**
@@ -72,55 +42,5 @@ class CssToStylesFilter implements TemplateFilterInterface
         $validTypes = MailUtil::getValidTypes($mailRendered->getTemplate()->getType());
 
         return in_array(MailTypes::TYPE_SCREEN, $validTypes);
-    }
-
-    /**
-     * Should the generated HTML be cleaned?
-     *
-     * @param bool $cleanup The option value
-     */
-    public function setCleanup($cleanup)
-    {
-        $this->cleanup = $cleanup;
-    }
-
-    /**
-     * Use inline-styles block as CSS.
-     *
-     * @param bool $useInlineStylesBlock The option value
-     */
-    public function setUseInlineStylesBlock($useInlineStylesBlock)
-    {
-        $this->useInlineStylesBlock = $useInlineStylesBlock;
-    }
-
-    /**
-     * Strip original style tags.
-     *
-     * @param bool $stripOriginalStyleTags The option value
-     */
-    public function setStripOriginalStyleTags($stripOriginalStyleTags)
-    {
-        $this->stripOriginalStyleTags = $stripOriginalStyleTags;
-    }
-
-    /**
-     * Exclude the media queries from the inlined styles.
-     *
-     * @param bool $excludeMediaQueries The option value
-     */
-    public function setExcludeMediaQueries($excludeMediaQueries)
-    {
-        $this->excludeMediaQueries = $excludeMediaQueries;
-    }
-
-    /**
-     * Should we output valid XHTML?
-     *
-     * @param bool $outputXhtml The option value
-     */
-    public function setOutputXhtml($outputXhtml)
-    {
-        $this->outputXhtml = $outputXhtml;
     }
 }

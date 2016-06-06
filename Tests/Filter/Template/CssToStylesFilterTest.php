@@ -23,16 +23,6 @@ use Sonatra\Bundle\MailerBundle\Model\MailInterface;
  */
 class CssToStylesFilterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSetters()
-    {
-        $filter = new CssToStylesFilter();
-        $filter->setCleanup(false);
-        $filter->setUseInlineStylesBlock(true);
-        $filter->setStripOriginalStyleTags(false);
-        $filter->setExcludeMediaQueries(false);
-        $filter->setOutputXhtml(false);
-    }
-
     public function getSupportTests()
     {
         return array(
@@ -74,7 +64,9 @@ class CssToStylesFilterTest extends \PHPUnit_Framework_TestCase
         $htmlConverted = '<html><head><style>p {color: #f7f7f7;}</style></head><body><p style="color: #f7f7f7;">Test.</p></body></html>';
         $document = new \DOMDocument('1.0', 'utf-8');
         $document->loadHTML($htmlConverted);
-        $htmlConverted = $document->saveHTML();
+        $document->formatOutput = true;
+        $htmlConverted = $document->saveXML(null, LIBXML_NOEMPTYTAG);
+        $htmlConverted = ltrim(preg_replace('|<\?xml (.*)\?>|', '', $htmlConverted));
 
         /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mailRendered */
         $mailRendered = $this->getMock(MailRenderedInterface::class);
