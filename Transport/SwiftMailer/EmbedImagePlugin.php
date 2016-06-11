@@ -55,7 +55,9 @@ class EmbedImagePlugin extends AbstractPlugin
         }
 
         $dom = new \DOMDocument('1.0', 'utf-8');
+        $internalErrors = libxml_use_internal_errors(true);
         $dom->loadHTML($message->getBody());
+        libxml_use_internal_errors($internalErrors);
         $xpath = new \DOMXPath($dom);
         $nodes = $xpath->query('//img/@src');
         $images = array();
