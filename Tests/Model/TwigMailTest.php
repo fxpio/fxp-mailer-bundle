@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Model;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
 use Sonatra\Bundle\MailerBundle\Model\TwigMail;
 use Symfony\Component\Filesystem\Filesystem;
 
