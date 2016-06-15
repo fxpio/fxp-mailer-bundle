@@ -60,6 +60,11 @@ class CssToStylesFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testFilter()
     {
+        if(defined('HHVM_VERSION')) {
+            $this->markTestSkipped('Bug: CssToInlineStyles::inlineCssOnElement() return a boolean on HHVM');
+            return;
+        }
+
         $html = '<html><head><style>p {color: #f7f7f7;}</style></head><body><p>Test.</p></body></html>';
         $htmlConverted = '<html><head><style>p {color: #f7f7f7;}</style></head><body><p style="color: #f7f7f7;">Test.</p></body></html>';
         $document = new \DOMDocument('1.0', 'utf-8');
