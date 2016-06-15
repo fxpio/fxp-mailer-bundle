@@ -62,6 +62,7 @@ class CssToStylesFilterTest extends \PHPUnit_Framework_TestCase
     {
         if(defined('HHVM_VERSION')) {
             $this->markTestSkipped('Bug: CssToInlineStyles::inlineCssOnElement() return a boolean on HHVM');
+
             return;
         }
 
