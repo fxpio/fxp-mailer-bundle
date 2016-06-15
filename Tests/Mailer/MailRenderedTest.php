@@ -24,7 +24,7 @@ class MailRenderedTest extends \PHPUnit_Framework_TestCase
     public function testModel()
     {
         /* @var MailInterface $template */
-        $template = $this->getMock(MailInterface::class);
+        $template = $this->getMockBuilder(MailInterface::class)->getMock();
         $subject = 'Subject of mail';
         $htmlBody = 'HTML body of mail';
         $body = 'Body of mail';

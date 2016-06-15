@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Loader;
 
-use Sonatra\Bundle\MailerBundle\Exception\UnknownMailException;
 use Sonatra\Bundle\MailerBundle\Loader\LayoutLoaderInterface;
 use Sonatra\Bundle\MailerBundle\Loader\TwigMailLoader;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
@@ -28,7 +27,7 @@ class TwigMailLoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         // layout
-        $templateLayout = $this->getMock(LayoutInterface::class);
+        $templateLayout = $this->getMockBuilder(LayoutInterface::class)->getMock();
         $templateLayout->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('test'));
@@ -38,13 +37,13 @@ class TwigMailLoaderTest extends \PHPUnit_Framework_TestCase
 
         // loader
         /* @var LayoutLoaderInterface|\PHPUnit_Framework_MockObject_MockObject $layoutLoader */
-        $layoutLoader = $this->getMock(LayoutLoaderInterface::class);
+        $layoutLoader = $this->getMockBuilder(LayoutLoaderInterface::class)->getMock();
         $layoutLoader->expects($this->once())
             ->method('load')
             ->will($this->returnValue($templateLayout));
 
         /* @var KernelInterface|\PHPUnit_Framework_MockObject_MockObject $kernel */
-        $kernel = $this->getMock(KernelInterface::class);
+        $kernel = $this->getMockBuilder(KernelInterface::class)->getMock();
         $template = array(
             'name' => 'test',
             'layout' => 'test',
@@ -72,13 +71,16 @@ class TwigMailLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(MailInterface::class, $loader->load('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnknownMailException
+     * @expectedExceptionMessage The "test" mail template does not exist with the "all" type
+     */
     public function testLoadUnknownTemplate()
     {
-        $this->setExpectedException(UnknownMailException::class, 'The "test" mail template does not exist with the "all" type');
         /* @var LayoutLoaderInterface $layoutLoader */
-        $layoutLoader = $this->getMock(LayoutLoaderInterface::class);
+        $layoutLoader = $this->getMockBuilder(LayoutLoaderInterface::class)->getMock();
         /* @var KernelInterface $kernel */
-        $kernel = $this->getMock(KernelInterface::class);
+        $kernel = $this->getMockBuilder(KernelInterface::class)->getMock();
 
         $loader = new TwigMailLoader(array(), $layoutLoader, $kernel);
 

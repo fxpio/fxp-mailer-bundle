@@ -58,7 +58,7 @@ class MailUtilTest extends \PHPUnit_Framework_TestCase
     public function testIsValid($result, $entryType, $mailEnabled, $mailType)
     {
         /* @var MailInterface|\PHPUnit_Framework_MockObject_MockObject $mail */
-        $mail = $this->getMock(MailInterface::class);
+        $mail = $this->getMockBuilder(MailInterface::class)->getMock();
         $mail->expects($this->any())
             ->method('isEnabled')
             ->will($this->returnValue($mailEnabled));

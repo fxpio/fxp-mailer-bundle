@@ -24,8 +24,8 @@ class FilterRegistryTest extends \PHPUnit_Framework_TestCase
 {
     public function test()
     {
-        $templateFilter = $this->getMock(TemplateFilterInterface::class);
-        $transportFilter = $this->getMock(TransportFilterInterface::class);
+        $templateFilter = $this->getMockBuilder(TemplateFilterInterface::class)->getMock();
+        $transportFilter = $this->getMockBuilder(TransportFilterInterface::class)->getMock();
 
         $registry = new FilterRegistry(array($templateFilter), array($transportFilter));
 

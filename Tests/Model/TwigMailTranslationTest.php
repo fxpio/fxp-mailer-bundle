@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Model;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
 use Sonatra\Bundle\MailerBundle\Model\TwigMailTranslation;
 use Symfony\Component\Filesystem\Filesystem;
@@ -36,7 +35,7 @@ class TwigMailTranslationTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->file = sys_get_temp_dir().'/sonatra_mailer_tests/file.html.twig';
-        $this->mail = $this->getMock(MailInterface::class);
+        $this->mail = $this->getMockBuilder(MailInterface::class)->getMock();
         $fs = new Filesystem();
         $fs->dumpFile($this->file, 'content');
     }
@@ -54,11 +53,12 @@ class TwigMailTranslationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->file, $mail->getFile());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException
+     * @expectedExceptionMessage The "file.ext" file is not supported by the mail translation file template
+     */
     public function testInvalidFile()
     {
-        $msg = 'The "file.ext" file is not supported by the mail translation file template';
-        $this->setExpectedException(InvalidArgumentException::class, $msg);
-
         new TwigMailTranslation($this->mail, 'file.ext');
     }
 }

@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Model;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
 use Sonatra\Bundle\MailerBundle\Model\TwigLayout;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -47,11 +46,12 @@ class TwigLayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->file, $layout->getFile());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException
+     * @expectedExceptionMessage The "file.ext" file is not supported by the layout file template
+     */
     public function testInvalidFile()
     {
-        $msg = 'The "file.ext" file is not supported by the layout file template';
-        $this->setExpectedException(InvalidArgumentException::class, $msg);
-
         new TwigLayout('file.ext');
     }
 }

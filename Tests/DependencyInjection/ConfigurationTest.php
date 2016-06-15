@@ -14,7 +14,6 @@ namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Configuration;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
@@ -56,11 +55,12 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array_merge(self::getBundleDefaultConfig(), $valid), $config);
     }
 
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage The sonatra_mailer.filters.templates config 42 must be either null or an array.
+     */
     public function testInvalidFilterConfig()
     {
-        $msg = 'The sonatra_mailer.filters.templates config 42 must be either null or an array.';
-        $this->setExpectedException(InvalidConfigurationException::class, $msg);
-
         $config = array(
             'filters' => array(
                 'templates' => array(

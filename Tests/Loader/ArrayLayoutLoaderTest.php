@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Loader;
 
-use Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException;
 use Sonatra\Bundle\MailerBundle\Loader\ArrayLayoutLoader;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 
@@ -24,7 +23,7 @@ class ArrayLayoutLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
-        $template = $this->getMock(LayoutInterface::class);
+        $template = $this->getMockBuilder(LayoutInterface::class)->getMock();
         $template->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('test'));
@@ -37,10 +36,12 @@ class ArrayLayoutLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($template, $loader->load('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException
+     * @expectedExceptionMessage The "test" layout template does not exist
+     */
     public function testLoadUnknownTemplate()
     {
-        $this->setExpectedException(UnknownLayoutException::class, 'The "test" layout template does not exist');
-
         $loader = new ArrayLayoutLoader(array());
 
         $loader->load('test');

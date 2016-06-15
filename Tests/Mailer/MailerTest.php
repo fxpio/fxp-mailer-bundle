@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Mailer;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
 use Sonatra\Bundle\MailerBundle\Mailer\Mailer;
 use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailTemplaterInterface;
@@ -48,9 +47,9 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->templater = $this->getMock(MailTemplaterInterface::class);
-        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
-        $this->transport = $this->getMock(TransportInterface::class);
+        $this->templater = $this->getMockBuilder(MailTemplaterInterface::class)->getMock();
+        $this->dispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $this->transport = $this->getMockBuilder(TransportInterface::class)->getMock();
         $this->transport->expects($this->atLeastOnce())
             ->method('getName')
             ->will($this->returnValue('test'));
@@ -66,18 +65,19 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->transport, $this->mailer->getTransport('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException
+     * @expectedExceptionMessage The "foo" transport does not exist
+     */
     public function testGetInvalidTransport()
     {
-        $msg = 'The "foo" transport does not exist';
-        $this->setExpectedException(InvalidArgumentException::class, $msg);
-
         $this->mailer->getTransport('foo');
     }
 
     public function testSend()
     {
         $message = $this->getMockBuilder(\Swift_Message::class)->disableOriginalConstructor()->getMock();
-        $mail = $this->getMock(MailRenderedInterface::class);
+        $mail = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
 
         $this->templater->expects($this->once())
             ->method('render')

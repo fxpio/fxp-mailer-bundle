@@ -16,7 +16,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Sonatra\Bundle\MailerBundle\Doctrine\Loader\EntityMailLoader;
 use Sonatra\Bundle\MailerBundle\Entity\Mail;
-use Sonatra\Bundle\MailerBundle\Exception\UnknownMailException;
 use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Util\MailUtil;
 
@@ -46,9 +45,9 @@ class EntityMailLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $class = Mail::class;
 
-        $this->repo = $this->getMock(ObjectRepository::class);
+        $this->repo = $this->getMockBuilder(ObjectRepository::class)->getMock();
 
-        $this->om = $this->getMock(ObjectManager::class);
+        $this->om = $this->getMockBuilder(ObjectManager::class)->getMock();
         $this->om->expects($this->once())
             ->method('getRepository')
             ->with($class)
@@ -56,7 +55,7 @@ class EntityMailLoaderTest extends \PHPUnit_Framework_TestCase
         ;
 
         /* @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $registry */
-        $registry = $this->getMock(ManagerRegistry::class);
+        $registry = $this->getMockBuilder(ManagerRegistry::class)->getMock();
         $registry->expects($this->once())
             ->method('getManagerForClass')
             ->with($class)
@@ -82,10 +81,12 @@ class EntityMailLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($template, $this->loader->load('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnknownMailException
+     * @expectedExceptionMessage The "test" mail template does not exist with the "all" type
+     */
     public function testLoadUnknownTemplate()
     {
-        $this->setExpectedException(UnknownMailException::class, 'The "test" mail template does not exist with the "all" type');
-
         $this->loader->load('test');
     }
 }

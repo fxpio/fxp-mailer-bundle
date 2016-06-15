@@ -26,7 +26,7 @@ class FilterPreSendEventTest extends \PHPUnit_Framework_TestCase
         $transport = 'transport_name';
         $message = new \stdClass();
         /* @var MailRenderedInterface $mailRendered */
-        $mailRendered = $this->getMock(MailRenderedInterface::class);
+        $mailRendered = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
 
         $event = new FilterPreSendEvent($transport, $message, $mailRendered);
 

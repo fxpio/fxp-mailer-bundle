@@ -16,7 +16,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Sonatra\Bundle\MailerBundle\Doctrine\Loader\EntityLayoutLoader;
 use Sonatra\Bundle\MailerBundle\Entity\Layout;
-use Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException;
 
 /**
  * Tests for entity layout loader.
@@ -44,9 +43,9 @@ class EntityLayoutLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $class = Layout::class;
 
-        $this->repo = $this->getMock(ObjectRepository::class);
+        $this->repo = $this->getMockBuilder(ObjectRepository::class)->getMock();
 
-        $this->om = $this->getMock(ObjectManager::class);
+        $this->om = $this->getMockBuilder(ObjectManager::class)->getMock();
         $this->om->expects($this->once())
             ->method('getRepository')
             ->with($class)
@@ -54,7 +53,7 @@ class EntityLayoutLoaderTest extends \PHPUnit_Framework_TestCase
         ;
 
         /* @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $registry */
-        $registry = $this->getMock(ManagerRegistry::class);
+        $registry = $this->getMockBuilder(ManagerRegistry::class)->getMock();
         $registry->expects($this->once())
             ->method('getManagerForClass')
             ->with($class)
@@ -79,10 +78,12 @@ class EntityLayoutLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($template, $this->loader->load('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException
+     * @expectedExceptionMessage The "test" layout template does not exist
+     */
     public function testLoadUnknownTemplate()
     {
-        $this->setExpectedException(UnknownLayoutException::class, 'The "test" layout template does not exist');
-
         $this->loader->load('test');
     }
 }

@@ -70,7 +70,7 @@ class TransportPassTest extends KernelTestCase
         $defMailer->setArguments(array(null, array()));
         $container->setDefinition('sonatra_mailer.mailer', $defMailer);
 
-        $transportMock = $this->getMock(TransportInterface::class);
+        $transportMock = $this->getMockBuilder(TransportInterface::class)->getMock();
 
         $defTransport = new Definition(get_class($transportMock));
         $defTransport->addTag('sonatra_mailer.transport');

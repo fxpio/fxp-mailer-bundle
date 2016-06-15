@@ -28,9 +28,9 @@ class MailTest extends \PHPUnit_Framework_TestCase
     public function testModel()
     {
         /* @var LayoutInterface $layout */
-        $layout = $this->getMock(LayoutInterface::class);
+        $layout = $this->getMockBuilder(LayoutInterface::class)->getMock();
         /* @var MailTranslationInterface $translation */
-        $translation = $this->getMock(MailTranslationInterface::class);
+        $translation = $this->getMockBuilder(MailTranslationInterface::class)->getMock();
 
         $mail = new Mail();
         $mail

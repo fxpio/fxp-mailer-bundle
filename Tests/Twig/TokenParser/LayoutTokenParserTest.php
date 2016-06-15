@@ -68,10 +68,12 @@ class LayoutTokenParserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('mailer_layout', $tokenParser->getTag());
     }
 
+    /**
+     * @expectedException \Twig_Error_Syntax
+     * @expectedExceptionMessage The decideBlockEnd method is wrong
+     */
     public function testInvalidModule()
     {
-        $this->setExpectedException(\Twig_Error_Syntax::class, 'The decideBlockEnd method is wrong');
-
         $layout = $this->getMockBuilder(\Twig_Node_Expression::class)->disableOriginalConstructor()->getMock();
 
         $expressionParser = $this->getMockBuilder(\Twig_ExpressionParser::class)->disableOriginalConstructor()->getMock();

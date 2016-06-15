@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Transport\SwiftMailer;
 
-use Sonatra\Bundle\MailerBundle\Exception\RuntimeException;
 use Sonatra\Bundle\MailerBundle\Transport\SwiftMailer\DkimSignerPlugin;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -76,12 +75,13 @@ class DkimSignerPluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->beforeSendPerformed($this->event);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\RuntimeException
+     * @expectedExceptionMessageRegExp /Impossible to read the private key of the DKIM swiftmailer signer "([\w.~:\\\/]+)\/private_key"/
+     */
     public function testBeforeSendPerformedWithInvalidPrivateKey()
     {
         $path = $this->cache.'/private_key';
-        $msg = 'Impossible to read the private key of the DKIM swiftmailer signer "'.$path.'"';
-        $this->setExpectedException(RuntimeException::class, $msg);
-
         $this->fs->remove($path);
 
         $this->message->expects($this->never())

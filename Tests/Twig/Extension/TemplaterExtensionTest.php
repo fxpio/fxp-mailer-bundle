@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Twig\Extension;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
 use Sonatra\Bundle\MailerBundle\Loader\LayoutLoaderInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 use Sonatra\Bundle\MailerBundle\Mailer\MailTemplaterInterface;
@@ -51,13 +50,13 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->templater = $this->getMock(MailTemplaterInterface::class);
-        $this->layoutLoader = $this->getMock(LayoutLoaderInterface::class);
-        $this->translator = $this->getMock(TranslatorInterface::class);
+        $this->templater = $this->getMockBuilder(MailTemplaterInterface::class)->getMock();
+        $this->layoutLoader = $this->getMockBuilder(LayoutLoaderInterface::class)->getMock();
+        $this->translator = $this->getMockBuilder(TranslatorInterface::class)->getMock();
         $this->ext = new TemplaterExtension($this->layoutLoader, $this->translator);
 
         /* @var ContainerInterface|\PHPUnit_Framework_MockObject_MockObject $container */
-        $container = $this->getMock(ContainerInterface::class);
+        $container = $this->getMockBuilder(ContainerInterface::class)->getMock();
         $container->expects($this->any())
             ->method('get')
             ->with('sonatra_mailer.mail_templater')
@@ -199,12 +198,13 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertNotSame($layout, $res);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException
+     * @expectedExceptionMessage The "test" layout is not a twig layout
+     */
     public function testGetTranslatedLayoutWithInvalidLayout()
     {
-        $msg = 'The "test" layout is not a twig layout';
-        $this->setExpectedException(InvalidArgumentException::class, $msg);
-
-        $layout = $this->getMock(LayoutInterface::class);
+        $layout = $this->getMockBuilder(LayoutInterface::class)->getMock();
 
         $layout->expects($this->once())
             ->method('getTranslation')
@@ -234,7 +234,7 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
             'foo' => 'bar',
         );
 
-        $mail = $this->getMock(MailRenderedInterface::class);
+        $mail = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
 
         $this->templater->expects($this->at(0))
             ->method('render')

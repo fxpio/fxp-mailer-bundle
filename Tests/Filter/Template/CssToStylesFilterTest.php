@@ -41,11 +41,11 @@ class CssToStylesFilterTest extends \PHPUnit_Framework_TestCase
     public function testSupports($type, $supported)
     {
         /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mailRendered */
-        $mailRendered = $this->getMock(MailRenderedInterface::class);
+        $mailRendered = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
         $mailRendered->expects($this->once())
             ->method('getTemplate')
             ->will($this->returnCallback(function () use ($type) {
-                $template = $this->getMock(MailInterface::class);
+                $template = $this->getMockBuilder(MailInterface::class)->getMock();
                 $template->expects($this->once())
                     ->method('getType')
                     ->will($this->returnValue($type));
@@ -74,7 +74,7 @@ class CssToStylesFilterTest extends \PHPUnit_Framework_TestCase
         $htmlConverted = ltrim(preg_replace('|<\?xml (.*)\?>|', '', $htmlConverted));
 
         /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mailRendered */
-        $mailRendered = $this->getMock(MailRenderedInterface::class);
+        $mailRendered = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
         $mailRendered->expects($this->at(0))
             ->method('getHtmlBody')
             ->will($this->returnValue($html));

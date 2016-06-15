@@ -11,8 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Util;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidConfigurationException;
-use Sonatra\Bundle\MailerBundle\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\MailerBundle\Util\ConfigUtil;
 
 /**
@@ -33,21 +31,23 @@ class ConfigUtilTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($valid, ConfigUtil::formatConfig($config));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnexpectedTypeException
+     * @expectedExceptionMessage Expected argument of type "array", "integer" given
+     */
     public function testFormatConfigWithoutFile()
     {
-        $msg = 'Expected argument of type "array", "integer" given';
-        $this->setExpectedException(UnexpectedTypeException::class, $msg);
-
         $config = 42;
 
         ConfigUtil::formatConfig($config);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage The "file" attribute must be defined in config of layout template
+     */
     public function testFormatConfigWithInvalidFilename()
     {
-        $msg = 'The "file" attribute must be defined in config of layout template';
-        $this->setExpectedException(InvalidConfigurationException::class, $msg);
-
         $config = array(
             'name' => 'test',
         );

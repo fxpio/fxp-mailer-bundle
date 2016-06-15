@@ -39,7 +39,7 @@ class FilterSubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->registry = $this->getMock(FilterRegistryInterface::class);
+        $this->registry = $this->getMockBuilder(FilterRegistryInterface::class)->getMock();
         $this->listener = new FilterSubscriber($this->registry);
     }
 
@@ -57,7 +57,7 @@ class FilterSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testTemplateFilters()
     {
         /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mailRendered */
-        $mailRendered = $this->getMock(MailRenderedInterface::class);
+        $mailRendered = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
 
         /* @var FilterPostRenderEvent|\PHPUnit_Framework_MockObject_MockObject $event */
         $event = $this->getMockBuilder(FilterPostRenderEvent::class)->disableOriginalConstructor()->getMock();
@@ -66,7 +66,7 @@ class FilterSubscriberTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($mailRendered));
 
         /* @var TemplateFilterInterface|\PHPUnit_Framework_MockObject_MockObject $templateFilter */
-        $templateFilter = $this->getMock(TemplateFilterInterface::class);
+        $templateFilter = $this->getMockBuilder(TemplateFilterInterface::class)->getMock();
         $templateFilter->expects($this->once())
             ->method('supports')
             ->with($mailRendered)
@@ -89,7 +89,7 @@ class FilterSubscriberTest extends \PHPUnit_Framework_TestCase
         $message = new \stdClass();
 
         /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mailRendered */
-        $mailRendered = $this->getMock(MailRenderedInterface::class);
+        $mailRendered = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
 
         /* @var FilterPreSendEvent|\PHPUnit_Framework_MockObject_MockObject $event */
         $event = $this->getMockBuilder(FilterPreSendEvent::class)->disableOriginalConstructor()->getMock();
@@ -104,7 +104,7 @@ class FilterSubscriberTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($mailRendered));
 
         /* @var TransportFilterInterface|\PHPUnit_Framework_MockObject_MockObject $transportFilter */
-        $transportFilter = $this->getMock(TransportFilterInterface::class);
+        $transportFilter = $this->getMockBuilder(TransportFilterInterface::class)->getMock();
         $transportFilter->expects($this->once())
             ->method('supports')
             ->with($transport, $message, $mailRendered)

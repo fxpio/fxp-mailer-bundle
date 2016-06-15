@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Model;
 
-use Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Sonatra\Bundle\MailerBundle\Model\TwigLayoutTranslation;
 use Symfony\Component\Filesystem\Filesystem;
@@ -36,7 +35,7 @@ class TwigLayoutTranslationTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->file = sys_get_temp_dir().'/sonatra_mailer_tests/file.html.twig';
-        $this->layout = $this->getMock(LayoutInterface::class);
+        $this->layout = $this->getMockBuilder(LayoutInterface::class)->getMock();
         $fs = new Filesystem();
         $fs->dumpFile($this->file, 'content');
     }
@@ -54,11 +53,12 @@ class TwigLayoutTranslationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->file, $layout->getFile());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException
+     * @expectedExceptionMessage The "file.ext" file is not supported by the layout translation file template
+     */
     public function testInvalidFile()
     {
-        $msg = 'The "file.ext" file is not supported by the layout translation file template';
-        $this->setExpectedException(InvalidArgumentException::class, $msg);
-
         new TwigLayoutTranslation($this->layout, 'file.ext');
     }
 }

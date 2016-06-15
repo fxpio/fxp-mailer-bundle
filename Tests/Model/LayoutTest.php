@@ -26,7 +26,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
     public function testModel()
     {
         /* @var LayoutTranslationInterface $translation */
-        $translation = $this->getMock(LayoutTranslationInterface::class);
+        $translation = $this->getMockBuilder(LayoutTranslationInterface::class)->getMock();
 
         $layout = new Layout();
         $layout->setTranslationDomain('domain');

@@ -47,11 +47,12 @@ class TwigMailTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->file, $mail->getFile());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\InvalidArgumentException
+     * @expectedExceptionMessage The "file.ext" file is not supported by the mail file template
+     */
     public function testInvalidFile()
     {
-        $msg = 'The "file.ext" file is not supported by the mail file template';
-        $this->setExpectedException(InvalidArgumentException::class, $msg);
-
         new TwigMail('file.ext');
     }
 }

@@ -59,10 +59,10 @@ class MailTemplaterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->loader = $this->getMock(MailLoaderInterface::class);
-        $this->twig = $this->getMock(\Twig_Environment::class);
+        $this->loader = $this->getMockBuilder(MailLoaderInterface::class)->getMock();
+        $this->twig = $this->getMockBuilder(\Twig_Environment::class)->getMock();
         $this->twigTemplate = $this->getMockBuilder(\Twig_Template::class)->disableOriginalConstructor()->getMock();
-        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
+        $this->dispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $this->templater = new MailTemplater($this->loader, $this->twig, $this->dispatcher);
 
         $this->twig->expects($this->any())
@@ -145,7 +145,7 @@ class MailTemplaterTest extends \PHPUnit_Framework_TestCase
     public function testRenderWithTranslator()
     {
         /* @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject $translator */
-        $translator = $this->getMock(TranslatorInterface::class);
+        $translator = $this->getMockBuilder(TranslatorInterface::class)->getMock();
         $this->templater->setTranslator($translator);
 
         $this->templater->setLocale('fr');

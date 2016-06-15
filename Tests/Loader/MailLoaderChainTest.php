@@ -26,14 +26,14 @@ class MailLoaderChainTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
-        $template = $this->getMock(MailInterface::class);
+        $template = $this->getMockBuilder(MailInterface::class)->getMock();
 
-        $loader1 = $this->getMock(MailLoaderInterface::class);
+        $loader1 = $this->getMockBuilder(MailLoaderInterface::class)->getMock();
         $loader1->expects($this->once())
             ->method('load')
             ->willThrowException(new UnknownMailException('test', MailTypes::TYPE_ALL));
 
-        $loader2 = $this->getMock(MailLoaderInterface::class);
+        $loader2 = $this->getMockBuilder(MailLoaderInterface::class)->getMock();
         $loader2->expects($this->once())
             ->method('load')
             ->will($this->returnValue($template));
@@ -43,10 +43,12 @@ class MailLoaderChainTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($template, $chainLoader->load('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnknownMailException
+     * @expectedExceptionMessage The "test" mail template does not exist with the "all" type
+     */
     public function testLoadUnknownTemplate()
     {
-        $this->setExpectedException(UnknownMailException::class, 'The "test" mail template does not exist with the "all" type');
-
         $loader = new MailLoaderChain(array());
 
         $loader->load('test');

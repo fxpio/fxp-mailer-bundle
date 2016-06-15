@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Transport;
 
-use Sonatra\Bundle\MailerBundle\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\MailerBundle\Mailer\MailRenderedInterface;
 use Sonatra\Bundle\MailerBundle\Transport\SwiftMailerTransport;
 
@@ -43,11 +42,12 @@ class SwiftMailerTransportTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('swiftmailer', $this->transport->getName());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnexpectedTypeException
+     * @expectedExceptionMessage Expected argument of type "Swift_Message", "integer" given
+     */
     public function testInvalidType()
     {
-        $msg = 'Expected argument of type "Swift_Message", "integer" given';
-        $this->setExpectedException(UnexpectedTypeException::class, $msg);
-
         $this->transport->validate(42);
     }
 
@@ -80,7 +80,7 @@ class SwiftMailerTransportTest extends \PHPUnit_Framework_TestCase
     {
         $message = $this->getMockBuilder(\Swift_Message::class)->disableOriginalConstructor()->getMock();
         /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mail */
-        $mail = $this->getMock(MailRenderedInterface::class);
+        $mail = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
         $mail->expects($this->once())
             ->method('getSubject')
             ->will($this->returnValue('Subject'));

@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Loader;
 
-use Sonatra\Bundle\MailerBundle\Exception\UnknownMailException;
 use Sonatra\Bundle\MailerBundle\Loader\ArrayMailLoader;
 use Sonatra\Bundle\MailerBundle\MailTypes;
 use Sonatra\Bundle\MailerBundle\Model\MailInterface;
@@ -25,7 +24,7 @@ class ArrayMailLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
-        $template = $this->getMock(MailInterface::class);
+        $template = $this->getMockBuilder(MailInterface::class)->getMock();
         $template->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('test'));
@@ -41,10 +40,12 @@ class ArrayMailLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($template, $loader->load('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnknownMailException
+     * @expectedExceptionMessage The "test" mail template does not exist with the "all" type
+     */
     public function testLoadUnknownTemplate()
     {
-        $this->setExpectedException(UnknownMailException::class, 'The "test" mail template does not exist with the "all" type');
-
         $loader = new ArrayMailLoader(array());
 
         $loader->load('test');

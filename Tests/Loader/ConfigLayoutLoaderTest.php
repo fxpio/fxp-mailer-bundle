@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Loader;
 
-use Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException;
 use Sonatra\Bundle\MailerBundle\Loader\ConfigLayoutLoader;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 
@@ -45,10 +44,12 @@ class ConfigLayoutLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(LayoutInterface::class, $loader->load('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException
+     * @€@expectedExceptionMessage The "test" layout template does not exist
+     */
     public function testLoadUnknownTemplate()
     {
-        $this->setExpectedException(UnknownLayoutException::class, 'The "test" layout template does not exist');
-
         $loader = new ConfigLayoutLoader(array());
 
         $loader->load('test');

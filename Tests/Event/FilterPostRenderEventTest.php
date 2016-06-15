@@ -24,7 +24,7 @@ class FilterPostRenderEventTest extends \PHPUnit_Framework_TestCase
     public function testModel()
     {
         /* @var MailRenderedInterface $mailRendered */
-        $mailRendered = $this->getMock(MailRenderedInterface::class);
+        $mailRendered = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
         $event = new FilterPostRenderEvent($mailRendered);
 
         $this->assertSame($mailRendered, $event->getMailRendered());

@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Loader;
 
-use Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException;
 use Sonatra\Bundle\MailerBundle\Loader\TwigLayoutLoader;
 use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -26,7 +25,7 @@ class TwigLayoutLoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         /* @var KernelInterface|\PHPUnit_Framework_MockObject_MockObject $kernel */
-        $kernel = $this->getMock(KernelInterface::class);
+        $kernel = $this->getMockBuilder(KernelInterface::class)->getMock();
         $template = array(
             'name' => 'test',
             'file' => '@AcmeDemoBundle/Resources/loaders/layout.html.twig',
@@ -53,12 +52,14 @@ class TwigLayoutLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(LayoutInterface::class, $loader->load('test'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\MailerBundle\Exception\UnknownLayoutException
+     * @expectedExceptionMessage The "test" layout template does not exist
+     */
     public function testLoadUnknownTemplate()
     {
-        $this->setExpectedException(UnknownLayoutException::class, 'The "test" layout template does not exist');
-
         /* @var KernelInterface $kernel */
-        $kernel = $this->getMock(KernelInterface::class);
+        $kernel = $this->getMockBuilder(KernelInterface::class)->getMock();
 
         $loader = new TwigLayoutLoader(array(), $kernel);
 

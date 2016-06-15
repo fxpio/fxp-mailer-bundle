@@ -24,7 +24,7 @@ class MailTranslationTest extends \PHPUnit_Framework_TestCase
     public function testModel()
     {
         /* @var MailInterface $mail */
-        $mail = $this->getMock(MailInterface::class);
+        $mail = $this->getMockBuilder(MailInterface::class)->getMock();
         $translation = new MailTranslation($mail);
         $translation
             ->setSubject('Subject of translation')
