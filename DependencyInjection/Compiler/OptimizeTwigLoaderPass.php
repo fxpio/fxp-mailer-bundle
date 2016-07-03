@@ -58,35 +58,8 @@ class OptimizeTwigLoaderPass implements CompilerPassInterface
         $serviceId = sprintf('sonatra_mailer.loader.%s_twig', $type);
         $def = $container->getDefinition($serviceId);
 
-        $templates = $def->getArgument(0);
-        $configs = array();
-
-        foreach ($templates as $template) {
-            $configs[] = $this->createConfig($container, $template);
-        }
+        $configs = $def->getArgument(0);
 
         ContainerUtil::addTemplates($container, $type, $configs, $templateConfig);
-    }
-
-    /**
-     * Create the config.
-     *
-     * @param ContainerBuilder $container
-     * @param array            $templateConfig
-     *
-     * @return array
-     */
-    protected function createConfig(ContainerBuilder $container, array $templateConfig)
-    {
-        $templateConfig['file'] = ContainerUtil::getRealFile($container, $templateConfig['file']);
-
-        if (isset($templateConfig['translations']) && is_array($templateConfig['translations'])) {
-            /* @var array $translation */
-            foreach ($templateConfig['translations'] as &$translation) {
-                $translation['file'] = ContainerUtil::getRealFile($container, $translation['file']);
-            }
-        }
-
-        return $templateConfig;
     }
 }

@@ -39,7 +39,7 @@ class TwigLayout extends Layout implements TwigTemplateInterface
      */
     protected function support($file)
     {
-        if (null !== $file && (!is_file($file) || 'twig' !== pathinfo($file, PATHINFO_EXTENSION))) {
+        if (null !== $file && 'twig' !== pathinfo($file, PATHINFO_EXTENSION)) {
             $msg = 'The "%s" file is not supported by the layout file template';
             throw new InvalidArgumentException(sprintf($msg, $file));
         }
