@@ -43,7 +43,7 @@ class ConfigLayoutLoader extends ArrayLayoutLoader
     /**
      * Create the layout.
      *
-     * @param array $config The config of layout.
+     * @param array $config The config of layout
      *
      * @return LayoutInterface
      */

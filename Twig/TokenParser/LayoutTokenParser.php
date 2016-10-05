@@ -59,7 +59,7 @@ class LayoutTokenParser extends \Twig_TokenParser_Embed
     /**
      * Test the end of tag.
      *
-     * @param \Twig_Token $token The token.
+     * @param \Twig_Token $token The token
      *
      * @return bool
      */
