@@ -69,10 +69,9 @@ class CssToStylesFilterTest extends \PHPUnit_Framework_TestCase
         $html = '<html><head><style>p {color: #f7f7f7;}</style></head><body><p>Test.</p></body></html>';
         $htmlConverted = '<html><head><style>p {color: #f7f7f7;}</style></head><body><p style="color: #f7f7f7;">Test.</p></body></html>';
         $document = new \DOMDocument('1.0', 'utf-8');
-        $document->loadHTML($htmlConverted);
+        $document->loadHTML(mb_convert_encoding($htmlConverted, 'HTML-ENTITIES', 'UTF-8'));
         $document->formatOutput = true;
-        $htmlConverted = $document->saveXML(null, LIBXML_NOEMPTYTAG);
-        $htmlConverted = ltrim(preg_replace('|<\?xml (.*)\?>|', '', $htmlConverted));
+        $htmlConverted = trim($document->saveHTML($document));
 
         /* @var MailRenderedInterface|\PHPUnit_Framework_MockObject_MockObject $mailRendered */
         $mailRendered = $this->getMockBuilder(MailRenderedInterface::class)->getMock();
