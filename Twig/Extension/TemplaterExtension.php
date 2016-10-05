@@ -93,14 +93,6 @@ class TemplaterExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'sonatra_mailer_templater';
-    }
-
-    /**
      * Render the subject of mail template.
      *
      * @param string $template  The mail template name

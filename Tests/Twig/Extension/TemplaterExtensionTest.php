@@ -67,7 +67,6 @@ class TemplaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testBasic()
     {
-        $this->assertSame('sonatra_mailer_templater', $this->ext->getName());
         $this->assertCount(5, $this->ext->getFunctions());
 
         $valid = array(
