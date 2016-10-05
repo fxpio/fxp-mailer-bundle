@@ -39,7 +39,7 @@ class ParentLayoutNode extends \Twig_Node_Expression
     public function compile(\Twig_Compiler $compiler)
     {
         $compiler
-            ->raw('$this->env->getExtension(\'sonatra_mailer_templater\')')
+            ->raw('$this->env->getExtension(\'Sonatra\Bundle\MailerBundle\Twig\Extension\TemplaterExtension\')')
             ->raw('->getTranslatedLayout(')
             ->subcompile($this->getAttribute('variables'))
             ->raw(')->getFile()')
