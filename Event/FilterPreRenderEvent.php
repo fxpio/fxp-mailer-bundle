@@ -42,7 +42,7 @@ class FilterPreRenderEvent extends Event
      * @param array  $variables The variables of template
      * @param string $type      The mail type defined in MailTypes::TYPE_*
      */
-    public function __construct($template, array $variables = array(), $type)
+    public function __construct($template, array $variables, $type)
     {
         $this->template = $template;
         $this->variables = $variables;
