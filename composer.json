@@ -26,7 +26,10 @@
 
     },
     "autoload": {
-        "psr-4": { "Sonatra\\Bundle\\MailerBundle\\": "" }
+        "psr-4": { "Sonatra\\Bundle\\MailerBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "extra": {
         "branch-alias": {
