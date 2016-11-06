@@ -35,7 +35,7 @@ class OptimizeConfigLoaderPassTest extends KernelTestCase
     protected $fs;
 
     /**
-     * @var OptimizeConfigLoaderPassTest
+     * @var OptimizeConfigLoaderPass
      */
     protected $pass;
 

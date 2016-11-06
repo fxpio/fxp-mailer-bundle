@@ -11,8 +11,8 @@
 
 namespace Sonatra\Bundle\MailerBundle\DependencyInjection;
 
-use Sonatra\Bundle\MailerBundle\Loader\ConfigLayoutLoader;
-use Sonatra\Bundle\MailerBundle\Loader\ConfigMailLoader;
+use Sonatra\Component\Mailer\Loader\ConfigLayoutLoader;
+use Sonatra\Component\Mailer\Loader\ConfigMailLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;

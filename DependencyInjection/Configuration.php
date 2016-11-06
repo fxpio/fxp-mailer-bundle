@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\MailerBundle\DependencyInjection;
 
-use Sonatra\Bundle\MailerBundle\MailTypes;
+use Sonatra\Component\Mailer\MailTypes;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -33,8 +33,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('layout_class')->defaultValue('Sonatra\Bundle\MailerBundle\Model\LayoutInterface')->end()
-                ->scalarNode('mail_class')->defaultValue('Sonatra\Bundle\MailerBundle\Model\MailInterface')->end()
+                ->scalarNode('layout_class')->defaultValue('Sonatra\Component\Mailer\Model\LayoutInterface')->end()
+                ->scalarNode('mail_class')->defaultValue('Sonatra\Component\Mailer\Model\MailInterface')->end()
                 ->append($this->getLayoutTemplatesNode())
                 ->append($this->getMailTemplatesNode())
                 ->append($this->getTransportNode())

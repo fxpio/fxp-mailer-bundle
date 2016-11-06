@@ -11,10 +11,10 @@
 
 namespace Sonatra\Bundle\MailerBundle\Util;
 
-use Sonatra\Bundle\MailerBundle\Model\Layout;
-use Sonatra\Bundle\MailerBundle\Model\LayoutTranslation;
-use Sonatra\Bundle\MailerBundle\Model\Mail;
-use Sonatra\Bundle\MailerBundle\Model\MailTranslation;
+use Sonatra\Component\Mailer\Model\Layout;
+use Sonatra\Component\Mailer\Model\LayoutTranslation;
+use Sonatra\Component\Mailer\Model\Mail;
+use Sonatra\Component\Mailer\Model\MailTranslation;
 
 /**
  * Config of template classes.

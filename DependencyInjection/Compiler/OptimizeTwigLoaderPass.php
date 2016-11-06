@@ -11,10 +11,10 @@
 
 namespace Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler;
 
-use Sonatra\Bundle\MailerBundle\Model\TwigLayout;
-use Sonatra\Bundle\MailerBundle\Model\TwigLayoutTranslation;
-use Sonatra\Bundle\MailerBundle\Model\TwigMail;
-use Sonatra\Bundle\MailerBundle\Model\TwigMailTranslation;
+use Sonatra\Component\Mailer\Model\TwigLayout;
+use Sonatra\Component\Mailer\Model\TwigLayoutTranslation;
+use Sonatra\Component\Mailer\Model\TwigMail;
+use Sonatra\Component\Mailer\Model\TwigMailTranslation;
 use Sonatra\Bundle\MailerBundle\Util\ConfigTemplate;
 use Sonatra\Bundle\MailerBundle\Util\ContainerUtil;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

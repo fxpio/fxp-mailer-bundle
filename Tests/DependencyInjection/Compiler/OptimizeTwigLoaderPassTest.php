@@ -12,8 +12,9 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigLoaderPass;
-use Sonatra\Bundle\MailerBundle\Loader\ArrayLayoutLoader;
-use Sonatra\Bundle\MailerBundle\Loader\TwigLayoutLoader;
+use Sonatra\Component\Mailer\Loader\ArrayLayoutLoader;
+use Sonatra\Component\Mailer\Loader\TwigLayoutLoader;
+use Sonatra\Component\Mailer\Mailer;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -69,6 +70,8 @@ class OptimizeTwigLoaderPassTest extends KernelTestCase
         $container = $this->getContainer();
         $layoutLoaderDef = new Definition(TwigLayoutLoader::class);
         $mailLoaderDef = new Definition(TwigLayoutLoader::class);
+        $refMailer = new \ReflectionClass(Mailer::class);
+        $mailerBaseDir = dirname($refMailer->getFileName());
 
         $layoutLoaderDef->setArguments(array(array()));
         $mailLoaderDef->setArguments(array(array()));
@@ -96,11 +99,11 @@ class OptimizeTwigLoaderPassTest extends KernelTestCase
         $layoutLoaderDef->replaceArgument(0, array(
             array(
                 'name' => 'layout-test',
-                'file' => __DIR__.'/../../Fixtures/loaders/layout.html.twig',
+                'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/layout.html.twig',
                 'translations' => array(
                     array(
                         'locale' => 'fr',
-                        'file' => __DIR__.'/../../Fixtures/loaders/layout.fr.html.twig',
+                        'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/layout.fr.html.twig',
                     ),
                 ),
             ),
@@ -108,12 +111,12 @@ class OptimizeTwigLoaderPassTest extends KernelTestCase
         $mailLoaderDef->replaceArgument(0, array(
             array(
                 'name' => 'mail-test',
-                'file' => __DIR__.'/../../Fixtures/loaders/mail.html.twig',
+                'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/mail.html.twig',
                 'layout' => 'layout-test',
                 'translations' => array(
                     array(
                         'locale' => 'fr',
-                        'file' => __DIR__.'/../../Fixtures/loaders/mail.fr.html.twig',
+                        'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/mail.fr.html.twig',
                     ),
                 ),
             ),

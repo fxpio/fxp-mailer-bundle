@@ -11,8 +11,8 @@
 
 namespace Sonatra\Bundle\MailerBundle\Util;
 
-use Sonatra\Bundle\MailerBundle\MailTypes;
-use Sonatra\Bundle\MailerBundle\Model\TemplateFileInterface;
+use Sonatra\Component\Mailer\MailTypes;
+use Sonatra\Component\Mailer\Model\TemplateFileInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;

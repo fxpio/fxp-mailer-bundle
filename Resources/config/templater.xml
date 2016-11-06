@@ -5,15 +5,15 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="sonatra_mailer.loader.layout_twig.class">Sonatra\Bundle\MailerBundle\Loader\TwigLayoutLoader</parameter>
-        <parameter key="sonatra_mailer.loader.mail_twig.class">Sonatra\Bundle\MailerBundle\Loader\TwigMailLoader</parameter>
-        <parameter key="sonatra_mailer.loader.layout_yaml.class">Sonatra\Bundle\MailerBundle\Loader\YamlLayoutLoader</parameter>
-        <parameter key="sonatra_mailer.loader.mail_yaml.class">Sonatra\Bundle\MailerBundle\Loader\YamlMailLoader</parameter>
-        <parameter key="sonatra_mailer.loader.layout_array.class">Sonatra\Bundle\MailerBundle\Loader\ArrayLayoutLoader</parameter>
-        <parameter key="sonatra_mailer.loader.mail_array.class">Sonatra\Bundle\MailerBundle\Loader\ArrayMailLoader</parameter>
-        <parameter key="sonatra_mailer.loader.layout_chain.class">Sonatra\Bundle\MailerBundle\Loader\LayoutLoaderChain</parameter>
-        <parameter key="sonatra_mailer.loader.mail_chain.class">Sonatra\Bundle\MailerBundle\Loader\MailLoaderChain</parameter>
-        <parameter key="sonatra_mailer.mail_templater.class">Sonatra\Bundle\MailerBundle\Mailer\MailTemplater</parameter>
+        <parameter key="sonatra_mailer.loader.layout_twig.class">Sonatra\Component\Mailer\Loader\TwigLayoutLoader</parameter>
+        <parameter key="sonatra_mailer.loader.mail_twig.class">Sonatra\Component\Mailer\Loader\TwigMailLoader</parameter>
+        <parameter key="sonatra_mailer.loader.layout_yaml.class">Sonatra\Component\Mailer\Loader\YamlLayoutLoader</parameter>
+        <parameter key="sonatra_mailer.loader.mail_yaml.class">Sonatra\Component\Mailer\Loader\YamlMailLoader</parameter>
+        <parameter key="sonatra_mailer.loader.layout_array.class">Sonatra\Component\Mailer\Loader\ArrayLayoutLoader</parameter>
+        <parameter key="sonatra_mailer.loader.mail_array.class">Sonatra\Component\Mailer\Loader\ArrayMailLoader</parameter>
+        <parameter key="sonatra_mailer.loader.layout_chain.class">Sonatra\Component\Mailer\Loader\LayoutLoaderChain</parameter>
+        <parameter key="sonatra_mailer.loader.mail_chain.class">Sonatra\Component\Mailer\Loader\MailLoaderChain</parameter>
+        <parameter key="sonatra_mailer.mail_templater.class">Sonatra\Component\Mailer\MailTemplater</parameter>
     </parameters>
 
     <services>

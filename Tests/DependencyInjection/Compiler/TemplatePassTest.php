@@ -12,9 +12,9 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
-use Sonatra\Bundle\MailerBundle\Loader\ArrayLayoutLoader;
-use Sonatra\Bundle\MailerBundle\Model\Layout;
-use Sonatra\Bundle\MailerBundle\Model\Mail;
+use Sonatra\Component\Mailer\Loader\ArrayLayoutLoader;
+use Sonatra\Component\Mailer\Model\Layout;
+use Sonatra\Component\Mailer\Model\Mail;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

@@ -12,7 +12,7 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TransportPass;
-use Sonatra\Bundle\MailerBundle\Transport\TransportInterface;
+use Sonatra\Component\Mailer\Transport\TransportInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

@@ -3,7 +3,7 @@ Getting Started With Sonatra MailerBundle
 
 ## Prerequisites
 
-This version of the bundle requires Symfony 2.8+ and Sonatra BootstrapBundle.
+This version of the bundle requires Symfony 3.
 
 ## Installation
 
@@ -20,7 +20,7 @@ Installation is a quick, 6 step process:
 
 Add Sonatra MailerBundle in your composer.json:
 
-```js
+```json
 {
     "require": {
         "sonatra/mailer-bundle": "~1.0"
@@ -31,7 +31,7 @@ Add Sonatra MailerBundle in your composer.json:
 Or tell composer to download the bundle by running the command:
 
 ```bash
-$ php composer.phar update sonatra/web-interface-bundle
+$ php composer.phar require sonatra/mailer-bundle:"~1.0"
 ```
 
 Composer will install the bundle to your project's `vendor/sonatra` directory.
@@ -56,7 +56,7 @@ public function registerBundles()
 
 #### Create the Layout class
 
-You can use `Sonatra\Bundle\MailBundle\Entity\Layout` class or create the entity class:
+You can use `Sonatra\Component\Mailer\Entity\Layout` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/Layout.php
@@ -64,7 +64,7 @@ You can use `Sonatra\Bundle\MailBundle\Entity\Layout` class or create the entity
 namespace Acme\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sonatra\Bundle\MailerBundle\Model\Layout as BaseLayout;
+use Sonatra\Component\Mailer\Model\Layout as BaseLayout;
 
 class Layout extends BaseLayout
 {
@@ -96,14 +96,14 @@ class Layout extends BaseLayout
 
 #### Create the Layout translation class
 
-You can use `Sonatra\Bundle\MailBundle\Entity\LayoutTranslation` class or create the entity class:
+You can use `Sonatra\Component\Mailer\Entity\LayoutTranslation` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/LayoutTranslation.php
 
 namespace Acme\CoreBundle\Entity;
 
-use Sonatra\Bundle\MailerBundle\Model\LayoutTranslation as BaseLayoutTranslation;
+use Sonatra\Component\Mailer\Model\LayoutTranslation as BaseLayoutTranslation;
 
 class LayoutTranslation extends BaseLayoutTranslation
 {
@@ -126,7 +126,7 @@ class LayoutTranslation extends BaseLayoutTranslation
 
 #### Create the Mail class
 
-You can use `Sonatra\Bundle\MailBundle\Entity\Mail` class or create the entity class:
+You can use `Sonatra\Component\Mailer\Entity\Mail` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/Mail.php
@@ -134,7 +134,7 @@ You can use `Sonatra\Bundle\MailBundle\Entity\Mail` class or create the entity c
 namespace Acme\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sonatra\Bundle\MailerBundle\Model\Mail as BaseMail;
+use Sonatra\Component\Mailer\Model\Mail as BaseMail;
 
 class Mail extends BaseMail
 {
@@ -165,14 +165,14 @@ class Mail extends BaseMail
 
 #### Create the mail translation class
 
-You can use `Sonatra\Bundle\MailBundle\Entity\MailTranslation` class or create the entity class:
+You can use `Sonatra\Component\Mailer\Entity\MailTranslation` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/MailTranslation.php
 
 namespace Acme\CoreBundle\Entity;
 
-use Sonatra\Bundle\MailerBundle\Model\MailTranslation as BaseMailTranslation;
+use Sonatra\Component\Mailer\Model\MailTranslation as BaseMailTranslation;
 
 class MailTranslation extends BaseMailTranslation
 {

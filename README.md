@@ -12,33 +12,11 @@ transport (email, mail, fax, ...).
 
 Features include:
 
-- Stored the templates in:
-  - filesystem with twig format
-  - filesystem with yaml format
-  - app config
-  - database with doctrine (optional)
-- Compatible with the localization
-- Allow to use the Symfony translator with the translation domain
-- Use twig for rendered the mail and layout templates
-- Send your email with SwiftMailer
-- Template filters:
-  - Inline CSS to inline styles (`css_to_styles`) with [CssToInlineStyles](https://github.com/tijsverkoyen/CssToInlineStyles)
-- SwiftMailer plugins:
-  - Embed link images in email
-  - DKIM signer
-- Add your event listeners for:
-  - template pre render
-  - template post render
-  - transport pre send
-  - transport post send
-- Register your filters for:
-  - template mail
-  - transport
-- Build your custom loaders for:
-  - template mails
-  - template layouts
-- Build your custom transports
-- Twig function for use this templater with existing templates defined in twig files of already existing systems
+- All features of [Sonatra Mailer](https://github.com/sonatra/sonatra-mailer)
+- Compiler pass of template mail and transport filters
+- Compiler pass of layout and mail loaders
+- Compiler pass of layout and mail
+- Compiler pass of transport
 
 Documentation
 -------------
@@ -64,7 +42,7 @@ About
 -----
 
 Sonatra MailerBundle is a [sonatra](https://github.com/sonatra) initiative.
-See also the list of [contributors](https://github.com/sonatra/SonatraMailerBundle/contributors).
+See also the list of [contributors](https://github.com/sonatra/SonatraMailerBundle/graphs/contributors).
 
 Reporting an issue or a feature request
 ---------------------------------------

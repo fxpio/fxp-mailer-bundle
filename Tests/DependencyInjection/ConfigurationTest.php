@@ -12,8 +12,8 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection;
 
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Configuration;
-use Sonatra\Bundle\MailerBundle\Model\LayoutInterface;
-use Sonatra\Bundle\MailerBundle\Model\MailInterface;
+use Sonatra\Component\Mailer\Model\LayoutInterface;
+use Sonatra\Component\Mailer\Model\MailInterface;
 use Symfony\Component\Config\Definition\Processor;
 
 /**

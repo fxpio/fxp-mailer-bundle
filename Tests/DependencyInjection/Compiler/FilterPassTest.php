@@ -12,9 +12,9 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\FilterPass;
-use Sonatra\Bundle\MailerBundle\Filter\FilterRegistry;
-use Sonatra\Bundle\MailerBundle\Filter\TemplateFilterInterface;
-use Sonatra\Bundle\MailerBundle\Filter\TransportFilterInterface;
+use Sonatra\Component\Mailer\Filter\FilterRegistry;
+use Sonatra\Component\Mailer\Filter\TemplateFilterInterface;
+use Sonatra\Component\Mailer\Filter\TransportFilterInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

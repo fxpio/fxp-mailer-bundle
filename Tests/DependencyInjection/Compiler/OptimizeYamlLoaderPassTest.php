@@ -12,8 +12,9 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
-use Sonatra\Bundle\MailerBundle\Loader\ArrayLayoutLoader;
-use Sonatra\Bundle\MailerBundle\Loader\YamlLayoutLoader;
+use Sonatra\Component\Mailer\Loader\ArrayLayoutLoader;
+use Sonatra\Component\Mailer\Loader\YamlLayoutLoader;
+use Sonatra\Component\Mailer\Mailer;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -69,6 +70,8 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $container = $this->getContainer();
         $layoutLoaderDef = new Definition(YamlLayoutLoader::class);
         $mailLoaderDef = new Definition(YamlLayoutLoader::class);
+        $refMailer = new \ReflectionClass(Mailer::class);
+        $mailerBaseDir = dirname($refMailer->getFileName());
 
         $layoutLoaderDef->setArguments(array(array()));
         $mailLoaderDef->setArguments(array(array()));
@@ -96,13 +99,13 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $layoutLoaderDef->replaceArgument(0, array(
             array(
                 'name' => 'layout-test',
-                'file' => __DIR__.'/../../Fixtures/loaders/layout.yml',
+                'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/layout.yml',
             ),
         ));
         $mailLoaderDef->replaceArgument(0, array(
             array(
                 'name' => 'mail-test',
-                'file' => __DIR__.'/../../Fixtures/loaders/mail.yml',
+                'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/mail.yml',
             ),
         ));
 
