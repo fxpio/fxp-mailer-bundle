@@ -42,7 +42,7 @@ class SonatraMailerBundle extends Bundle
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver(
                     array(
-                        realpath(dirname($ref->getFileName()).'/Resources/config/doctrine/model') => 'Sonatra\Bundle\MailerBundle\Model',
+                        realpath(dirname($ref->getFileName()).'/Resources/config/doctrine/model') => 'Sonatra\Component\Mailer\Model',
                     )
                 )
             );
