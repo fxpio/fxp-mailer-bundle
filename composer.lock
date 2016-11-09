@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8520a689dddaccaa8469548cae2b1115",
+    "hash": "97376fe063ceb3153bab9474043d3399",
     "content-hash": "7ccc14c023130a5c843949b56170f05d",
     "packages": [
         {
@@ -407,16 +407,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "c0125896dbb151380ab47e96c621741e79623beb"
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c0125896dbb151380ab47e96c621741e79623beb",
-                "reference": "c0125896dbb151380ab47e96c621741e79623beb",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
                 "shasum": ""
             },
             "require": {
@@ -451,7 +451,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-10-17 15:23:22"
+            "time": "2016-11-07 23:38:38"
         },
         {
             "name": "psr/cache",
@@ -552,12 +552,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonatra/sonatra-mailer.git",
-                "reference": "e4d17b63fdf513a89359a9f2e51faf63ca10fa60"
+                "reference": "2849c7a9b16a5f47e97b4fdc1dd959fbc90cfb3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonatra/sonatra-mailer/zipball/e4d17b63fdf513a89359a9f2e51faf63ca10fa60",
-                "reference": "e4d17b63fdf513a89359a9f2e51faf63ca10fa60",
+                "url": "https://api.github.com/repos/sonatra/sonatra-mailer/zipball/2849c7a9b16a5f47e97b4fdc1dd959fbc90cfb3a",
+                "reference": "2849c7a9b16a5f47e97b4fdc1dd959fbc90cfb3a",
                 "shasum": ""
             },
             "require": {
@@ -613,7 +613,7 @@
                 "template",
                 "twig"
             ],
-            "time": "2016-11-06 11:04:51"
+            "time": "2016-11-07 15:26:36"
         },
         {
             "name": "symfony/asset",
