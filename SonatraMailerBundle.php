@@ -12,11 +12,11 @@
 namespace Sonatra\Bundle\MailerBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\FilterPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\LoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigLoaderPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\FilterPass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TransportPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;

@@ -12,8 +12,8 @@
 namespace Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler;
 
 use Sonatra\Bundle\MailerBundle\Util\ContainerUtil;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Replace all services with the tags "sonatra_mailer.loader.layout_config" and
