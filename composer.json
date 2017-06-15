@@ -15,12 +15,12 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.0.0",
-        "symfony/framework-bundle": "^3.0.0",
-        "symfony/yaml": "^3.0.0",
+        "symfony/framework-bundle": "^3.3.0",
+        "symfony/yaml": "^3.3.0",
         "sonatra/mailer": "^1.0.0"
     },
     "require-dev": {
-        "swiftmailer/swiftmailer": "^5.4.0",
+        "swiftmailer/swiftmailer": "^6.0.0",
         "doctrine/doctrine-bundle": "^1.6.0",
         "doctrine/orm": "^2.5.0"
     },
