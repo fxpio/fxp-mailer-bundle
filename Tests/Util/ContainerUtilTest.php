@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Sonatra\Bundle\MailerBundle\SonatraMailerBundle;
 use Sonatra\Bundle\MailerBundle\Util\ContainerUtil;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,7 +22,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class ContainerUtilTest extends \PHPUnit_Framework_TestCase
+class ContainerUtilTest extends TestCase
 {
     public function testGetRealFile()
     {

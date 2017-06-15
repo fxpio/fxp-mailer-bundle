@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
+use PHPUnit\Framework\TestCase;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\SonatraMailerExtension;
 use Sonatra\Bundle\MailerBundle\SonatraMailerBundle;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
@@ -23,7 +24,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class SonatraMailerExtensionTest extends \PHPUnit_Framework_TestCase
+class SonatraMailerExtensionTest extends TestCase
 {
     public function testExtensionExist()
     {

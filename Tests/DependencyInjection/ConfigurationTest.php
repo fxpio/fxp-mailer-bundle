@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
 use Sonatra\Bundle\MailerBundle\DependencyInjection\Configuration;
 use Sonatra\Component\Mailer\Model\LayoutInterface;
 use Sonatra\Component\Mailer\Model\MailInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Config\Definition\Processor;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
     public function testDefaultConfig()
     {
