@@ -142,6 +142,7 @@ class SonatraMailerExtensionTest extends TestCase
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'SonatraMailerBundle' => 'Sonatra\\Bundle\\MailerBundle\\SonatraMailerBundle',
             ),
+            'kernel.bundles_metadata' => array(),
             'kernel.cache_dir' => sys_get_temp_dir().'/sonatra_mailer_bundle',
             'kernel.debug' => false,
             'kernel.environment' => 'test',
