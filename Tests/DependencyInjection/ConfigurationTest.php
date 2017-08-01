@@ -93,6 +93,7 @@ class ConfigurationTest extends TestCase
                     'embed_image' => array(
                         'enabled' => false,
                         'host_pattern' => '/(.*)+/',
+                        'web_dir' => null,
                     ),
                     'dkim_signer' => array(
                         'enabled' => false,

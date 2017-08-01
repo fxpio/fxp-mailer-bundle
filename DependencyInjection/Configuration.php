@@ -164,6 +164,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->canBeEnabled()
             ->children()
+                ->scalarNode('web_dir')->defaultNull()->end()
                 ->scalarNode('host_pattern')->defaultValue('/(.*)+/')->end()
             ->end()
         ;

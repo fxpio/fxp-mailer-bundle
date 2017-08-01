@@ -147,7 +147,8 @@ class SonatraMailerExtensionTest extends TestCase
             'kernel.debug' => false,
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
-            'kernel.root_dir' => sys_get_temp_dir().'/sonatra_mailer_bundle',
+            'kernel.project_dir' => sys_get_temp_dir().'/sonatra_mailer_bundle',
+            'kernel.root_dir' => sys_get_temp_dir().'/sonatra_mailer_bundle/app',
             'kernel.charset' => 'UTF-8',
         )));
 

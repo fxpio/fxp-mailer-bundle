@@ -11,7 +11,7 @@
     <services>
         <service id="sonatra_mailer.transport.swiftmailer.embed_image_plugin" class="%sonatra_mailer.transport.swiftmailer.embed_image_plugin.class%">
             <tag name="swiftmailer.default.plugin" />
-            <argument>%kernel.root_dir%/../web</argument>
+            <argument>%sonatra_mailer.transport.swiftmailer.embed_image.web_dir%</argument>
             <argument>%sonatra_mailer.transport.swiftmailer.embed_image.host_pattern%</argument>
         </service>
     </services>

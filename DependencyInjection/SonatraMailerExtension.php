@@ -88,6 +88,7 @@ class SonatraMailerExtension extends Extension
                 $loader->load('transport_swiftmailer_embed_image.xml');
                 $embedConfig = $config['transports']['swiftmailer']['embed_image'];
                 $prefix = 'sonatra_mailer.transport.swiftmailer.embed_image.';
+                $container->setParameter($prefix.'web_dir', $this->getWebDir($container, $embedConfig['web_dir']));
                 $container->setParameter($prefix.'host_pattern', $embedConfig['host_pattern']);
             }
         }
@@ -143,5 +144,23 @@ class SonatraMailerExtension extends Extension
                 $container->setParameter('sonatra_mailer.filter.'.$type.'.'.$name.'.'.$key, $value);
             }
         }
+    }
+
+    /**
+     * Get the web directory.
+     *
+     * @param ContainerBuilder $container The container
+     * @param string|null      $webDir    The web directory
+     *
+     * @return string
+     */
+    protected function getWebDir(ContainerBuilder $container, $webDir = null)
+    {
+        if (null === $webDir) {
+            $projectDir = $container->getParameter('kernel.project_dir');
+            $webDir = is_dir($projectDir.'/public') ? $projectDir.'/public' : $projectDir.'/web';
+        }
+
+        return $webDir;
     }
 }
