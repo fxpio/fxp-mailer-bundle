@@ -4,12 +4,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="fxp_mailer.filter.template.css_to_styles.class">Fxp\Component\Mailer\Filter\Template\CssToStylesFilter</parameter>
-    </parameters>
-
     <services>
-        <service id="fxp_mailer.filter.template.css_to_styles" class="%fxp_mailer.filter.template.css_to_styles.class%">
+        <service id="fxp_mailer.filter.template.css_to_styles"
+                 class="Fxp\Component\Mailer\Filter\Template\CssToStylesFilter">
             <tag name="fxp_mailer.template_filter" />
         </service>
     </services>

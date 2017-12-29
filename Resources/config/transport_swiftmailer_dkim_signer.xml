@@ -4,12 +4,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="fxp_mailer.transport.swiftmailer.dkim_signer_plugin.class">Fxp\Component\Mailer\Transport\SwiftMailer\DkimSignerPlugin</parameter>
-    </parameters>
-
     <services>
-        <service id="fxp_mailer.transport.swiftmailer.dkim_signer_plugin" class="%fxp_mailer.transport.swiftmailer.dkim_signer_plugin.class%" public="false">
+        <service id="fxp_mailer.transport.swiftmailer.dkim_signer_plugin"
+                 class="Fxp\Component\Mailer\Transport\SwiftMailer\DkimSignerPlugin"
+                 public="false">
             <tag name="swiftmailer.default.plugin" />
             <argument>%fxp_mailer.transport.swiftmailer.dkim_signer.private_key_path%</argument>
             <argument>%fxp_mailer.transport.swiftmailer.dkim_signer.domain%</argument>

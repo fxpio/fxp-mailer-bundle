@@ -4,20 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="fxp_mailer.loader.doctrine_layout.class">Fxp\Component\Mailer\Doctrine\Loader\EntityLayoutLoader</parameter>
-        <parameter key="fxp_mailer.loader.doctrine_mail.class">Fxp\Component\Mailer\Doctrine\Loader\EntityMailLoader</parameter>
-    </parameters>
-
     <services>
         <!-- Doctrine Loaders -->
-        <service id="fxp_mailer.loader.doctrine_layout" class="%fxp_mailer.loader.doctrine_layout.class%">
+        <service id="fxp_mailer.loader.doctrine_layout" class="Fxp\Component\Mailer\Doctrine\Loader\EntityLayoutLoader">
             <tag name="fxp_mailer.layout_loader" priority="-100" />
             <argument type="service" id="doctrine" />
             <argument>%fxp_mailer.layout_class%</argument>
         </service>
 
-        <service id="fxp_mailer.loader.doctrine_mail" class="%fxp_mailer.loader.doctrine_mail.class%">
+        <service id="fxp_mailer.loader.doctrine_mail" class="Fxp\Component\Mailer\Doctrine\Loader\EntityMailLoader">
             <tag name="fxp_mailer.mail_loader" priority="-100" />
             <argument type="service" id="doctrine" />
             <argument>%fxp_mailer.mail_class%</argument>

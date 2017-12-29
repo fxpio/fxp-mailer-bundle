@@ -4,69 +4,57 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="fxp_mailer.loader.layout_twig.class">Fxp\Component\Mailer\Loader\TwigLayoutLoader</parameter>
-        <parameter key="fxp_mailer.loader.mail_twig.class">Fxp\Component\Mailer\Loader\TwigMailLoader</parameter>
-        <parameter key="fxp_mailer.loader.layout_yaml.class">Fxp\Component\Mailer\Loader\YamlLayoutLoader</parameter>
-        <parameter key="fxp_mailer.loader.mail_yaml.class">Fxp\Component\Mailer\Loader\YamlMailLoader</parameter>
-        <parameter key="fxp_mailer.loader.layout_array.class">Fxp\Component\Mailer\Loader\ArrayLayoutLoader</parameter>
-        <parameter key="fxp_mailer.loader.mail_array.class">Fxp\Component\Mailer\Loader\ArrayMailLoader</parameter>
-        <parameter key="fxp_mailer.loader.layout_chain.class">Fxp\Component\Mailer\Loader\LayoutLoaderChain</parameter>
-        <parameter key="fxp_mailer.loader.mail_chain.class">Fxp\Component\Mailer\Loader\MailLoaderChain</parameter>
-        <parameter key="fxp_mailer.mail_templater.class">Fxp\Component\Mailer\MailTemplater</parameter>
-    </parameters>
-
     <services>
         <!-- File Loaders -->
         <!-- Not attached with tag because removing on the optimization -->
-        <service id="fxp_mailer.loader.layout_twig" class="%fxp_mailer.loader.layout_twig.class%">
+        <service id="fxp_mailer.loader.layout_twig" class="Fxp\Component\Mailer\Loader\TwigLayoutLoader">
             <argument type="collection" />
             <argument type="service" id="kernel" />
         </service>
 
         <!-- Not attached with tag because removing on the optimization -->
-        <service id="fxp_mailer.loader.mail_twig" class="%fxp_mailer.loader.mail_twig.class%">
+        <service id="fxp_mailer.loader.mail_twig" class="Fxp\Component\Mailer\Loader\TwigMailLoader">
             <argument type="collection" />
             <argument type="service" id="fxp_mailer.loader.layout_chain" />
             <argument type="service" id="kernel" />
         </service>
 
         <!-- Not attached with tag because removing on the optimization -->
-        <service id="fxp_mailer.loader.layout_yaml" class="%fxp_mailer.loader.layout_yaml.class%">
+        <service id="fxp_mailer.loader.layout_yaml" class="Fxp\Component\Mailer\Loader\YamlLayoutLoader">
             <argument type="collection" />
             <argument type="service" id="kernel" />
         </service>
 
         <!-- Not attached with tag because removing on the optimization -->
-        <service id="fxp_mailer.loader.mail_yaml" class="%fxp_mailer.loader.mail_yaml.class%">
+        <service id="fxp_mailer.loader.mail_yaml" class="Fxp\Component\Mailer\Loader\YamlMailLoader">
             <argument type="collection" />
             <argument type="service" id="fxp_mailer.loader.layout_chain" />
             <argument type="service" id="kernel" />
         </service>
 
         <!-- Loaders -->
-        <service id="fxp_mailer.loader.layout_array" class="%fxp_mailer.loader.layout_array.class%">
+        <service id="fxp_mailer.loader.layout_array" class="Fxp\Component\Mailer\Loader\ArrayLayoutLoader">
             <tag name="fxp_mailer.layout_loader" priority="-25" />
             <argument type="collection" />
         </service>
 
-        <service id="fxp_mailer.loader.mail_array" class="%fxp_mailer.loader.mail_array.class%">
+        <service id="fxp_mailer.loader.mail_array" class="Fxp\Component\Mailer\Loader\ArrayMailLoader">
             <tag name="fxp_mailer.mail_loader" priority="-25" />
             <argument type="collection" />
             <argument type="service" id="fxp_mailer.loader.layout_chain" />
         </service>
 
         <!-- Chain Loaders -->
-        <service id="fxp_mailer.loader.layout_chain" class="%fxp_mailer.loader.layout_chain.class%">
+        <service id="fxp_mailer.loader.layout_chain" class="Fxp\Component\Mailer\Loader\LayoutLoaderChain">
             <argument type="collection" />
         </service>
 
-        <service id="fxp_mailer.loader.mail_chain" class="%fxp_mailer.loader.mail_chain.class%">
+        <service id="fxp_mailer.loader.mail_chain" class="Fxp\Component\Mailer\Loader\MailLoaderChain">
             <argument type="collection" />
         </service>
 
         <!-- Templater -->
-        <service id="fxp_mailer.mail_templater" class="%fxp_mailer.mail_templater.class%" public="true">
+        <service id="fxp_mailer.mail_templater" class="Fxp\Component\Mailer\MailTemplater" public="true">
             <argument type="service" id="fxp_mailer.loader.mail_chain" />
             <argument type="service" id="twig" />
             <argument type="service" id="event_dispatcher" />
