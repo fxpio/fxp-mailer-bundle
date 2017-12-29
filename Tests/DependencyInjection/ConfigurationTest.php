@@ -27,31 +27,31 @@ class ConfigurationTest extends TestCase
     public function testDefaultConfig()
     {
         $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), array(array()));
+        $config = $processor->processConfiguration(new Configuration(), [[]]);
 
-        $this->assertEquals(array_merge(array(), self::getBundleDefaultConfig()), $config);
+        $this->assertEquals(array_merge([], self::getBundleDefaultConfig()), $config);
     }
 
     public function testFilterConfig()
     {
-        $valid = array(
-            'filters' => array(
-                'templates' => array(
-                    'css_to_styles' => array(),
-                ),
-                'transports' => array(),
-            ),
-        );
-        $config = array(
-            'filters' => array(
-                'templates' => array(
-                    'css_to_styles' => array(),
-                ),
-            ),
-        );
+        $valid = [
+            'filters' => [
+                'templates' => [
+                    'css_to_styles' => [],
+                ],
+                'transports' => [],
+            ],
+        ];
+        $config = [
+            'filters' => [
+                'templates' => [
+                    'css_to_styles' => [],
+                ],
+            ],
+        ];
 
         $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), array($config));
+        $config = $processor->processConfiguration(new Configuration(), [$config]);
 
         $this->assertEquals(array_merge(self::getBundleDefaultConfig(), $valid), $config);
     }
@@ -62,16 +62,16 @@ class ConfigurationTest extends TestCase
      */
     public function testInvalidFilterConfig()
     {
-        $config = array(
-            'filters' => array(
-                'templates' => array(
+        $config = [
+            'filters' => [
+                'templates' => [
                     'css_to_styles' => 42,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $processor = new Processor();
-        $processor->processConfiguration(new Configuration(), array($config));
+        $processor->processConfiguration(new Configuration(), [$config]);
     }
 
     /**
@@ -79,30 +79,30 @@ class ConfigurationTest extends TestCase
      */
     protected static function getBundleDefaultConfig()
     {
-        return array(
+        return [
             'layout_class' => LayoutInterface::class,
             'mail_class' => MailInterface::class,
-            'layout_templates' => array(),
-            'mail_templates' => array(),
-            'filters' => array(
-                'templates' => array(),
-                'transports' => array(),
-            ),
-            'transports' => array(
-                'swiftmailer' => array(
-                    'embed_image' => array(
+            'layout_templates' => [],
+            'mail_templates' => [],
+            'filters' => [
+                'templates' => [],
+                'transports' => [],
+            ],
+            'transports' => [
+                'swiftmailer' => [
+                    'embed_image' => [
                         'enabled' => false,
                         'host_pattern' => '/(.*)+/',
                         'web_dir' => null,
-                    ),
-                    'dkim_signer' => array(
+                    ],
+                    'dkim_signer' => [
                         'enabled' => false,
                         'private_key_path' => null,
                         'domain' => null,
                         'selector' => null,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 }

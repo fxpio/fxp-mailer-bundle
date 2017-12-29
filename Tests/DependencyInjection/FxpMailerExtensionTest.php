@@ -50,23 +50,23 @@ class FxpMailerExtensionTest extends TestCase
 
     public function testAddTemplates()
     {
-        $container = $this->createContainer(array(
-            array(
-                'layout_templates' => array(
-                    array(
+        $container = $this->createContainer([
+            [
+                'layout_templates' => [
+                    [
                         'name' => 'layout-test',
                         'loader' => 'config',
-                    ),
-                ),
-                'mail_templates' => array(
-                    array(
+                    ],
+                ],
+                'mail_templates' => [
+                    [
                         'name' => 'mail-test',
                         'loader' => 'config',
                         'layout' => 'layout-test',
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
         $this->assertTrue($container->hasDefinition('fxp_mailer.loader.layout_array'));
         $this->assertTrue($container->hasDefinition('fxp_mailer.loader.mail_array'));
@@ -82,18 +82,18 @@ class FxpMailerExtensionTest extends TestCase
 
     public function testAddFilters()
     {
-        $container = $this->createContainer(array(
-            array(
-                'filters' => array(
-                    'templates' => array(
-                        'css_to_styles' => array(
+        $container = $this->createContainer([
+            [
+                'filters' => [
+                    'templates' => [
+                        'css_to_styles' => [
                             'foo' => 'bar',
                             'bar' => 'foo',
-                        ),
-                    ),
-                ),
-            ),
-        ));
+                        ],
+                    ],
+                ],
+            ],
+        ]);
 
         $this->assertTrue($container->hasDefinition('fxp_mailer.filter.template.css_to_styles'));
         $this->assertTrue($container->hasParameter('fxp_mailer.filter.template.css_to_styles.foo'));
@@ -102,47 +102,47 @@ class FxpMailerExtensionTest extends TestCase
 
     public function testEnableSwiftMailerEmbedImagePlugin()
     {
-        $container = $this->createContainer(array(
-            array(
-                'transports' => array(
-                    'swiftmailer' => array(
+        $container = $this->createContainer([
+            [
+                'transports' => [
+                    'swiftmailer' => [
                         'embed_image' => true,
-                    ),
-                ),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
         $this->assertTrue($container->hasDefinition('fxp_mailer.transport.swiftmailer.embed_image_plugin'));
     }
 
     public function testEnableSwiftMailerDkimSignerPlugin()
     {
-        $container = $this->createContainer(array(
-            array(
-                'transports' => array(
-                    'swiftmailer' => array(
-                        'dkim_signer' => array(
+        $container = $this->createContainer([
+            [
+                'transports' => [
+                    'swiftmailer' => [
+                        'dkim_signer' => [
                             'enabled' => true,
                             'private_key_path' => 'private_key_path',
                             'domain' => 'domain',
                             'selector' => 'selector',
-                        ),
-                    ),
-                ),
-            ),
-        ));
+                        ],
+                    ],
+                ],
+            ],
+        ]);
 
         $this->assertTrue($container->hasDefinition('fxp_mailer.transport.swiftmailer.dkim_signer_plugin'));
     }
 
-    protected function createContainer(array $configs = array())
+    protected function createContainer(array $configs = [])
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
-            'kernel.bundles' => array(
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.bundles' => [
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'FxpMailerBundle' => 'Fxp\\Bundle\\MailerBundle\\FxpMailerBundle',
-            ),
-            'kernel.bundles_metadata' => array(),
+            ],
+            'kernel.bundles_metadata' => [],
             'kernel.cache_dir' => sys_get_temp_dir().'/fxp_mailer_bundle',
             'kernel.debug' => false,
             'kernel.environment' => 'test',
@@ -150,7 +150,7 @@ class FxpMailerExtensionTest extends TestCase
             'kernel.project_dir' => sys_get_temp_dir().'/fxp_mailer_bundle',
             'kernel.root_dir' => sys_get_temp_dir().'/fxp_mailer_bundle/app',
             'kernel.charset' => 'UTF-8',
-        )));
+        ]));
 
         $sfExt = new FrameworkExtension();
         $doctrineExt = new DoctrineExtension();
@@ -160,14 +160,14 @@ class FxpMailerExtensionTest extends TestCase
         $container->registerExtension($doctrineExt);
         $container->registerExtension($extension);
 
-        $sfExt->load(array(array()), $container);
-        $doctrineExt->load(array($this->getDoctrineConfig()), $container);
+        $sfExt->load([[]], $container);
+        $doctrineExt->load([$this->getDoctrineConfig()], $container);
         $extension->load($configs, $container);
 
         $bundle = new FxpMailerBundle();
         $bundle->build($container);
 
-        $optimizationPasses = array();
+        $optimizationPasses = [];
 
         foreach ($container->getCompilerPassConfig()->getOptimizationPasses() as $pass) {
             if (0 === strpos(get_class($pass), 'Fxp\Bundle\MailerBundle\DependencyInjection\Compiler')) {
@@ -176,7 +176,7 @@ class FxpMailerExtensionTest extends TestCase
         }
 
         $container->getCompilerPassConfig()->setOptimizationPasses($optimizationPasses);
-        $container->getCompilerPassConfig()->setRemovingPasses(array());
+        $container->getCompilerPassConfig()->setRemovingPasses([]);
         $container->compile();
 
         return $container;
@@ -184,24 +184,24 @@ class FxpMailerExtensionTest extends TestCase
 
     protected function getDoctrineConfig()
     {
-        return array(
-            'dbal' => array(
+        return [
+            'dbal' => [
                 'default_connection' => 'default',
-                'connections' => array(
-                    'default' => array(
+                'connections' => [
+                    'default' => [
                         'driver' => 'pdo_sqlite',
                         'path' => '%kernel.cache_dir%/test.db',
-                    ),
-                ),
-            ),
-            'orm' => array(
+                    ],
+                ],
+            ],
+            'orm' => [
                 'auto_generate_proxy_classes' => true,
-                'entity_managers' => array(
-                    'default' => array(
+                'entity_managers' => [
+                    'default' => [
                         'auto_mapping' => true,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 }

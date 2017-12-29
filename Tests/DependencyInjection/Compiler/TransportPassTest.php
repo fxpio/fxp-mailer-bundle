@@ -67,7 +67,7 @@ class TransportPassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $defMailer = new Definition();
-        $defMailer->setArguments(array(null, array()));
+        $defMailer->setArguments([null, []]);
         $container->setDefinition('fxp_mailer.mailer', $defMailer);
 
         $transportMock = $this->getMockBuilder(TransportInterface::class)->getMock();
@@ -90,15 +90,15 @@ class TransportPassTest extends KernelTestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
+        $container = new ContainerBuilder(new ParameterBag([
             'kernel.cache_dir' => $this->rootDir,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
             'kernel.root_dir' => $this->rootDir,
             'kernel.charset' => 'UTF-8',
-            'kernel.bundles' => array(),
-        )));
+            'kernel.bundles' => [],
+        ]));
 
         return $container;
     }

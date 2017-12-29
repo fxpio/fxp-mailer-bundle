@@ -32,7 +32,7 @@ class TransportPass implements CompilerPassInterface
             return;
         }
 
-        $transports = array();
+        $transports = [];
 
         foreach ($container->findTaggedServiceIds('fxp_mailer.transport') as $serviceId => $tags) {
             $transports[] = new Reference($serviceId);

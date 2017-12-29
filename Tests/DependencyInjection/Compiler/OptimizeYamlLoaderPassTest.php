@@ -73,8 +73,8 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $refMailer = new \ReflectionClass(Mailer::class);
         $mailerBaseDir = dirname($refMailer->getFileName());
 
-        $layoutLoaderDef->setArguments(array(array()));
-        $mailLoaderDef->setArguments(array(array()));
+        $layoutLoaderDef->setArguments([[]]);
+        $mailLoaderDef->setArguments([[]]);
 
         $container->setDefinition('fxp_mailer.loader.layout_yaml', $layoutLoaderDef);
         $container->setDefinition('fxp_mailer.loader.mail_yaml', $mailLoaderDef);
@@ -86,8 +86,8 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $layoutArrayLoaderDef = new Definition(ArrayLayoutLoader::class);
         $mailArrayLoaderDef = new Definition(ArrayLayoutLoader::class);
 
-        $layoutArrayLoaderDef->setArguments(array(array()));
-        $mailArrayLoaderDef->setArguments(array(array()));
+        $layoutArrayLoaderDef->setArguments([[]]);
+        $mailArrayLoaderDef->setArguments([[]]);
 
         $container->setDefinition('fxp_mailer.loader.layout_array', $layoutArrayLoaderDef);
         $container->setDefinition('fxp_mailer.loader.mail_array', $mailArrayLoaderDef);
@@ -96,18 +96,18 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $this->assertCount(0, $mailArrayLoaderDef->getArgument(0));
 
         // add mocks
-        $layoutLoaderDef->replaceArgument(0, array(
-            array(
+        $layoutLoaderDef->replaceArgument(0, [
+            [
                 'name' => 'layout-test',
                 'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/layout.yml',
-            ),
-        ));
-        $mailLoaderDef->replaceArgument(0, array(
-            array(
+            ],
+        ]);
+        $mailLoaderDef->replaceArgument(0, [
+            [
                 'name' => 'mail-test',
                 'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/mail.yml',
-            ),
-        ));
+            ],
+        ]);
 
         // test
         $this->pass->process($container);
@@ -122,15 +122,15 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
+        $container = new ContainerBuilder(new ParameterBag([
             'kernel.cache_dir' => $this->rootDir,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
             'kernel.root_dir' => $this->rootDir,
             'kernel.charset' => 'UTF-8',
-            'kernel.bundles' => array(),
-        )));
+            'kernel.bundles' => [],
+        ]));
 
         return $container;
     }

@@ -44,7 +44,7 @@ class FilterPass implements CompilerPassInterface
      */
     protected function addFilters(ContainerBuilder $container, $type)
     {
-        $filters = array();
+        $filters = [];
         $tagName = sprintf('fxp_mailer.%s_filter', $type);
         $registryName = 'fxp_mailer.filter_registry';
         $pos = 'transport' === $type ? 1 : 0;

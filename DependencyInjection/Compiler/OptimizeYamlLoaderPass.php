@@ -54,7 +54,7 @@ class OptimizeYamlLoaderPass implements CompilerPassInterface
         $def = $container->getDefinition($serviceId);
 
         $templates = $def->getArgument(0);
-        $configs = array();
+        $configs = [];
 
         foreach ($templates as $template) {
             $configs[] = $this->createConfig($container, $template);

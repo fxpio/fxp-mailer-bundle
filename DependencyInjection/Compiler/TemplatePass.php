@@ -46,7 +46,7 @@ class TemplatePass implements CompilerPassInterface
      */
     protected function addTemplate(ContainerBuilder $container, $type)
     {
-        $templates = array();
+        $templates = [];
         $tagName = sprintf('fxp_mailer.%s', $type);
         $arrayLoaderName = sprintf('fxp_mailer.loader.%s_array', $type);
 

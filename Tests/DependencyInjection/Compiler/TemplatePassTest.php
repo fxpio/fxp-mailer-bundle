@@ -71,8 +71,8 @@ class TemplatePassTest extends KernelTestCase
         $layoutLoaderDef = new Definition(ArrayLayoutLoader::class);
         $mailLoaderDef = new Definition(ArrayLayoutLoader::class);
 
-        $layoutLoaderDef->setArguments(array(array()));
-        $mailLoaderDef->setArguments(array(array()));
+        $layoutLoaderDef->setArguments([[]]);
+        $mailLoaderDef->setArguments([[]]);
 
         $container->setDefinition('fxp_mailer.loader.layout_array', $layoutLoaderDef);
         $container->setDefinition('fxp_mailer.loader.mail_array', $mailLoaderDef);
@@ -103,15 +103,15 @@ class TemplatePassTest extends KernelTestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
+        $container = new ContainerBuilder(new ParameterBag([
             'kernel.cache_dir' => $this->rootDir,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
             'kernel.root_dir' => $this->rootDir,
             'kernel.charset' => 'UTF-8',
-            'kernel.bundles' => array(),
-        )));
+            'kernel.bundles' => [],
+        ]));
 
         return $container;
     }

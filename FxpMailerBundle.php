@@ -41,9 +41,9 @@ class FxpMailerBundle extends Bundle
             $ref = new \ReflectionClass($this);
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver(
-                    array(
+                    [
                         realpath(dirname($ref->getFileName()).'/Resources/config/doctrine/model') => 'Fxp\Component\Mailer\Model',
-                    )
+                    ]
                 )
             );
         }

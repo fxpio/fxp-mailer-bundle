@@ -82,7 +82,7 @@ abstract class ContainerUtil
 
             $transId = sprintf('fxp_mailer.%s_translation.%s', $type, str_replace('-', '_', $name));
             $container->setDefinition($transId, $transDef);
-            $def->addMethodCall('addTranslation', array(new Reference($transId)));
+            $def->addMethodCall('addTranslation', [new Reference($transId)]);
         }
     }
 
@@ -100,7 +100,7 @@ abstract class ContainerUtil
         $value = array_key_exists($field, $config) ? $config[$field] : $default;
 
         if ($default !== $value) {
-            $def->addMethodCall($method, array($value));
+            $def->addMethodCall($method, [$value]);
         }
     }
 
@@ -169,7 +169,7 @@ abstract class ContainerUtil
             static::addArgumentValue($def, 'setHtmlBody', $template, 'html_body');
 
             if (isset($template['layout']) && null !== $template['layout']) {
-                $def->addMethodCall('setLayout', array(new Reference('fxp_mailer.layout.'.str_replace('-', '_', $template['layout']))));
+                $def->addMethodCall('setLayout', [new Reference('fxp_mailer.layout.'.str_replace('-', '_', $template['layout']))]);
             }
         }
     }

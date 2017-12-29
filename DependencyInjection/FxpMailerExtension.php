@@ -107,7 +107,7 @@ class FxpMailerExtension extends Extension
      */
     protected function addTemplates(ContainerBuilder $container, $type, $class, array $templates, $reference = null)
     {
-        $loaderTypes = array();
+        $loaderTypes = [];
 
         foreach ($templates as $template) {
             $loader = isset($template['loader']) ? $template['loader'] : 'config';
@@ -116,7 +116,7 @@ class FxpMailerExtension extends Extension
 
         foreach ($loaderTypes as $loader => $loaderTemplate) {
             $def = new Definition($class);
-            $def->setArguments(array($loaderTemplate));
+            $def->setArguments([$loaderTemplate]);
 
             if (null !== $reference) {
                 $def->addArgument($reference);

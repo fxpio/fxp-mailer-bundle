@@ -217,7 +217,7 @@ class Configuration implements ConfigurationInterface
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
             ->prototype('variable')
-                ->treatNullLike(array())
+                ->treatNullLike([])
                 ->validate()
                     ->ifTrue(function ($v) {
                         return !is_array($v);

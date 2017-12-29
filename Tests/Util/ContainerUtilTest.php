@@ -40,11 +40,11 @@ class ContainerUtilTest extends TestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
-            'kernel.bundles' => array(
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.bundles' => [
                 'FxpMailerBundle' => FxpMailerBundle::class,
-            ),
-        )));
+            ],
+        ]));
 
         return $container;
     }

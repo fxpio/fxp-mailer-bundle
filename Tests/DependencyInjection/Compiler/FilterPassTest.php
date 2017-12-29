@@ -54,7 +54,7 @@ class FilterPassTest extends KernelTestCase
     {
         $container = $this->getContainer();
         $registryDef = new Definition(FilterRegistry::class);
-        $registryDef->setArguments(array(array(), array()));
+        $registryDef->setArguments([[], []]);
 
         $container->setDefinition('fxp_mailer.filter_registry', $registryDef);
 
@@ -84,13 +84,13 @@ class FilterPassTest extends KernelTestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
+        $container = new ContainerBuilder(new ParameterBag([
             'kernel.debug' => false,
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
             'kernel.charset' => 'UTF-8',
-            'kernel.bundles' => array(),
-        )));
+            'kernel.bundles' => [],
+        ]));
 
         return $container;
     }

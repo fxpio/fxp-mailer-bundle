@@ -46,7 +46,7 @@ class LoaderPass implements CompilerPassInterface
      */
     protected function chainLoader(ContainerBuilder $container, $type)
     {
-        $loaders = array();
+        $loaders = [];
         $tagName = sprintf('fxp_mailer.%s_loader', $type);
         $chainLoaderName = sprintf('fxp_mailer.loader.%s_chain', $type);
 
