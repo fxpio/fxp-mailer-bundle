@@ -1,32 +1,32 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle;
+namespace Fxp\Bundle\MailerBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\FilterPass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\LoaderPass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigLoaderPass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TransportPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\FilterPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\LoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\TransportPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class SonatraMailerBundle extends Bundle
+class FxpMailerBundle extends Bundle
 {
     /**
      * {@inheritdoc}
@@ -42,7 +42,7 @@ class SonatraMailerBundle extends Bundle
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver(
                     array(
-                        realpath(dirname($ref->getFileName()).'/Resources/config/doctrine/model') => 'Sonatra\Component\Mailer\Model',
+                        realpath(dirname($ref->getFileName()).'/Resources/config/doctrine/model') => 'Fxp\Component\Mailer\Model',
                     )
                 )
             );

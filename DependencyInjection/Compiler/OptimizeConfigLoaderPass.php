@@ -1,26 +1,26 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler;
+namespace Fxp\Bundle\MailerBundle\DependencyInjection\Compiler;
 
-use Sonatra\Bundle\MailerBundle\Util\ContainerUtil;
+use Fxp\Bundle\MailerBundle\Util\ContainerUtil;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Replace all services with the tags "sonatra_mailer.loader.layout_config" and
- * "sonatra_mailer.loader.mail_config" by "sonatra_mailer.loader.layout_array" service
- * and "sonatra_mailer.loader.mail_array" service.
+ * Replace all services with the tags "fxp_mailer.loader.layout_config" and
+ * "fxp_mailer.loader.mail_config" by "fxp_mailer.loader.layout_array" service
+ * and "fxp_mailer.loader.mail_array" service.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class OptimizeConfigLoaderPass implements CompilerPassInterface
 {
@@ -29,16 +29,16 @@ class OptimizeConfigLoaderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra_mailer.loader.layout_config')
-                || !$container->hasDefinition('sonatra_mailer.loader.mail_config')) {
+        if (!$container->hasDefinition('fxp_mailer.loader.layout_config')
+                || !$container->hasDefinition('fxp_mailer.loader.mail_config')) {
             return;
         }
 
         $this->optimize($container, 'layout');
         $this->optimize($container, 'mail');
 
-        $container->removeDefinition('sonatra_mailer.loader.mail_config');
-        $container->removeDefinition('sonatra_mailer.loader.layout_config');
+        $container->removeDefinition('fxp_mailer.loader.mail_config');
+        $container->removeDefinition('fxp_mailer.loader.layout_config');
     }
 
     /**
@@ -49,7 +49,7 @@ class OptimizeConfigLoaderPass implements CompilerPassInterface
      */
     protected function optimize(ContainerBuilder $container, $type)
     {
-        $serviceId = sprintf('sonatra_mailer.loader.%s_config', $type);
+        $serviceId = sprintf('fxp_mailer.loader.%s_config', $type);
         $def = $container->getDefinition($serviceId);
 
         ContainerUtil::addTemplates($container, $type, $def->getArgument(0));

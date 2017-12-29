@@ -1,20 +1,20 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
+namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
-use Sonatra\Component\Mailer\Loader\ArrayLayoutLoader;
-use Sonatra\Component\Mailer\Loader\YamlLayoutLoader;
-use Sonatra\Component\Mailer\Mailer;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
+use Fxp\Component\Mailer\Loader\ArrayLayoutLoader;
+use Fxp\Component\Mailer\Loader\YamlLayoutLoader;
+use Fxp\Component\Mailer\Mailer;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -24,7 +24,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * Tests for optimize yaml loader pass.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class OptimizeYamlLoaderPassTest extends KernelTestCase
 {
@@ -45,7 +45,7 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
 
     protected function setUp()
     {
-        $this->rootDir = sys_get_temp_dir().'/sonatra_mailer_bundle_optimize_yaml_loader_pass';
+        $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_optimize_yaml_loader_pass';
         $this->fs = new Filesystem();
         $this->pass = new OptimizeYamlLoaderPass();
     }
@@ -61,8 +61,8 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $this->pass->process($container);
-        $this->assertFalse($container->has('sonatra_mailer.loader.layout_yaml'));
-        $this->assertFalse($container->has('sonatra_mailer.loader.mail_yaml'));
+        $this->assertFalse($container->has('fxp_mailer.loader.layout_yaml'));
+        $this->assertFalse($container->has('fxp_mailer.loader.mail_yaml'));
     }
 
     public function testProcessWithAddTemplates()
@@ -76,8 +76,8 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $layoutLoaderDef->setArguments(array(array()));
         $mailLoaderDef->setArguments(array(array()));
 
-        $container->setDefinition('sonatra_mailer.loader.layout_yaml', $layoutLoaderDef);
-        $container->setDefinition('sonatra_mailer.loader.mail_yaml', $mailLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.layout_yaml', $layoutLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.mail_yaml', $mailLoaderDef);
 
         $this->assertCount(0, $layoutLoaderDef->getArgument(0));
         $this->assertCount(0, $mailLoaderDef->getArgument(0));
@@ -89,8 +89,8 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $layoutArrayLoaderDef->setArguments(array(array()));
         $mailArrayLoaderDef->setArguments(array(array()));
 
-        $container->setDefinition('sonatra_mailer.loader.layout_array', $layoutArrayLoaderDef);
-        $container->setDefinition('sonatra_mailer.loader.mail_array', $mailArrayLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.layout_array', $layoutArrayLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.mail_array', $mailArrayLoaderDef);
 
         $this->assertCount(0, $layoutArrayLoaderDef->getArgument(0));
         $this->assertCount(0, $mailArrayLoaderDef->getArgument(0));
@@ -111,8 +111,8 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
 
         // test
         $this->pass->process($container);
-        $this->assertFalse($container->has('sonatra_mailer.loader.layout_yaml'));
-        $this->assertFalse($container->has('sonatra_mailer.loader.mail_yaml'));
+        $this->assertFalse($container->has('fxp_mailer.loader.layout_yaml'));
+        $this->assertFalse($container->has('fxp_mailer.loader.mail_yaml'));
     }
 
     /**

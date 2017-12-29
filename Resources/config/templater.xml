@@ -5,69 +5,69 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="sonatra_mailer.loader.layout_twig.class">Sonatra\Component\Mailer\Loader\TwigLayoutLoader</parameter>
-        <parameter key="sonatra_mailer.loader.mail_twig.class">Sonatra\Component\Mailer\Loader\TwigMailLoader</parameter>
-        <parameter key="sonatra_mailer.loader.layout_yaml.class">Sonatra\Component\Mailer\Loader\YamlLayoutLoader</parameter>
-        <parameter key="sonatra_mailer.loader.mail_yaml.class">Sonatra\Component\Mailer\Loader\YamlMailLoader</parameter>
-        <parameter key="sonatra_mailer.loader.layout_array.class">Sonatra\Component\Mailer\Loader\ArrayLayoutLoader</parameter>
-        <parameter key="sonatra_mailer.loader.mail_array.class">Sonatra\Component\Mailer\Loader\ArrayMailLoader</parameter>
-        <parameter key="sonatra_mailer.loader.layout_chain.class">Sonatra\Component\Mailer\Loader\LayoutLoaderChain</parameter>
-        <parameter key="sonatra_mailer.loader.mail_chain.class">Sonatra\Component\Mailer\Loader\MailLoaderChain</parameter>
-        <parameter key="sonatra_mailer.mail_templater.class">Sonatra\Component\Mailer\MailTemplater</parameter>
+        <parameter key="fxp_mailer.loader.layout_twig.class">Fxp\Component\Mailer\Loader\TwigLayoutLoader</parameter>
+        <parameter key="fxp_mailer.loader.mail_twig.class">Fxp\Component\Mailer\Loader\TwigMailLoader</parameter>
+        <parameter key="fxp_mailer.loader.layout_yaml.class">Fxp\Component\Mailer\Loader\YamlLayoutLoader</parameter>
+        <parameter key="fxp_mailer.loader.mail_yaml.class">Fxp\Component\Mailer\Loader\YamlMailLoader</parameter>
+        <parameter key="fxp_mailer.loader.layout_array.class">Fxp\Component\Mailer\Loader\ArrayLayoutLoader</parameter>
+        <parameter key="fxp_mailer.loader.mail_array.class">Fxp\Component\Mailer\Loader\ArrayMailLoader</parameter>
+        <parameter key="fxp_mailer.loader.layout_chain.class">Fxp\Component\Mailer\Loader\LayoutLoaderChain</parameter>
+        <parameter key="fxp_mailer.loader.mail_chain.class">Fxp\Component\Mailer\Loader\MailLoaderChain</parameter>
+        <parameter key="fxp_mailer.mail_templater.class">Fxp\Component\Mailer\MailTemplater</parameter>
     </parameters>
 
     <services>
         <!-- File Loaders -->
         <!-- Not attached with tag because removing on the optimization -->
-        <service id="sonatra_mailer.loader.layout_twig" class="%sonatra_mailer.loader.layout_twig.class%">
+        <service id="fxp_mailer.loader.layout_twig" class="%fxp_mailer.loader.layout_twig.class%">
             <argument type="collection" />
             <argument type="service" id="kernel" />
         </service>
 
         <!-- Not attached with tag because removing on the optimization -->
-        <service id="sonatra_mailer.loader.mail_twig" class="%sonatra_mailer.loader.mail_twig.class%">
+        <service id="fxp_mailer.loader.mail_twig" class="%fxp_mailer.loader.mail_twig.class%">
             <argument type="collection" />
-            <argument type="service" id="sonatra_mailer.loader.layout_chain" />
+            <argument type="service" id="fxp_mailer.loader.layout_chain" />
             <argument type="service" id="kernel" />
         </service>
 
         <!-- Not attached with tag because removing on the optimization -->
-        <service id="sonatra_mailer.loader.layout_yaml" class="%sonatra_mailer.loader.layout_yaml.class%">
+        <service id="fxp_mailer.loader.layout_yaml" class="%fxp_mailer.loader.layout_yaml.class%">
             <argument type="collection" />
             <argument type="service" id="kernel" />
         </service>
 
         <!-- Not attached with tag because removing on the optimization -->
-        <service id="sonatra_mailer.loader.mail_yaml" class="%sonatra_mailer.loader.mail_yaml.class%">
+        <service id="fxp_mailer.loader.mail_yaml" class="%fxp_mailer.loader.mail_yaml.class%">
             <argument type="collection" />
-            <argument type="service" id="sonatra_mailer.loader.layout_chain" />
+            <argument type="service" id="fxp_mailer.loader.layout_chain" />
             <argument type="service" id="kernel" />
         </service>
 
         <!-- Loaders -->
-        <service id="sonatra_mailer.loader.layout_array" class="%sonatra_mailer.loader.layout_array.class%">
-            <tag name="sonatra_mailer.layout_loader" priority="-25" />
+        <service id="fxp_mailer.loader.layout_array" class="%fxp_mailer.loader.layout_array.class%">
+            <tag name="fxp_mailer.layout_loader" priority="-25" />
             <argument type="collection" />
         </service>
 
-        <service id="sonatra_mailer.loader.mail_array" class="%sonatra_mailer.loader.mail_array.class%">
-            <tag name="sonatra_mailer.mail_loader" priority="-25" />
+        <service id="fxp_mailer.loader.mail_array" class="%fxp_mailer.loader.mail_array.class%">
+            <tag name="fxp_mailer.mail_loader" priority="-25" />
             <argument type="collection" />
-            <argument type="service" id="sonatra_mailer.loader.layout_chain" />
+            <argument type="service" id="fxp_mailer.loader.layout_chain" />
         </service>
 
         <!-- Chain Loaders -->
-        <service id="sonatra_mailer.loader.layout_chain" class="%sonatra_mailer.loader.layout_chain.class%">
+        <service id="fxp_mailer.loader.layout_chain" class="%fxp_mailer.loader.layout_chain.class%">
             <argument type="collection" />
         </service>
 
-        <service id="sonatra_mailer.loader.mail_chain" class="%sonatra_mailer.loader.mail_chain.class%">
+        <service id="fxp_mailer.loader.mail_chain" class="%fxp_mailer.loader.mail_chain.class%">
             <argument type="collection" />
         </service>
 
         <!-- Templater -->
-        <service id="sonatra_mailer.mail_templater" class="%sonatra_mailer.mail_templater.class%" public="true">
-            <argument type="service" id="sonatra_mailer.loader.mail_chain" />
+        <service id="fxp_mailer.mail_templater" class="%fxp_mailer.mail_templater.class%" public="true">
+            <argument type="service" id="fxp_mailer.loader.mail_chain" />
             <argument type="service" id="twig" />
             <argument type="service" id="event_dispatcher" />
             <call method="setTranslator">

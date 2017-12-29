@@ -1,17 +1,17 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\DependencyInjection;
+namespace Fxp\Bundle\MailerBundle\DependencyInjection;
 
-use Sonatra\Component\Mailer\MailTypes;
+use Fxp\Component\Mailer\MailTypes;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * This is the class that validates and merges configuration from your app/config files.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class Configuration implements ConfigurationInterface
 {
@@ -29,12 +29,12 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sonatra_mailer');
+        $rootNode = $treeBuilder->root('fxp_mailer');
 
         $rootNode
             ->children()
-                ->scalarNode('layout_class')->defaultValue('Sonatra\Component\Mailer\Model\LayoutInterface')->end()
-                ->scalarNode('mail_class')->defaultValue('Sonatra\Component\Mailer\Model\MailInterface')->end()
+                ->scalarNode('layout_class')->defaultValue('Fxp\Component\Mailer\Model\LayoutInterface')->end()
+                ->scalarNode('mail_class')->defaultValue('Fxp\Component\Mailer\Model\MailInterface')->end()
                 ->append($this->getLayoutTemplatesNode())
                 ->append($this->getMailTemplatesNode())
                 ->append($this->getTransportNode())
@@ -222,7 +222,7 @@ class Configuration implements ConfigurationInterface
                     ->ifTrue(function ($v) {
                         return !is_array($v);
                     })
-                    ->thenInvalid('The sonatra_mailer.filters.'.$type.'s config %s must be either null or an array.')
+                    ->thenInvalid('The fxp_mailer.filters.'.$type.'s config %s must be either null or an array.')
                 ->end()
             ->end()
         ;

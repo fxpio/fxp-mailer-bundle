@@ -5,12 +5,12 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="sonatra_mailer.filter.template.css_to_styles.class">Sonatra\Component\Mailer\Filter\Template\CssToStylesFilter</parameter>
+        <parameter key="fxp_mailer.filter.template.css_to_styles.class">Fxp\Component\Mailer\Filter\Template\CssToStylesFilter</parameter>
     </parameters>
 
     <services>
-        <service id="sonatra_mailer.filter.template.css_to_styles" class="%sonatra_mailer.filter.template.css_to_styles.class%">
-            <tag name="sonatra_mailer.template_filter" />
+        <service id="fxp_mailer.filter.template.css_to_styles" class="%fxp_mailer.filter.template.css_to_styles.class%">
+            <tag name="fxp_mailer.template_filter" />
         </service>
     </services>
 </container>

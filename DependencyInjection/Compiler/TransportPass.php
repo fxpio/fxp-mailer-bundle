@@ -1,25 +1,25 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler;
+namespace Fxp\Bundle\MailerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Adds all services with the tags "sonatra_mailer.transport" as arguments of
- * the "sonatra_mailer.mailer" service.
+ * Adds all services with the tags "fxp_mailer.transport" as arguments of
+ * the "fxp_mailer.mailer" service.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class TransportPass implements CompilerPassInterface
 {
@@ -28,16 +28,16 @@ class TransportPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra_mailer.mailer')) {
+        if (!$container->hasDefinition('fxp_mailer.mailer')) {
             return;
         }
 
         $transports = array();
 
-        foreach ($container->findTaggedServiceIds('sonatra_mailer.transport') as $serviceId => $tags) {
+        foreach ($container->findTaggedServiceIds('fxp_mailer.transport') as $serviceId => $tags) {
             $transports[] = new Reference($serviceId);
         }
 
-        $container->getDefinition('sonatra_mailer.mailer')->replaceArgument(1, $transports);
+        $container->getDefinition('fxp_mailer.mailer')->replaceArgument(1, $transports);
     }
 }

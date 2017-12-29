@@ -1,18 +1,18 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Util;
+namespace Fxp\Bundle\MailerBundle\Util;
 
-use Sonatra\Component\Mailer\MailTypes;
-use Sonatra\Component\Mailer\Model\TemplateFileInterface;
+use Fxp\Component\Mailer\MailTypes;
+use Fxp\Component\Mailer\Model\TemplateFileInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Utils for container builder.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 abstract class ContainerUtil
 {
@@ -38,10 +38,10 @@ abstract class ContainerUtil
 
         foreach ($templates as $template) {
             $def = new Definition($config->getTemplateClass($type));
-            $def->addTag(sprintf('sonatra_mailer.%s', $type));
+            $def->addTag(sprintf('fxp_mailer.%s', $type));
             static::addTemplateValues($def, $type, $template);
 
-            $defId = sprintf('sonatra_mailer.%s.%s', $type, str_replace('-', '_', $template['name']));
+            $defId = sprintf('fxp_mailer.%s.%s', $type, str_replace('-', '_', $template['name']));
 
             if (isset($template['translations'])) {
                 static::addTemplateTranslations($container, $def, $defId, $type, $template['translations'], $template['name'], $config);
@@ -80,7 +80,7 @@ abstract class ContainerUtil
                 static::addArgumentValue($transDef, 'setHtmlBody', $translation, 'html_body');
             }
 
-            $transId = sprintf('sonatra_mailer.%s_translation.%s', $type, str_replace('-', '_', $name));
+            $transId = sprintf('fxp_mailer.%s_translation.%s', $type, str_replace('-', '_', $name));
             $container->setDefinition($transId, $transDef);
             $def->addMethodCall('addTranslation', array(new Reference($transId)));
         }
@@ -169,7 +169,7 @@ abstract class ContainerUtil
             static::addArgumentValue($def, 'setHtmlBody', $template, 'html_body');
 
             if (isset($template['layout']) && null !== $template['layout']) {
-                $def->addMethodCall('setLayout', array(new Reference('sonatra_mailer.layout.'.str_replace('-', '_', $template['layout']))));
+                $def->addMethodCall('setLayout', array(new Reference('fxp_mailer.layout.'.str_replace('-', '_', $template['layout']))));
             }
         }
     }

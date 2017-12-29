@@ -1,25 +1,25 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler;
+namespace Fxp\Bundle\MailerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Adds all services with the tags "sonatra_mailer.layout_loader" and "sonatra_mailer.mail_loader" as
- * arguments of the "sonatra_mailer.loader.layout_chain" service and "sonatra_mailer.loader.mail_chain" service.
+ * Adds all services with the tags "fxp_mailer.layout_loader" and "fxp_mailer.mail_loader" as
+ * arguments of the "fxp_mailer.loader.layout_chain" service and "fxp_mailer.loader.mail_chain" service.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class LoaderPass implements CompilerPassInterface
 {
@@ -28,8 +28,8 @@ class LoaderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra_mailer.loader.layout_chain')
-                || !$container->hasDefinition('sonatra_mailer.loader.mail_chain')) {
+        if (!$container->hasDefinition('fxp_mailer.loader.layout_chain')
+                || !$container->hasDefinition('fxp_mailer.loader.mail_chain')) {
             return;
         }
 
@@ -47,8 +47,8 @@ class LoaderPass implements CompilerPassInterface
     protected function chainLoader(ContainerBuilder $container, $type)
     {
         $loaders = array();
-        $tagName = sprintf('sonatra_mailer.%s_loader', $type);
-        $chainLoaderName = sprintf('sonatra_mailer.loader.%s_chain', $type);
+        $tagName = sprintf('fxp_mailer.%s_loader', $type);
+        $chainLoaderName = sprintf('fxp_mailer.loader.%s_chain', $type);
 
         foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {
             $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;

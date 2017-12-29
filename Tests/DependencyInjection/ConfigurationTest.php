@@ -1,26 +1,26 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection;
+namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection;
 
+use Fxp\Bundle\MailerBundle\DependencyInjection\Configuration;
+use Fxp\Component\Mailer\Model\LayoutInterface;
+use Fxp\Component\Mailer\Model\MailInterface;
 use PHPUnit\Framework\TestCase;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Configuration;
-use Sonatra\Component\Mailer\Model\LayoutInterface;
-use Sonatra\Component\Mailer\Model\MailInterface;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
  * Tests for symfony extension configuration.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class ConfigurationTest extends TestCase
 {
@@ -58,7 +58,7 @@ class ConfigurationTest extends TestCase
 
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The sonatra_mailer.filters.templates config 42 must be either null or an array.
+     * @expectedExceptionMessage The fxp_mailer.filters.templates config 42 must be either null or an array.
      */
     public function testInvalidFilterConfig()
     {

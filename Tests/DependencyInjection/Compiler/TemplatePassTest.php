@@ -1,20 +1,20 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
+namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
-use Sonatra\Component\Mailer\Loader\ArrayLayoutLoader;
-use Sonatra\Component\Mailer\Model\Layout;
-use Sonatra\Component\Mailer\Model\Mail;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
+use Fxp\Component\Mailer\Loader\ArrayLayoutLoader;
+use Fxp\Component\Mailer\Model\Layout;
+use Fxp\Component\Mailer\Model\Mail;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -24,7 +24,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * Tests for template loader pass.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class TemplatePassTest extends KernelTestCase
 {
@@ -45,7 +45,7 @@ class TemplatePassTest extends KernelTestCase
 
     protected function setUp()
     {
-        $this->rootDir = sys_get_temp_dir().'/sonatra_mailer_bundle_template_loader_pass';
+        $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_template_loader_pass';
         $this->fs = new Filesystem();
         $this->pass = new TemplatePass();
     }
@@ -61,8 +61,8 @@ class TemplatePassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $this->pass->process($container);
-        $this->assertFalse($container->has('sonatra_mailer.loader.layout_array'));
-        $this->assertFalse($container->has('sonatra_mailer.loader.mail_array'));
+        $this->assertFalse($container->has('fxp_mailer.loader.layout_array'));
+        $this->assertFalse($container->has('fxp_mailer.loader.mail_array'));
     }
 
     public function testProcessWithAddTemplates()
@@ -74,8 +74,8 @@ class TemplatePassTest extends KernelTestCase
         $layoutLoaderDef->setArguments(array(array()));
         $mailLoaderDef->setArguments(array(array()));
 
-        $container->setDefinition('sonatra_mailer.loader.layout_array', $layoutLoaderDef);
-        $container->setDefinition('sonatra_mailer.loader.mail_array', $mailLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.layout_array', $layoutLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.mail_array', $mailLoaderDef);
 
         $this->assertCount(0, $layoutLoaderDef->getArgument(0));
         $this->assertCount(0, $mailLoaderDef->getArgument(0));
@@ -83,8 +83,8 @@ class TemplatePassTest extends KernelTestCase
         // add mocks
         $layoutDef = new Definition(Layout::class);
         $mailDef = new Definition(Mail::class);
-        $layoutDef->addTag('sonatra_mailer.layout');
-        $mailDef->addTag('sonatra_mailer.mail');
+        $layoutDef->addTag('fxp_mailer.layout');
+        $mailDef->addTag('fxp_mailer.mail');
 
         $container->setDefinition('test.layout', $layoutDef);
         $container->setDefinition('test.mail', $mailDef);

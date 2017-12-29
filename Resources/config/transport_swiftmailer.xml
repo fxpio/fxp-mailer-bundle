@@ -5,12 +5,12 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="sonatra_mailer.transport.swiftmailer.class">Sonatra\Component\Mailer\Transport\SwiftMailerTransport</parameter>
+        <parameter key="fxp_mailer.transport.swiftmailer.class">Fxp\Component\Mailer\Transport\SwiftMailerTransport</parameter>
     </parameters>
 
     <services>
-        <service id="sonatra_mailer.transport.swiftmailer" class="%sonatra_mailer.transport.swiftmailer.class%" public="false">
-            <tag name="sonatra_mailer.transport" />
+        <service id="fxp_mailer.transport.swiftmailer" class="%fxp_mailer.transport.swiftmailer.class%" public="false">
+            <tag name="fxp_mailer.transport" />
             <argument type="service" id="swiftmailer.mailer" />
         </service>
     </services>

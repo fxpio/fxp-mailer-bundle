@@ -1,4 +1,4 @@
-Getting Started With Sonatra MailerBundle
+Getting Started With Fxp MailerBundle
 =========================================
 
 ## Prerequisites
@@ -18,23 +18,13 @@ Installation is a quick, 6 step process:
 
 ### Step 1: Download the bundle using composer
 
-Add Sonatra MailerBundle in your composer.json:
-
-```json
-{
-    "require": {
-        "sonatra/mailer-bundle": "~1.0"
-    }
-}
-```
-
-Or tell composer to download the bundle by running the command:
+Tell composer to download the bundle by running the command:
 
 ```bash
-$ php composer.phar require sonatra/mailer-bundle:"~1.0"
+$ composer require fxp/mailer-bundle
 ```
 
-Composer will install the bundle to your project's `vendor/sonatra` directory.
+Composer will install the bundle to your project's `vendor/fxp` directory.
 
 ### Step 2: Enable the bundle
 
@@ -47,7 +37,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Sonatra\Bundle\MailerBundle\SonatraMailerBundle(),
+        new Fxp\Bundle\MailerBundle\FxpMailerBundle(),
     );
 }
 ```
@@ -56,7 +46,7 @@ public function registerBundles()
 
 #### Create the Layout class
 
-You can use `Sonatra\Component\Mailer\Entity\Layout` class or create the entity class:
+You can use `Fxp\Component\Mailer\Entity\Layout` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/Layout.php
@@ -64,7 +54,7 @@ You can use `Sonatra\Component\Mailer\Entity\Layout` class or create the entity 
 namespace Acme\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sonatra\Component\Mailer\Model\Layout as BaseLayout;
+use Fxp\Component\Mailer\Model\Layout as BaseLayout;
 
 class Layout extends BaseLayout
 {
@@ -96,14 +86,14 @@ class Layout extends BaseLayout
 
 #### Create the Layout translation class
 
-You can use `Sonatra\Component\Mailer\Entity\LayoutTranslation` class or create the entity class:
+You can use `Fxp\Component\Mailer\Entity\LayoutTranslation` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/LayoutTranslation.php
 
 namespace Acme\CoreBundle\Entity;
 
-use Sonatra\Component\Mailer\Model\LayoutTranslation as BaseLayoutTranslation;
+use Fxp\Component\Mailer\Model\LayoutTranslation as BaseLayoutTranslation;
 
 class LayoutTranslation extends BaseLayoutTranslation
 {
@@ -126,7 +116,7 @@ class LayoutTranslation extends BaseLayoutTranslation
 
 #### Create the Mail class
 
-You can use `Sonatra\Component\Mailer\Entity\Mail` class or create the entity class:
+You can use `Fxp\Component\Mailer\Entity\Mail` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/Mail.php
@@ -134,7 +124,7 @@ You can use `Sonatra\Component\Mailer\Entity\Mail` class or create the entity cl
 namespace Acme\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sonatra\Component\Mailer\Model\Mail as BaseMail;
+use Fxp\Component\Mailer\Model\Mail as BaseMail;
 
 class Mail extends BaseMail
 {
@@ -165,14 +155,14 @@ class Mail extends BaseMail
 
 #### Create the mail translation class
 
-You can use `Sonatra\Component\Mailer\Entity\MailTranslation` class or create the entity class:
+You can use `Fxp\Component\Mailer\Entity\MailTranslation` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/MailTranslation.php
 
 namespace Acme\CoreBundle\Entity;
 
-use Sonatra\Component\Mailer\Model\MailTranslation as BaseMailTranslation;
+use Fxp\Component\Mailer\Model\MailTranslation as BaseMailTranslation;
 
 class MailTranslation extends BaseMailTranslation
 {
@@ -327,7 +317,7 @@ Add the following configuration to your `config.yml`.
 
 ```yaml
 # app/config/config.yml
-sonatra_mailer:
+fxp_mailer:
     layout_class: Acme\CoreBundle\Entity\Layout
     mail_class:   Acme\CoreBundle\Entity\Mail
 ```
@@ -340,14 +330,14 @@ $ php app/console doctrine:schema:update --force
 
 ### Step 6: Configure the bundle
 
-You can override the default configuration adding `sonatra_mailer` tree in `app/config/config.yml`.
-For see the reference of Sonatra Mailer Configuration, execute command:
+You can override the default configuration adding `fxp_mailer` tree in `app/config/config.yml`.
+For see the reference of Fxp Mailer Configuration, execute command:
 
 ```bash
-$ php app/console config:dump-reference SonatraMailerBundle
+$ php app/console config:dump-reference FxpMailerBundle
 ```
 
 ### Next Steps
 
 Now that you have completed the basic installation and configuration of the
-Sonatra MailerBundle, you are ready to learn about usages of the bundle.
+Fxp MailerBundle, you are ready to learn about usages of the bundle.

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "27e0a3429641ae8753a2fb625988afac",
+    "content-hash": "5e2af82e142aa6d4e1fa7b60208b67a9",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -410,6 +410,75 @@
             "time": "2014-09-09T13:34:57+00:00"
         },
         {
+            "name": "fxp/mailer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fxpio/fxp-mailer.git",
+                "reference": "8ba14b32a870c28f21c91391bb8439af3e049267"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fxpio/fxp-mailer/zipball/8ba14b32a870c28f21c91391bb8439af3e049267",
+                "reference": "8ba14b32a870c28f21c91391bb8439af3e049267",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "^2.8.0",
+                "php": "^7.1.0",
+                "symfony/dependency-injection": "^3.4.0|^4.0.0",
+                "symfony/event-dispatcher": "^3.4.0|^4.0.0",
+                "symfony/http-kernel": "^3.4.0|^4.0.0",
+                "symfony/translation": "^3.4.0|^4.0.0",
+                "twig/twig": "^2.4.0"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.6.0",
+                "swiftmailer/swiftmailer": "^6.0.0",
+                "symfony/config": "^3.4.0|^4.0.0",
+                "symfony/filesystem": "^3.4.0|^4.0.0",
+                "symfony/yaml": "^3.4.0|^4.0.0",
+                "tijsverkoyen/css-to-inline-styles": "^2.2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fxp\\Component\\Mailer\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Pluchino",
+                    "email": "francois.pluchino@gmail.com"
+                }
+            ],
+            "description": "A manager of HTML mail template stored in multiple systems and sent with different transports",
+            "homepage": "https://github.com/fxpio/fxp-mailer",
+            "keywords": [
+                "doctrine",
+                "email",
+                "html",
+                "mail",
+                "manager",
+                "switmailer",
+                "template",
+                "twig"
+            ],
+            "time": "2017-12-29T10:49:00+00:00"
+        },
+        {
             "name": "psr/cache",
             "version": "1.0.1",
             "source": {
@@ -598,75 +667,6 @@
                 "simple-cache"
             ],
             "time": "2017-01-02T13:31:39+00:00"
-        },
-        {
-            "name": "sonatra/mailer",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sonatra/sonatra-mailer.git",
-                "reference": "3a82c07c3e48f74988ef544fbdc2313c0321c734"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sonatra/sonatra-mailer/zipball/3a82c07c3e48f74988ef544fbdc2313c0321c734",
-                "reference": "3a82c07c3e48f74988ef544fbdc2313c0321c734",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/common": "^2.8.0",
-                "php": "^7.1.0",
-                "symfony/dependency-injection": "^3.4.0|^4.0.0",
-                "symfony/event-dispatcher": "^3.4.0|^4.0.0",
-                "symfony/http-kernel": "^3.4.0|^4.0.0",
-                "symfony/translation": "^3.4.0|^4.0.0",
-                "twig/twig": "^2.4.0"
-            },
-            "require-dev": {
-                "doctrine/orm": "^2.6.0",
-                "swiftmailer/swiftmailer": "^6.0.0",
-                "symfony/config": "^3.4.0|^4.0.0",
-                "symfony/filesystem": "^3.4.0|^4.0.0",
-                "symfony/yaml": "^3.4.0|^4.0.0",
-                "tijsverkoyen/css-to-inline-styles": "^2.2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Sonatra\\Component\\Mailer\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Pluchino",
-                    "email": "francois.pluchino@sonatra.com"
-                }
-            ],
-            "description": "A manager of HTML mail template stored in multiple systems and sent with different transports",
-            "homepage": "https://github.com/sonatra/sonatra-mailer",
-            "keywords": [
-                "doctrine",
-                "email",
-                "html",
-                "mail",
-                "manager",
-                "switmailer",
-                "template",
-                "twig"
-            ],
-            "time": "2017-12-26T18:14:53+00:00"
         },
         {
             "name": "symfony/cache",

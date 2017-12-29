@@ -1,17 +1,17 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
+namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
-use Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -20,7 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * Tests for optimize config loader pass.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class OptimizeConfigLoaderPassTest extends KernelTestCase
 {
@@ -41,7 +41,7 @@ class OptimizeConfigLoaderPassTest extends KernelTestCase
 
     protected function setUp()
     {
-        $this->rootDir = sys_get_temp_dir().'/sonatra_mailer_bundle_optimize_loader_config_pass';
+        $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_optimize_loader_config_pass';
         $this->fs = new Filesystem();
         $this->pass = new OptimizeConfigLoaderPass();
     }
@@ -57,8 +57,8 @@ class OptimizeConfigLoaderPassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $this->pass->process($container);
-        $this->assertFalse($container->has('sonatra_mailer.loader.layout_config'));
-        $this->assertFalse($container->has('sonatra_mailer.loader.mail_config'));
+        $this->assertFalse($container->has('fxp_mailer.loader.layout_config'));
+        $this->assertFalse($container->has('fxp_mailer.loader.mail_config'));
     }
 
     /**

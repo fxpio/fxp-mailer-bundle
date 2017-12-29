@@ -1,14 +1,14 @@
 {
-    "name": "sonatra/mailer-bundle",
+    "name": "fxp/mailer-bundle",
     "type": "symfony-bundle",
     "description": "A manager of HTML mail template stored in multiple systems and sent with different transports",
     "keywords": ["email", "template", "html", "mail", "manager", "switmailer", "doctrine", "twig", "bundle"],
-    "homepage": "https://github.com/sonatra/sonatra-mailer-bundle",
+    "homepage": "https://github.com/fxpio/fxp-mailer-bundle",
     "license": "MIT",
     "authors": [
         {
             "name": "François Pluchino",
-            "email": "francois.pluchino@sonatra.com"
+            "email": "francois.pluchino@gmail.com"
         }
     ],
     "minimum-stability": "dev",
@@ -17,7 +17,7 @@
         "php": "^7.1.0",
         "symfony/framework-bundle": "^3.4.0|^4.0.0",
         "symfony/yaml": "^3.4.0|^4.0.0",
-        "sonatra/mailer": "^1.0.0"
+        "fxp/mailer": "^1.0.0"
     },
     "require-dev": {
         "swiftmailer/swiftmailer": "^6.0.0",
@@ -25,7 +25,7 @@
         "doctrine/orm": "^2.6.0"
     },
     "autoload": {
-        "psr-4": { "Sonatra\\Bundle\\MailerBundle\\": "" },
+        "psr-4": { "Fxp\\Bundle\\MailerBundle\\": "" },
         "exclude-from-classmap": [
             "/Tests/"
         ]

@@ -5,13 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="twig.extension.sonatra_mailer.templater.class">Sonatra\Component\Mailer\Twig\Extension\TemplaterExtension</parameter>
+        <parameter key="twig.extension.fxp_mailer.templater.class">Fxp\Component\Mailer\Twig\Extension\TemplaterExtension</parameter>
     </parameters>
 
     <services>
-        <service id="twig.extension.sonatra_mailer.templater" class="%twig.extension.sonatra_mailer.templater.class%" public="false">
+        <service id="twig.extension.fxp_mailer.templater" class="%twig.extension.fxp_mailer.templater.class%" public="false">
             <tag name="twig.extension" />
-            <argument type="service" id="sonatra_mailer.loader.layout_chain" />
+            <argument type="service" id="fxp_mailer.loader.layout_chain" />
             <argument type="service" id="translator" />
             <property name="container" type="service" id="service_container" />
         </service>

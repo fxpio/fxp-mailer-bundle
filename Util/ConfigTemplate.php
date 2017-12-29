@@ -1,25 +1,25 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Util;
+namespace Fxp\Bundle\MailerBundle\Util;
 
-use Sonatra\Component\Mailer\Model\Layout;
-use Sonatra\Component\Mailer\Model\LayoutTranslation;
-use Sonatra\Component\Mailer\Model\Mail;
-use Sonatra\Component\Mailer\Model\MailTranslation;
+use Fxp\Component\Mailer\Model\Layout;
+use Fxp\Component\Mailer\Model\LayoutTranslation;
+use Fxp\Component\Mailer\Model\Mail;
+use Fxp\Component\Mailer\Model\MailTranslation;
 
 /**
  * Config of template classes.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class ConfigTemplate
 {

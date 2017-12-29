@@ -1,20 +1,20 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\Tests\DependencyInjection;
+namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
+use Fxp\Bundle\MailerBundle\DependencyInjection\FxpMailerExtension;
+use Fxp\Bundle\MailerBundle\FxpMailerBundle;
 use PHPUnit\Framework\TestCase;
-use Sonatra\Bundle\MailerBundle\DependencyInjection\SonatraMailerExtension;
-use Sonatra\Bundle\MailerBundle\SonatraMailerBundle;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -22,30 +22,30 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 /**
  * Tests for symfony extension.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class SonatraMailerExtensionTest extends TestCase
+class FxpMailerExtensionTest extends TestCase
 {
     public function testExtensionExist()
     {
         $container = $this->createContainer();
 
-        $this->assertTrue($container->hasExtension('sonatra_mailer'));
+        $this->assertTrue($container->hasExtension('fxp_mailer'));
     }
 
     public function testExtensionLoader()
     {
         $container = $this->createContainer();
 
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.mail_templater'));
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.layout_chain'));
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.mail_chain'));
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.layout_array'));
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.mail_array'));
-        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.layout_config'));
-        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.mail_config'));
-        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.layout_yaml'));
-        $this->assertFalse($container->hasDefinition('sonatra_mailer.loader.mail_yaml'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.mail_templater'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.layout_chain'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.mail_chain'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.layout_array'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.mail_array'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.layout_config'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.mail_config'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.layout_yaml'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.mail_yaml'));
     }
 
     public function testAddTemplates()
@@ -68,14 +68,14 @@ class SonatraMailerExtensionTest extends TestCase
             ),
         ));
 
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.layout_array'));
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.loader.mail_array'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.layout_array'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.mail_array'));
 
-        $layout = $container->getDefinition('sonatra_mailer.loader.layout_array');
+        $layout = $container->getDefinition('fxp_mailer.loader.layout_array');
         $this->assertCount(1, $layout->getArguments());
         $this->assertCount(1, $layout->getArgument(0));
 
-        $mail = $container->getDefinition('sonatra_mailer.loader.mail_array');
+        $mail = $container->getDefinition('fxp_mailer.loader.mail_array');
         $this->assertCount(2, $mail->getArguments());
         $this->assertCount(1, $mail->getArgument(0));
     }
@@ -95,9 +95,9 @@ class SonatraMailerExtensionTest extends TestCase
             ),
         ));
 
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.filter.template.css_to_styles'));
-        $this->assertTrue($container->hasParameter('sonatra_mailer.filter.template.css_to_styles.foo'));
-        $this->assertTrue($container->hasParameter('sonatra_mailer.filter.template.css_to_styles.bar'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.filter.template.css_to_styles'));
+        $this->assertTrue($container->hasParameter('fxp_mailer.filter.template.css_to_styles.foo'));
+        $this->assertTrue($container->hasParameter('fxp_mailer.filter.template.css_to_styles.bar'));
     }
 
     public function testEnableSwiftMailerEmbedImagePlugin()
@@ -112,7 +112,7 @@ class SonatraMailerExtensionTest extends TestCase
             ),
         ));
 
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.transport.swiftmailer.embed_image_plugin'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.transport.swiftmailer.embed_image_plugin'));
     }
 
     public function testEnableSwiftMailerDkimSignerPlugin()
@@ -132,7 +132,7 @@ class SonatraMailerExtensionTest extends TestCase
             ),
         ));
 
-        $this->assertTrue($container->hasDefinition('sonatra_mailer.transport.swiftmailer.dkim_signer_plugin'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.transport.swiftmailer.dkim_signer_plugin'));
     }
 
     protected function createContainer(array $configs = array())
@@ -140,21 +140,21 @@ class SonatraMailerExtensionTest extends TestCase
         $container = new ContainerBuilder(new ParameterBag(array(
             'kernel.bundles' => array(
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
-                'SonatraMailerBundle' => 'Sonatra\\Bundle\\MailerBundle\\SonatraMailerBundle',
+                'FxpMailerBundle' => 'Fxp\\Bundle\\MailerBundle\\FxpMailerBundle',
             ),
             'kernel.bundles_metadata' => array(),
-            'kernel.cache_dir' => sys_get_temp_dir().'/sonatra_mailer_bundle',
+            'kernel.cache_dir' => sys_get_temp_dir().'/fxp_mailer_bundle',
             'kernel.debug' => false,
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
-            'kernel.project_dir' => sys_get_temp_dir().'/sonatra_mailer_bundle',
-            'kernel.root_dir' => sys_get_temp_dir().'/sonatra_mailer_bundle/app',
+            'kernel.project_dir' => sys_get_temp_dir().'/fxp_mailer_bundle',
+            'kernel.root_dir' => sys_get_temp_dir().'/fxp_mailer_bundle/app',
             'kernel.charset' => 'UTF-8',
         )));
 
         $sfExt = new FrameworkExtension();
         $doctrineExt = new DoctrineExtension();
-        $extension = new SonatraMailerExtension();
+        $extension = new FxpMailerExtension();
 
         $container->registerExtension($sfExt);
         $container->registerExtension($doctrineExt);
@@ -164,13 +164,13 @@ class SonatraMailerExtensionTest extends TestCase
         $doctrineExt->load(array($this->getDoctrineConfig()), $container);
         $extension->load($configs, $container);
 
-        $bundle = new SonatraMailerBundle();
+        $bundle = new FxpMailerBundle();
         $bundle->build($container);
 
         $optimizationPasses = array();
 
         foreach ($container->getCompilerPassConfig()->getOptimizationPasses() as $pass) {
-            if (0 === strpos(get_class($pass), 'Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler')) {
+            if (0 === strpos(get_class($pass), 'Fxp\Bundle\MailerBundle\DependencyInjection\Compiler')) {
                 $optimizationPasses[] = $pass;
             }
         }

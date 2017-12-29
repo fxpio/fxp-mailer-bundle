@@ -1,25 +1,25 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\DependencyInjection\Compiler;
+namespace Fxp\Bundle\MailerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Adds all services with the tags "sonatra_mailer.template_filter" and "sonatra_mailer.transport_filter"
- * as arguments of the "sonatra_mailer.loader.filter_registry" service.
+ * Adds all services with the tags "fxp_mailer.template_filter" and "fxp_mailer.transport_filter"
+ * as arguments of the "fxp_mailer.loader.filter_registry" service.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class FilterPass implements CompilerPassInterface
 {
@@ -28,7 +28,7 @@ class FilterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra_mailer.filter_registry')) {
+        if (!$container->hasDefinition('fxp_mailer.filter_registry')) {
             return;
         }
 
@@ -45,8 +45,8 @@ class FilterPass implements CompilerPassInterface
     protected function addFilters(ContainerBuilder $container, $type)
     {
         $filters = array();
-        $tagName = sprintf('sonatra_mailer.%s_filter', $type);
-        $registryName = 'sonatra_mailer.filter_registry';
+        $tagName = sprintf('fxp_mailer.%s_filter', $type);
+        $registryName = 'fxp_mailer.filter_registry';
         $pos = 'transport' === $type ? 1 : 0;
 
         foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {

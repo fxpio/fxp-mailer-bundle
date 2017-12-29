@@ -1,18 +1,18 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\MailerBundle\DependencyInjection;
+namespace Fxp\Bundle\MailerBundle\DependencyInjection;
 
-use Sonatra\Component\Mailer\Loader\ConfigLayoutLoader;
-use Sonatra\Component\Mailer\Loader\ConfigMailLoader;
+use Fxp\Component\Mailer\Loader\ConfigLayoutLoader;
+use Fxp\Component\Mailer\Loader\ConfigMailLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -23,9 +23,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * This is the class that loads and manages your bundle configuration.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class SonatraMailerExtension extends Extension
+class FxpMailerExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -38,13 +38,13 @@ class SonatraMailerExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         // model classes
-        $container->setParameter('sonatra_mailer.layout_class', $config['layout_class']);
-        $container->setParameter('sonatra_mailer.mail_class', $config['mail_class']);
+        $container->setParameter('fxp_mailer.layout_class', $config['layout_class']);
+        $container->setParameter('fxp_mailer.mail_class', $config['mail_class']);
 
         $this->loadConfigs($loader);
         $this->configureTransport($container, $loader, $config);
         $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
-        $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('sonatra_mailer.loader.layout_chain'));
+        $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('fxp_mailer.loader.layout_chain'));
         $this->addFilters($container, $loader, 'template', $config['filters']['templates']);
         $this->addFilters($container, $loader, 'transport', $config['filters']['transports']);
     }
@@ -78,7 +78,7 @@ class SonatraMailerExtension extends Extension
             if ($config['transports']['swiftmailer']['dkim_signer']['enabled']) {
                 $loader->load('transport_swiftmailer_dkim_signer.xml');
                 $dkimConfig = $config['transports']['swiftmailer']['dkim_signer'];
-                $prefix = 'sonatra_mailer.transport.swiftmailer.dkim_signer.';
+                $prefix = 'fxp_mailer.transport.swiftmailer.dkim_signer.';
                 $container->setParameter($prefix.'private_key_path', $dkimConfig['private_key_path']);
                 $container->setParameter($prefix.'domain', $dkimConfig['domain']);
                 $container->setParameter($prefix.'selector', $dkimConfig['selector']);
@@ -87,7 +87,7 @@ class SonatraMailerExtension extends Extension
             if ($config['transports']['swiftmailer']['embed_image']['enabled']) {
                 $loader->load('transport_swiftmailer_embed_image.xml');
                 $embedConfig = $config['transports']['swiftmailer']['embed_image'];
-                $prefix = 'sonatra_mailer.transport.swiftmailer.embed_image.';
+                $prefix = 'fxp_mailer.transport.swiftmailer.embed_image.';
                 $container->setParameter($prefix.'web_dir', $this->getWebDir($container, $embedConfig['web_dir']));
                 $container->setParameter($prefix.'host_pattern', $embedConfig['host_pattern']);
             }
@@ -122,7 +122,7 @@ class SonatraMailerExtension extends Extension
                 $def->addArgument($reference);
             }
 
-            $container->setDefinition(sprintf('sonatra_mailer.loader.%s_%s', $type, $loader), $def);
+            $container->setDefinition(sprintf('fxp_mailer.loader.%s_%s', $type, $loader), $def);
         }
     }
 
@@ -141,7 +141,7 @@ class SonatraMailerExtension extends Extension
             $loader->load('filters/'.$type.'s/'.$name.'.xml');
 
             foreach ($filter as $key => $value) {
-                $container->setParameter('sonatra_mailer.filter.'.$type.'.'.$name.'.'.$key, $value);
+                $container->setParameter('fxp_mailer.filter.'.$type.'.'.$name.'.'.$key, $value);
             }
         }
     }

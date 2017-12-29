@@ -5,22 +5,22 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="sonatra_mailer.loader.doctrine_layout.class">Sonatra\Component\Mailer\Doctrine\Loader\EntityLayoutLoader</parameter>
-        <parameter key="sonatra_mailer.loader.doctrine_mail.class">Sonatra\Component\Mailer\Doctrine\Loader\EntityMailLoader</parameter>
+        <parameter key="fxp_mailer.loader.doctrine_layout.class">Fxp\Component\Mailer\Doctrine\Loader\EntityLayoutLoader</parameter>
+        <parameter key="fxp_mailer.loader.doctrine_mail.class">Fxp\Component\Mailer\Doctrine\Loader\EntityMailLoader</parameter>
     </parameters>
 
     <services>
         <!-- Doctrine Loaders -->
-        <service id="sonatra_mailer.loader.doctrine_layout" class="%sonatra_mailer.loader.doctrine_layout.class%">
-            <tag name="sonatra_mailer.layout_loader" priority="-100" />
+        <service id="fxp_mailer.loader.doctrine_layout" class="%fxp_mailer.loader.doctrine_layout.class%">
+            <tag name="fxp_mailer.layout_loader" priority="-100" />
             <argument type="service" id="doctrine" />
-            <argument>%sonatra_mailer.layout_class%</argument>
+            <argument>%fxp_mailer.layout_class%</argument>
         </service>
 
-        <service id="sonatra_mailer.loader.doctrine_mail" class="%sonatra_mailer.loader.doctrine_mail.class%">
-            <tag name="sonatra_mailer.mail_loader" priority="-100" />
+        <service id="fxp_mailer.loader.doctrine_mail" class="%fxp_mailer.loader.doctrine_mail.class%">
+            <tag name="fxp_mailer.mail_loader" priority="-100" />
             <argument type="service" id="doctrine" />
-            <argument>%sonatra_mailer.mail_class%</argument>
+            <argument>%fxp_mailer.mail_class%</argument>
         </service>
     </services>
 </container>
