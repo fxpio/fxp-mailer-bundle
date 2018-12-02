@@ -28,8 +28,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fxp_mailer');
+        $treeBuilder = new TreeBuilder('fxp_mailer');
+        /* @var ArrayNodeDefinition $rootNode */
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
@@ -47,9 +48,9 @@ class Configuration implements ConfigurationInterface
 
     protected function getLayoutTemplatesNode()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('layout_templates');
         /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root('layout_templates');
+        $node = $treeBuilder->getRootNode();
         $node
             ->fixXmlConfig('layout_template')
             ->useAttributeAsKey('name', false)
@@ -88,9 +89,9 @@ class Configuration implements ConfigurationInterface
 
     protected function getMailTemplatesNode()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('mail_templates');
         /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root('mail_templates');
+        $node = $treeBuilder->getRootNode();
         $node
             ->fixXmlConfig('mail_template')
             ->useAttributeAsKey('name', false)
@@ -135,9 +136,9 @@ class Configuration implements ConfigurationInterface
 
     protected function getTransportNode()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('transports');
         /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root('transports');
+        $node = $treeBuilder->getRootNode();
         $node
             ->fixXmlConfig('transport')
             ->addDefaultsIfNotSet()
@@ -157,9 +158,9 @@ class Configuration implements ConfigurationInterface
 
     protected function getSwiftMailerEmbedImageNode()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('embed_image');
         /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root('embed_image');
+        $node = $treeBuilder->getRootNode();
         $node
             ->addDefaultsIfNotSet()
             ->canBeEnabled()
@@ -174,9 +175,9 @@ class Configuration implements ConfigurationInterface
 
     protected function getSwiftMailerDkimSignerNode()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('dkim_signer');
         /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root('dkim_signer');
+        $node = $treeBuilder->getRootNode();
         $node
             ->addDefaultsIfNotSet()
             ->canBeEnabled()
@@ -192,9 +193,9 @@ class Configuration implements ConfigurationInterface
 
     protected function getFilterNode()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('filters');
         /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root('filters');
+        $node = $treeBuilder->getRootNode();
         $node
             ->fixXmlConfig('filter')
             ->addDefaultsIfNotSet()
@@ -209,9 +210,9 @@ class Configuration implements ConfigurationInterface
 
     protected function getFilterTypeNode($type)
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder($type.'s');
         /* @var ArrayNodeDefinition $node */
-        $node = $treeBuilder->root($type.'s');
+        $node = $treeBuilder->getRootNode();
         $node
             ->fixXmlConfig($type)
             ->requiresAtLeastOneElement()
