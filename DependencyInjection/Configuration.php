@@ -220,7 +220,7 @@ class Configuration implements ConfigurationInterface
                 ->treatNullLike([])
                 ->validate()
                     ->ifTrue(function ($v) {
-                        return !is_array($v);
+                        return !\is_array($v);
                     })
                     ->thenInvalid('The fxp_mailer.filters.'.$type.'s config %s must be either null or an array.')
                 ->end()

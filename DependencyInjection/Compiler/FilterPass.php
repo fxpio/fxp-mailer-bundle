@@ -55,9 +55,9 @@ class FilterPass implements CompilerPassInterface
         }
 
         // sort by priority and flatten
-        if (count($filters) > 0) {
+        if (\count($filters) > 0) {
             krsort($filters);
-            $filters = call_user_func_array('array_merge', $filters);
+            $filters = \call_user_func_array('array_merge', $filters);
         }
 
         $container->getDefinition($registryName)->replaceArgument($pos, $filters);

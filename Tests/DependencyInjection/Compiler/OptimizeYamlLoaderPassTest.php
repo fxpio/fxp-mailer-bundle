@@ -71,7 +71,7 @@ class OptimizeYamlLoaderPassTest extends KernelTestCase
         $layoutLoaderDef = new Definition(YamlLayoutLoader::class);
         $mailLoaderDef = new Definition(YamlLayoutLoader::class);
         $refMailer = new \ReflectionClass(Mailer::class);
-        $mailerBaseDir = dirname($refMailer->getFileName());
+        $mailerBaseDir = \dirname($refMailer->getFileName());
 
         $layoutLoaderDef->setArguments([[]]);
         $mailLoaderDef->setArguments([[]]);

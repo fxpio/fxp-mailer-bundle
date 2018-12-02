@@ -170,7 +170,7 @@ class FxpMailerExtensionTest extends TestCase
         $optimizationPasses = [];
 
         foreach ($container->getCompilerPassConfig()->getOptimizationPasses() as $pass) {
-            if (0 === strpos(get_class($pass), 'Fxp\Bundle\MailerBundle\DependencyInjection\Compiler')) {
+            if (0 === strpos(\get_class($pass), 'Fxp\Bundle\MailerBundle\DependencyInjection\Compiler')) {
                 $optimizationPasses[] = $pass;
             }
         }

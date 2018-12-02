@@ -72,7 +72,7 @@ class TransportPassTest extends KernelTestCase
 
         $transportMock = $this->getMockBuilder(TransportInterface::class)->getMock();
 
-        $defTransport = new Definition(get_class($transportMock));
+        $defTransport = new Definition(\get_class($transportMock));
         $defTransport->addTag('fxp_mailer.transport');
         $container->setDefinition('test.transport', $defTransport);
 

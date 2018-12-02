@@ -112,7 +112,7 @@ abstract class ContainerUtil
      */
     public static function addArgumentFileValue(Definition $def, array $config)
     {
-        if (in_array(TemplateFileInterface::class, class_implements($def->getClass()))) {
+        if (\in_array(TemplateFileInterface::class, class_implements($def->getClass()))) {
             static::addArgumentValue($def, 'setFile', $config, 'file');
         }
     }
@@ -136,8 +136,8 @@ abstract class ContainerUtil
             foreach ($bundles as $bundleName => $bundleClass) {
                 if ($bundle === $bundleName) {
                     $refClass = new \ReflectionClass($bundleClass);
-                    $bundleDir = dirname($refClass->getFileName());
-                    $file = $bundleDir.substr($file, strlen($bundle) + 1);
+                    $bundleDir = \dirname($refClass->getFileName());
+                    $file = $bundleDir.substr($file, \strlen($bundle) + 1);
                     break;
                 }
             }
