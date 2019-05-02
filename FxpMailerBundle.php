@@ -31,7 +31,7 @@ class FxpMailerBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -56,7 +56,7 @@ class FxpMailerBundle extends Bundle
      *
      * @param ContainerBuilder $container The container
      */
-    protected function addCompilerPasses(ContainerBuilder $container)
+    protected function addCompilerPasses(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new LoaderPass());
         $container->addCompilerPass(new TransportPass());

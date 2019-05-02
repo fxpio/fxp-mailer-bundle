@@ -26,7 +26,7 @@ class LoaderPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('fxp_mailer.loader.layout_chain')
                 || !$container->hasDefinition('fxp_mailer.loader.mail_chain')) {
@@ -44,14 +44,14 @@ class LoaderPass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The layout or mail type
      */
-    protected function chainLoader(ContainerBuilder $container, $type)
+    protected function chainLoader(ContainerBuilder $container, $type): void
     {
         $loaders = [];
         $tagName = sprintf('fxp_mailer.%s_loader', $type);
         $chainLoaderName = sprintf('fxp_mailer.loader.%s_chain', $type);
 
         foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {
-            $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;
+            $priority = $tags[0]['priority'] ?? 0;
             $loaders[$priority][] = new Reference($serviceId);
         }
 

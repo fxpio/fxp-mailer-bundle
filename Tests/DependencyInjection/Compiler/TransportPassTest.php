@@ -23,8 +23,10 @@ use Symfony\Component\Filesystem\Filesystem;
  * Tests for transport pass.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class TransportPassTest extends KernelTestCase
+final class TransportPassTest extends KernelTestCase
 {
     /**
      * @var string
@@ -41,20 +43,20 @@ class TransportPassTest extends KernelTestCase
      */
     protected $pass;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_transport_pass';
         $this->fs = new Filesystem();
         $this->pass = new TransportPass();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->fs->remove($this->rootDir);
         $this->pass = null;
     }
 
-    public function testProcessWithoutService()
+    public function testProcessWithoutService(): void
     {
         $container = $this->getContainer();
 
@@ -62,7 +64,7 @@ class TransportPassTest extends KernelTestCase
         $this->assertFalse($container->has('fxp_mailer.transport_registry'));
     }
 
-    public function testProcessAddTransport()
+    public function testProcessAddTransport(): void
     {
         $container = $this->getContainer();
 
@@ -90,7 +92,7 @@ class TransportPassTest extends KernelTestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag([
+        return new ContainerBuilder(new ParameterBag([
             'kernel.cache_dir' => $this->rootDir,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
@@ -99,7 +101,5 @@ class TransportPassTest extends KernelTestCase
             'kernel.charset' => 'UTF-8',
             'kernel.bundles' => [],
         ]));
-
-        return $container;
     }
 }

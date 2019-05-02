@@ -26,7 +26,7 @@ class TemplatePass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('fxp_mailer.loader.layout_array')
                 || !$container->hasDefinition('fxp_mailer.loader.mail_array')) {
@@ -44,7 +44,7 @@ class TemplatePass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The layout or mail type
      */
-    protected function addTemplate(ContainerBuilder $container, $type)
+    protected function addTemplate(ContainerBuilder $container, $type): void
     {
         $templates = [];
         $tagName = sprintf('fxp_mailer.%s', $type);

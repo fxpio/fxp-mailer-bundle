@@ -30,7 +30,7 @@ class FxpMailerExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -54,7 +54,7 @@ class FxpMailerExtension extends Extension
      *
      * @param Loader\XmlFileLoader $loader The loader
      */
-    protected function loadConfigs(Loader\XmlFileLoader $loader)
+    protected function loadConfigs(Loader\XmlFileLoader $loader): void
     {
         $loader->load('mailer.xml');
         $loader->load('templater.xml');
@@ -70,7 +70,7 @@ class FxpMailerExtension extends Extension
      * @param Loader\XmlFileLoader $loader    The config loader
      * @param array                $config    The config
      */
-    protected function configureTransport(ContainerBuilder $container, Loader\XmlFileLoader $loader, array $config)
+    protected function configureTransport(ContainerBuilder $container, Loader\XmlFileLoader $loader, array $config): void
     {
         if (class_exists('Swift_Message')) {
             $loader->load('transport_swiftmailer.xml');
@@ -105,12 +105,12 @@ class FxpMailerExtension extends Extension
      * @param array            $templates The template configs of layouts
      * @param Reference        $reference The reference
      */
-    protected function addTemplates(ContainerBuilder $container, $type, $class, array $templates, $reference = null)
+    protected function addTemplates(ContainerBuilder $container, $type, $class, array $templates, $reference = null): void
     {
         $loaderTypes = [];
 
         foreach ($templates as $template) {
-            $loader = isset($template['loader']) ? $template['loader'] : 'config';
+            $loader = $template['loader'] ?? 'config';
             $loaderTypes[$loader][] = $template;
         }
 
@@ -134,9 +134,12 @@ class FxpMailerExtension extends Extension
      * @param string               $type      The filter type
      * @param array[]              $filters   The filters configs
      */
-    protected function addFilters(ContainerBuilder $container, Loader\XmlFileLoader $loader,
-                                  $type, array $filters)
-    {
+    protected function addFilters(
+        ContainerBuilder $container,
+        Loader\XmlFileLoader $loader,
+        $type,
+        array $filters
+    ): void {
         foreach ($filters as $name => $filter) {
             $loader->load('filters/'.$type.'s/'.$name.'.xml');
 
@@ -150,7 +153,7 @@ class FxpMailerExtension extends Extension
      * Get the web directory.
      *
      * @param ContainerBuilder $container The container
-     * @param string|null      $webDir    The web directory
+     * @param null|string      $webDir    The web directory
      *
      * @return string
      */

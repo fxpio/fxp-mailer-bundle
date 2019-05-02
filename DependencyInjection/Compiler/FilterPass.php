@@ -26,7 +26,7 @@ class FilterPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('fxp_mailer.filter_registry')) {
             return;
@@ -42,7 +42,7 @@ class FilterPass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The filter type
      */
-    protected function addFilters(ContainerBuilder $container, $type)
+    protected function addFilters(ContainerBuilder $container, $type): void
     {
         $filters = [];
         $tagName = sprintf('fxp_mailer.%s_filter', $type);
@@ -50,7 +50,7 @@ class FilterPass implements CompilerPassInterface
         $pos = 'transport' === $type ? 1 : 0;
 
         foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {
-            $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : 0;
+            $priority = $tags[0]['priority'] ?? 0;
             $filters[$priority][] = new Reference($serviceId);
         }
 

@@ -23,17 +23,19 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  * Tests for symfony extension.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class FxpMailerExtensionTest extends TestCase
+final class FxpMailerExtensionTest extends TestCase
 {
-    public function testExtensionExist()
+    public function testExtensionExist(): void
     {
         $container = $this->createContainer();
 
         $this->assertTrue($container->hasExtension('fxp_mailer'));
     }
 
-    public function testExtensionLoader()
+    public function testExtensionLoader(): void
     {
         $container = $this->createContainer();
 
@@ -48,7 +50,7 @@ class FxpMailerExtensionTest extends TestCase
         $this->assertFalse($container->hasDefinition('fxp_mailer.loader.mail_yaml'));
     }
 
-    public function testAddTemplates()
+    public function testAddTemplates(): void
     {
         $container = $this->createContainer([
             [
@@ -80,7 +82,7 @@ class FxpMailerExtensionTest extends TestCase
         $this->assertCount(1, $mail->getArgument(0));
     }
 
-    public function testAddFilters()
+    public function testAddFilters(): void
     {
         $container = $this->createContainer([
             [
@@ -100,7 +102,7 @@ class FxpMailerExtensionTest extends TestCase
         $this->assertTrue($container->hasParameter('fxp_mailer.filter.template.css_to_styles.bar'));
     }
 
-    public function testEnableSwiftMailerEmbedImagePlugin()
+    public function testEnableSwiftMailerEmbedImagePlugin(): void
     {
         $container = $this->createContainer([
             [
@@ -115,7 +117,7 @@ class FxpMailerExtensionTest extends TestCase
         $this->assertTrue($container->hasDefinition('fxp_mailer.transport.swiftmailer.embed_image_plugin'));
     }
 
-    public function testEnableSwiftMailerDkimSignerPlugin()
+    public function testEnableSwiftMailerDkimSignerPlugin(): void
     {
         $container = $this->createContainer([
             [

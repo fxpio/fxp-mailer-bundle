@@ -30,9 +30,9 @@ abstract class ContainerUtil
      * @param ContainerBuilder    $container The container
      * @param string              $type      The template type
      * @param array               $templates The template configs of layouts
-     * @param ConfigTemplate|null $config    The template configurator
+     * @param null|ConfigTemplate $config    The template configurator
      */
-    public static function addTemplates(ContainerBuilder $container, $type, array $templates, ConfigTemplate $config = null)
+    public static function addTemplates(ContainerBuilder $container, $type, array $templates, ConfigTemplate $config = null): void
     {
         $config = null === $config ? new ConfigTemplate() : $config;
 
@@ -60,9 +60,9 @@ abstract class ContainerUtil
      * @param string              $type         The template type
      * @param array               $translations The translations of template
      * @param string              $name         The name of template
-     * @param ConfigTemplate|null $config       The template configurator
+     * @param null|ConfigTemplate $config       The template configurator
      */
-    public static function addTemplateTranslations(ContainerBuilder $container, Definition $def, $defId, $type, array $translations, $name, ConfigTemplate $config = null)
+    public static function addTemplateTranslations(ContainerBuilder $container, Definition $def, $defId, $type, array $translations, $name, ConfigTemplate $config = null): void
     {
         $config = null === $config ? new ConfigTemplate() : $config;
 
@@ -93,11 +93,11 @@ abstract class ContainerUtil
      * @param string     $method  The name of method
      * @param array      $config  The template config
      * @param string     $field   The field name
-     * @param mixed|null $default The default value
+     * @param null|mixed $default The default value
      */
-    public static function addArgumentValue(Definition $def, $method, array $config, $field, $default = null)
+    public static function addArgumentValue(Definition $def, $method, array $config, $field, $default = null): void
     {
-        $value = array_key_exists($field, $config) ? $config[$field] : $default;
+        $value = \array_key_exists($field, $config) ? $config[$field] : $default;
 
         if ($default !== $value) {
             $def->addMethodCall($method, [$value]);
@@ -110,9 +110,9 @@ abstract class ContainerUtil
      * @param Definition $def    The definition
      * @param array      $config The template config
      */
-    public static function addArgumentFileValue(Definition $def, array $config)
+    public static function addArgumentFileValue(Definition $def, array $config): void
     {
-        if (\in_array(TemplateFileInterface::class, class_implements($def->getClass()))) {
+        if (\in_array(TemplateFileInterface::class, class_implements($def->getClass()), true)) {
             static::addArgumentValue($def, 'setFile', $config, 'file');
         }
     }
@@ -138,6 +138,7 @@ abstract class ContainerUtil
                     $refClass = new \ReflectionClass($bundleClass);
                     $bundleDir = \dirname($refClass->getFileName());
                     $file = $bundleDir.substr($file, \strlen($bundle) + 1);
+
                     break;
                 }
             }
@@ -153,7 +154,7 @@ abstract class ContainerUtil
      * @param string     $type     The template type
      * @param array      $template The template config
      */
-    protected static function addTemplateValues(Definition $def, $type, array $template)
+    protected static function addTemplateValues(Definition $def, $type, array $template): void
     {
         static::addArgumentValue($def, 'setName', $template, 'name');
         static::addArgumentValue($def, 'setLabel', $template, 'label');

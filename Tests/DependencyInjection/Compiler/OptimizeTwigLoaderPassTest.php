@@ -25,8 +25,10 @@ use Symfony\Component\Filesystem\Filesystem;
  * Tests for optimize twig loader pass.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class OptimizeTwigLoaderPassTest extends KernelTestCase
+final class OptimizeTwigLoaderPassTest extends KernelTestCase
 {
     /**
      * @var string
@@ -43,20 +45,20 @@ class OptimizeTwigLoaderPassTest extends KernelTestCase
      */
     protected $pass;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_optimize_twig_loader_pass';
         $this->fs = new Filesystem();
         $this->pass = new OptimizeTwigLoaderPass();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->fs->remove($this->rootDir);
         $this->pass = null;
     }
 
-    public function testProcessWithoutService()
+    public function testProcessWithoutService(): void
     {
         $container = $this->getContainer();
 
@@ -65,7 +67,7 @@ class OptimizeTwigLoaderPassTest extends KernelTestCase
         $this->assertFalse($container->has('fxp_mailer.loader.mail_twig'));
     }
 
-    public function testProcessWithAddTemplates()
+    public function testProcessWithAddTemplates(): void
     {
         $container = $this->getContainer();
         $layoutLoaderDef = new Definition(TwigLayoutLoader::class);
@@ -135,7 +137,7 @@ class OptimizeTwigLoaderPassTest extends KernelTestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag([
+        return new ContainerBuilder(new ParameterBag([
             'kernel.cache_dir' => $this->rootDir,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
@@ -144,7 +146,5 @@ class OptimizeTwigLoaderPassTest extends KernelTestCase
             'kernel.charset' => 'UTF-8',
             'kernel.bundles' => [],
         ]));
-
-        return $container;
     }
 }

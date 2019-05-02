@@ -24,25 +24,27 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  * Tests for filter pass.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class FilterPassTest extends KernelTestCase
+final class FilterPassTest extends KernelTestCase
 {
     /**
      * @var FilterPass
      */
     protected $pass;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->pass = new FilterPass();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->pass = null;
     }
 
-    public function testProcessWithoutService()
+    public function testProcessWithoutService(): void
     {
         $container = $this->getContainer();
 
@@ -50,7 +52,7 @@ class FilterPassTest extends KernelTestCase
         $this->assertFalse($container->has('fxp_mailer.filter_registry'));
     }
 
-    public function testProcessWithAddFilters()
+    public function testProcessWithAddFilters(): void
     {
         $container = $this->getContainer();
         $registryDef = new Definition(FilterRegistry::class);
@@ -84,14 +86,12 @@ class FilterPassTest extends KernelTestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag([
+        return new ContainerBuilder(new ParameterBag([
             'kernel.debug' => false,
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
             'kernel.charset' => 'UTF-8',
             'kernel.bundles' => [],
         ]));
-
-        return $container;
     }
 }

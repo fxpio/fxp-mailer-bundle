@@ -21,10 +21,12 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  * Tests for container util.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class ContainerUtilTest extends TestCase
+final class ContainerUtilTest extends TestCase
 {
-    public function testGetRealFile()
+    public function testGetRealFile(): void
     {
         $realPath = realpath(__DIR__.'/../../Resources/config/mailer.xml');
         $file = '@FxpMailerBundle/Resources/config/mailer.xml';
@@ -40,12 +42,10 @@ class ContainerUtilTest extends TestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag([
+        return new ContainerBuilder(new ParameterBag([
             'kernel.bundles' => [
                 'FxpMailerBundle' => FxpMailerBundle::class,
             ],
         ]));
-
-        return $container;
     }
 }

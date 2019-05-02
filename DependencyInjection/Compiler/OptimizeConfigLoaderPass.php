@@ -27,7 +27,7 @@ class OptimizeConfigLoaderPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('fxp_mailer.loader.layout_config')
                 || !$container->hasDefinition('fxp_mailer.loader.mail_config')) {
@@ -47,7 +47,7 @@ class OptimizeConfigLoaderPass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The layout or mail type
      */
-    protected function optimize(ContainerBuilder $container, $type)
+    protected function optimize(ContainerBuilder $container, $type): void
     {
         $serviceId = sprintf('fxp_mailer.loader.%s_config', $type);
         $def = $container->getDefinition($serviceId);

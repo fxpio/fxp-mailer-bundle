@@ -21,8 +21,10 @@ use Symfony\Component\Filesystem\Filesystem;
  * Tests for loader pass.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class LoaderPassTest extends KernelTestCase
+final class LoaderPassTest extends KernelTestCase
 {
     /**
      * @var string
@@ -39,20 +41,20 @@ class LoaderPassTest extends KernelTestCase
      */
     protected $pass;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_loader_pass';
         $this->fs = new Filesystem();
         $this->pass = new LoaderPass();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->fs->remove($this->rootDir);
         $this->pass = null;
     }
 
-    public function testProcessWithoutService()
+    public function testProcessWithoutService(): void
     {
         $container = $this->getContainer();
 
@@ -68,7 +70,7 @@ class LoaderPassTest extends KernelTestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag([
+        return new ContainerBuilder(new ParameterBag([
             'kernel.cache_dir' => $this->rootDir,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
@@ -77,7 +79,5 @@ class LoaderPassTest extends KernelTestCase
             'kernel.charset' => 'UTF-8',
             'kernel.bundles' => [],
         ]));
-
-        return $container;
     }
 }

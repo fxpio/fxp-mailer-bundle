@@ -32,7 +32,7 @@ class OptimizeTwigLoaderPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('fxp_mailer.loader.layout_twig')
                 || !$container->hasDefinition('fxp_mailer.loader.mail_twig')) {
@@ -52,7 +52,7 @@ class OptimizeTwigLoaderPass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The layout or mail type
      */
-    protected function optimize(ContainerBuilder $container, $type)
+    protected function optimize(ContainerBuilder $container, $type): void
     {
         $templateConfig = new ConfigTemplate(TwigLayout::class, TwigMail::class, TwigLayoutTranslation::class, TwigMailTranslation::class);
         $serviceId = sprintf('fxp_mailer.loader.%s_twig', $type);

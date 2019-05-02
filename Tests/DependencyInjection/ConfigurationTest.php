@@ -21,10 +21,12 @@ use Symfony\Component\Config\Definition\Processor;
  * Tests for symfony extension configuration.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
+ *
+ * @internal
  */
-class ConfigurationTest extends TestCase
+final class ConfigurationTest extends TestCase
 {
-    public function testDefaultConfig()
+    public function testDefaultConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[]]);
@@ -32,7 +34,7 @@ class ConfigurationTest extends TestCase
         $this->assertEquals(array_merge([], self::getBundleDefaultConfig()), $config);
     }
 
-    public function testFilterConfig()
+    public function testFilterConfig(): void
     {
         $valid = [
             'filters' => [
@@ -56,12 +58,11 @@ class ConfigurationTest extends TestCase
         $this->assertEquals(array_merge(self::getBundleDefaultConfig(), $valid), $config);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The fxp_mailer.filters.templates config 42 must be either null or an array.
-     */
-    public function testInvalidFilterConfig()
+    public function testInvalidFilterConfig(): void
     {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The fxp_mailer.filters.templates config 42 must be either null or an array.');
+
         $config = [
             'filters' => [
                 'templates' => [

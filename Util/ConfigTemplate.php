@@ -39,10 +39,12 @@ class ConfigTemplate
      * @param string $layoutTranslationClass The class name of layout translation
      * @param string $mailTranslationClass   The class name of mail translation
      */
-    public function __construct($layoutClass = Layout::class, $mailClass = Mail::class,
-                                $layoutTranslationClass = LayoutTranslation::class,
-                                $mailTranslationClass = MailTranslation::class)
-    {
+    public function __construct(
+        $layoutClass = Layout::class,
+        $mailClass = Mail::class,
+        $layoutTranslationClass = LayoutTranslation::class,
+        $mailTranslationClass = MailTranslation::class
+    ) {
         $this->layoutClass = $layoutClass;
         $this->mailClass = $mailClass;
         $this->layoutTranslationClass = $layoutTranslationClass;
