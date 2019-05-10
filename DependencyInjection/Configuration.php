@@ -12,8 +12,8 @@
 namespace Fxp\Bundle\MailerBundle\DependencyInjection;
 
 use Fxp\Component\Mailer\MailTypes;
-use Fxp\Component\Mailer\Model\LayoutInterface;
-use Fxp\Component\Mailer\Model\MailInterface;
+use Fxp\Component\Mailer\Model\TemplateLayoutInterface;
+use Fxp\Component\Mailer\Model\TemplateMailInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -36,8 +36,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('layout_class')->defaultValue(LayoutInterface::class)->end()
-            ->scalarNode('mail_class')->defaultValue(MailInterface::class)->end()
+            ->scalarNode('layout_class')->defaultValue(TemplateLayoutInterface::class)->end()
+            ->scalarNode('mail_class')->defaultValue(TemplateMailInterface::class)->end()
             ->append($this->getLayoutTemplatesNode())
             ->append($this->getMailTemplatesNode())
             ->append($this->getTransportNode())

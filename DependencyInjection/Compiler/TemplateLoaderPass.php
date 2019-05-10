@@ -16,20 +16,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Adds all services with the tags "fxp_mailer.layout_loader" and "fxp_mailer.mail_loader" as
- * arguments of the "fxp_mailer.loader.layout_chain" service and "fxp_mailer.loader.mail_chain" service.
+ * Adds all services with the tags "fxp_mailer.layout_loader" and "fxp_mailer.template_mail_loader" as
+ * arguments of the "fxp_mailer.loader.template_layout_chain" service and "fxp_mailer.loader.template_mail_chain" service.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class LoaderPass implements CompilerPassInterface
+class TemplateLoaderPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('fxp_mailer.loader.layout_chain')
-                || !$container->hasDefinition('fxp_mailer.loader.mail_chain')) {
+        if (!$container->hasDefinition('fxp_mailer.loader.template_layout_chain')
+                || !$container->hasDefinition('fxp_mailer.loader.template_mail_chain')) {
             return;
         }
 
@@ -48,7 +48,7 @@ class LoaderPass implements CompilerPassInterface
     {
         $loaders = [];
         $tagName = sprintf('fxp_mailer.%s_loader', $type);
-        $chainLoaderName = sprintf('fxp_mailer.loader.%s_chain', $type);
+        $chainLoaderName = sprintf('fxp_mailer.loader.template_%s_chain', $type);
 
         foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {
             $priority = $tags[0]['priority'] ?? 0;

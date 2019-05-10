@@ -17,29 +17,29 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Replace all services with the tags "fxp_mailer.loader.layout_yaml" and
- * "fxp_mailer.loader.mail_yaml" by "fxp_mailer.loader.layout_array" service
- * and "fxp_mailer.loader.mail_array" service.
+ * Replace all services with the tags "fxp_mailer.loader.template_layout_yaml" and
+ * "fxp_mailer.loader.template_mail_yaml" by "fxp_mailer.loader.template_layout_array" service
+ * and "fxp_mailer.loader.template_mail_array" service.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class OptimizeYamlLoaderPass implements CompilerPassInterface
+class OptimizeYamlTemplateLoaderPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('fxp_mailer.loader.layout_yaml')
-                || !$container->hasDefinition('fxp_mailer.loader.mail_yaml')) {
+        if (!$container->hasDefinition('fxp_mailer.loader.template_layout_yaml')
+                || !$container->hasDefinition('fxp_mailer.loader.template_mail_yaml')) {
             return;
         }
 
         $this->optimize($container, 'layout');
         $this->optimize($container, 'mail');
 
-        $container->removeDefinition('fxp_mailer.loader.layout_yaml');
-        $container->removeDefinition('fxp_mailer.loader.mail_yaml');
+        $container->removeDefinition('fxp_mailer.loader.template_layout_yaml');
+        $container->removeDefinition('fxp_mailer.loader.template_mail_yaml');
     }
 
     /**
@@ -50,7 +50,7 @@ class OptimizeYamlLoaderPass implements CompilerPassInterface
      */
     protected function optimize(ContainerBuilder $container, string $type): void
     {
-        $serviceId = sprintf('fxp_mailer.loader.%s_yaml', $type);
+        $serviceId = sprintf('fxp_mailer.loader.template_%s_yaml', $type);
         $def = $container->getDefinition($serviceId);
 
         $templates = $def->getArgument(0);

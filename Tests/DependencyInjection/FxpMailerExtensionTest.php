@@ -40,14 +40,14 @@ final class FxpMailerExtensionTest extends TestCase
         $container = $this->createContainer();
 
         $this->assertTrue($container->hasDefinition('fxp_mailer.mail_templater'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.layout_chain'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.mail_chain'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.layout_array'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.mail_array'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.layout_config'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.mail_config'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.layout_yaml'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.mail_yaml'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_layout_chain'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_mail_chain'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_layout_array'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_mail_array'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.template_layout_config'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.template_mail_config'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.template_layout_yaml'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.template_mail_yaml'));
     }
 
     public function testAddTemplates(): void
@@ -70,14 +70,14 @@ final class FxpMailerExtensionTest extends TestCase
             ],
         ]);
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.layout_array'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.mail_array'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_layout_array'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_mail_array'));
 
-        $layout = $container->getDefinition('fxp_mailer.loader.layout_array');
+        $layout = $container->getDefinition('fxp_mailer.loader.template_layout_array');
         $this->assertCount(1, $layout->getArguments());
         $this->assertCount(1, $layout->getArgument(0));
 
-        $mail = $container->getDefinition('fxp_mailer.loader.mail_array');
+        $mail = $container->getDefinition('fxp_mailer.loader.template_mail_array');
         $this->assertCount(2, $mail->getArguments());
         $this->assertCount(1, $mail->getArgument(0));
     }

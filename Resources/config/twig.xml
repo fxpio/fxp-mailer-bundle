@@ -9,7 +9,7 @@
                  class="Fxp\Component\Mailer\Twig\Extension\TemplaterExtension"
                  public="false">
             <tag name="twig.extension" />
-            <argument type="service" id="fxp_mailer.loader.layout_chain" />
+            <argument type="service" id="fxp_mailer.loader.template_layout_chain" />
             <argument type="service" id="translator" />
             <property name="container" type="service" id="service_container" />
         </service>

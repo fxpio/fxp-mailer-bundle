@@ -11,8 +11,8 @@
 
 namespace Fxp\Bundle\MailerBundle\DependencyInjection;
 
-use Fxp\Component\Mailer\Loader\ConfigLayoutLoader;
-use Fxp\Component\Mailer\Loader\ConfigMailLoader;
+use Fxp\Component\Mailer\Loader\ConfigTemplateLayoutLoader;
+use Fxp\Component\Mailer\Loader\ConfigTemplateMailLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -43,8 +43,8 @@ class FxpMailerExtension extends Extension
 
         $this->loadConfigs($loader);
         $this->configureTransport($container, $loader, $config);
-        $this->addTemplates($container, 'layout', ConfigLayoutLoader::class, $config['layout_templates']);
-        $this->addTemplates($container, 'mail', ConfigMailLoader::class, $config['mail_templates'], new Reference('fxp_mailer.loader.layout_chain'));
+        $this->addTemplates($container, 'layout', ConfigTemplateLayoutLoader::class, $config['layout_templates']);
+        $this->addTemplates($container, 'mail', ConfigTemplateMailLoader::class, $config['mail_templates'], new Reference('fxp_mailer.loader.template_layout_chain'));
         $this->addFilters($container, $loader, 'template', $config['filters']['templates']);
         $this->addFilters($container, $loader, 'transport', $config['filters']['transports']);
     }
@@ -126,7 +126,7 @@ class FxpMailerExtension extends Extension
                 $def->addArgument($reference);
             }
 
-            $container->setDefinition(sprintf('fxp_mailer.loader.%s_%s', $type, $loader), $def);
+            $container->setDefinition(sprintf('fxp_mailer.loader.template_%s_%s', $type, $loader), $def);
         }
     }
 

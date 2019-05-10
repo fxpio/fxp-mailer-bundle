@@ -5,14 +5,14 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <!-- Doctrine Loaders -->
-        <service id="fxp_mailer.loader.doctrine_layout" class="Fxp\Component\Mailer\Doctrine\Loader\EntityLayoutLoader">
+        <!-- Doctrine Template Loaders -->
+        <service id="fxp_mailer.loader.template_doctrine_layout" class="Fxp\Component\Mailer\Doctrine\Loader\EntityTemplateLayoutLoader">
             <tag name="fxp_mailer.layout_loader" priority="-100" />
             <argument type="service" id="doctrine" />
             <argument>%fxp_mailer.layout_class%</argument>
         </service>
 
-        <service id="fxp_mailer.loader.doctrine_mail" class="Fxp\Component\Mailer\Doctrine\Loader\EntityMailLoader">
+        <service id="fxp_mailer.loader.template_doctrine_mail" class="Fxp\Component\Mailer\Doctrine\Loader\EntityTemplateMailLoader">
             <tag name="fxp_mailer.mail_loader" priority="-100" />
             <argument type="service" id="doctrine" />
             <argument>%fxp_mailer.mail_class%</argument>

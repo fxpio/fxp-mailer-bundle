@@ -13,10 +13,10 @@ namespace Fxp\Bundle\MailerBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\FilterPass;
-use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\LoaderPass;
-use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
-use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigLoaderPass;
-use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigTemplateLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigTemplateLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlTemplateLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\TemplateLoaderPass;
 use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
 use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\TransportPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -58,12 +58,12 @@ class FxpMailerBundle extends Bundle
      */
     protected function addCompilerPasses(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new LoaderPass());
+        $container->addCompilerPass(new TemplateLoaderPass());
         $container->addCompilerPass(new TransportPass());
         $container->addCompilerPass(new FilterPass());
-        $container->addCompilerPass(new OptimizeConfigLoaderPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new OptimizeYamlLoaderPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass(new OptimizeTwigLoaderPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new OptimizeConfigTemplateLoaderPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new OptimizeYamlTemplateLoaderPass(), PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(new OptimizeTwigTemplateLoaderPass(), PassConfig::TYPE_OPTIMIZE);
         $container->addCompilerPass(new TemplatePass(), PassConfig::TYPE_OPTIMIZE);
     }
 }

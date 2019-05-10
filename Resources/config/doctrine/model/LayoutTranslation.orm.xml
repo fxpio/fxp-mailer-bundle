@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <mapped-superclass name="Fxp\Component\Mailer\Model\LayoutTranslation">
+    <mapped-superclass name="Fxp\Component\Mailer\Model\TemplateLayoutTranslation">
 
         <field name="locale" column="locale" type="string" length="10" nullable="false" />
 

@@ -16,8 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Adds all services with the tags "fxp_mailer.layout" and "fxp_mailer.mail" as
- * arguments of the "fxp_mailer.loader.layout_array" service and "fxp_mailer.loader.mail_array" service.
+ * Adds all services with the tags "fxp_mailer.template_layout" and "fxp_mailer.template_mail" as
+ * arguments of the "fxp_mailer.loader.template_layout_array" service and "fxp_mailer.loader.template_mail_array" service.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
@@ -28,8 +28,8 @@ class TemplatePass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('fxp_mailer.loader.layout_array')
-                || !$container->hasDefinition('fxp_mailer.loader.mail_array')) {
+        if (!$container->hasDefinition('fxp_mailer.loader.template_layout_array')
+                || !$container->hasDefinition('fxp_mailer.loader.template_mail_array')) {
             return;
         }
 
@@ -48,7 +48,7 @@ class TemplatePass implements CompilerPassInterface
     {
         $templates = [];
         $tagName = sprintf('fxp_mailer.%s', $type);
-        $arrayLoaderName = sprintf('fxp_mailer.loader.%s_array', $type);
+        $arrayLoaderName = sprintf('fxp_mailer.loader.template_%s_array', $type);
 
         foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {
             $templates[] = new Reference($serviceId);

@@ -11,9 +11,9 @@
 
 namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
-use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeTwigLoaderPass;
-use Fxp\Component\Mailer\Loader\ArrayLayoutLoader;
-use Fxp\Component\Mailer\Loader\TwigLayoutLoader;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeYamlTemplateLoaderPass;
+use Fxp\Component\Mailer\Loader\ArrayTemplateLayoutLoader;
+use Fxp\Component\Mailer\Loader\YamlTemplateLayoutLoader;
 use Fxp\Component\Mailer\Mailer;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,13 +22,13 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Tests for optimize twig loader pass.
+ * Tests for optimize yaml loader pass.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  *
  * @internal
  */
-final class OptimizeTwigLoaderPassTest extends KernelTestCase
+final class OptimizeYamlTemplateLoaderPassTest extends KernelTestCase
 {
     /**
      * @var string
@@ -41,15 +41,15 @@ final class OptimizeTwigLoaderPassTest extends KernelTestCase
     protected $fs;
 
     /**
-     * @var OptimizeTwigLoaderPass
+     * @var OptimizeYamlTemplateLoaderPass
      */
     protected $pass;
 
     protected function setUp(): void
     {
-        $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_optimize_twig_loader_pass';
+        $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_optimize_yaml_loader_pass';
         $this->fs = new Filesystem();
-        $this->pass = new OptimizeTwigLoaderPass();
+        $this->pass = new OptimizeYamlTemplateLoaderPass();
     }
 
     protected function tearDown(): void
@@ -63,36 +63,36 @@ final class OptimizeTwigLoaderPassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $this->pass->process($container);
-        $this->assertFalse($container->has('fxp_mailer.loader.layout_twig'));
-        $this->assertFalse($container->has('fxp_mailer.loader.mail_twig'));
+        $this->assertFalse($container->has('fxp_mailer.loader.template_layout_yaml'));
+        $this->assertFalse($container->has('fxp_mailer.loader.template_mail_yaml'));
     }
 
     public function testProcessWithAddTemplates(): void
     {
         $container = $this->getContainer();
-        $layoutLoaderDef = new Definition(TwigLayoutLoader::class);
-        $mailLoaderDef = new Definition(TwigLayoutLoader::class);
+        $layoutLoaderDef = new Definition(YamlTemplateLayoutLoader::class);
+        $mailLoaderDef = new Definition(YamlTemplateLayoutLoader::class);
         $refMailer = new \ReflectionClass(Mailer::class);
         $mailerBaseDir = \dirname($refMailer->getFileName());
 
         $layoutLoaderDef->setArguments([[]]);
         $mailLoaderDef->setArguments([[]]);
 
-        $container->setDefinition('fxp_mailer.loader.layout_twig', $layoutLoaderDef);
-        $container->setDefinition('fxp_mailer.loader.mail_twig', $mailLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.template_layout_yaml', $layoutLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.template_mail_yaml', $mailLoaderDef);
 
         $this->assertCount(0, $layoutLoaderDef->getArgument(0));
         $this->assertCount(0, $mailLoaderDef->getArgument(0));
 
         // array loader
-        $layoutArrayLoaderDef = new Definition(ArrayLayoutLoader::class);
-        $mailArrayLoaderDef = new Definition(ArrayLayoutLoader::class);
+        $layoutArrayLoaderDef = new Definition(ArrayTemplateLayoutLoader::class);
+        $mailArrayLoaderDef = new Definition(ArrayTemplateLayoutLoader::class);
 
         $layoutArrayLoaderDef->setArguments([[]]);
         $mailArrayLoaderDef->setArguments([[]]);
 
-        $container->setDefinition('fxp_mailer.loader.layout_array', $layoutArrayLoaderDef);
-        $container->setDefinition('fxp_mailer.loader.mail_array', $mailArrayLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.template_layout_array', $layoutArrayLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.template_mail_array', $mailArrayLoaderDef);
 
         $this->assertCount(0, $layoutArrayLoaderDef->getArgument(0));
         $this->assertCount(0, $mailArrayLoaderDef->getArgument(0));
@@ -101,33 +101,20 @@ final class OptimizeTwigLoaderPassTest extends KernelTestCase
         $layoutLoaderDef->replaceArgument(0, [
             [
                 'name' => 'layout-test',
-                'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/layout.html.twig',
-                'translations' => [
-                    [
-                        'locale' => 'fr',
-                        'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/layout.fr.html.twig',
-                    ],
-                ],
+                'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/layout.yml',
             ],
         ]);
         $mailLoaderDef->replaceArgument(0, [
             [
                 'name' => 'mail-test',
-                'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/mail.html.twig',
-                'layout' => 'layout-test',
-                'translations' => [
-                    [
-                        'locale' => 'fr',
-                        'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/mail.fr.html.twig',
-                    ],
-                ],
+                'file' => $mailerBaseDir.'/Tests/Fixtures/loaders/mail.yml',
             ],
         ]);
 
         // test
         $this->pass->process($container);
-        $this->assertFalse($container->has('fxp_mailer.loader.layout_twig'));
-        $this->assertFalse($container->has('fxp_mailer.loader.mail_twig'));
+        $this->assertFalse($container->has('fxp_mailer.loader.template_layout_yaml'));
+        $this->assertFalse($container->has('fxp_mailer.loader.template_mail_yaml'));
     }
 
     /**

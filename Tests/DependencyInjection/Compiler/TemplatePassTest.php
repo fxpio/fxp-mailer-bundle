@@ -12,9 +12,9 @@
 namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
 use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\TemplatePass;
-use Fxp\Component\Mailer\Loader\ArrayLayoutLoader;
-use Fxp\Component\Mailer\Model\Layout;
-use Fxp\Component\Mailer\Model\Mail;
+use Fxp\Component\Mailer\Loader\ArrayTemplateLayoutLoader;
+use Fxp\Component\Mailer\Model\TemplateLayout;
+use Fxp\Component\Mailer\Model\TemplateMail;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -63,28 +63,28 @@ final class TemplatePassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $this->pass->process($container);
-        $this->assertFalse($container->has('fxp_mailer.loader.layout_array'));
-        $this->assertFalse($container->has('fxp_mailer.loader.mail_array'));
+        $this->assertFalse($container->has('fxp_mailer.loader.template_layout_array'));
+        $this->assertFalse($container->has('fxp_mailer.loader.template_mail_array'));
     }
 
     public function testProcessWithAddTemplates(): void
     {
         $container = $this->getContainer();
-        $layoutLoaderDef = new Definition(ArrayLayoutLoader::class);
-        $mailLoaderDef = new Definition(ArrayLayoutLoader::class);
+        $layoutLoaderDef = new Definition(ArrayTemplateLayoutLoader::class);
+        $mailLoaderDef = new Definition(ArrayTemplateLayoutLoader::class);
 
         $layoutLoaderDef->setArguments([[]]);
         $mailLoaderDef->setArguments([[]]);
 
-        $container->setDefinition('fxp_mailer.loader.layout_array', $layoutLoaderDef);
-        $container->setDefinition('fxp_mailer.loader.mail_array', $mailLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.template_layout_array', $layoutLoaderDef);
+        $container->setDefinition('fxp_mailer.loader.template_mail_array', $mailLoaderDef);
 
         $this->assertCount(0, $layoutLoaderDef->getArgument(0));
         $this->assertCount(0, $mailLoaderDef->getArgument(0));
 
         // add mocks
-        $layoutDef = new Definition(Layout::class);
-        $mailDef = new Definition(Mail::class);
+        $layoutDef = new Definition(TemplateLayout::class);
+        $mailDef = new Definition(TemplateMail::class);
         $layoutDef->addTag('fxp_mailer.layout');
         $mailDef->addTag('fxp_mailer.mail');
 

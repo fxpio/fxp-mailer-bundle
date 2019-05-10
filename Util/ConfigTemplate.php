@@ -11,10 +11,10 @@
 
 namespace Fxp\Bundle\MailerBundle\Util;
 
-use Fxp\Component\Mailer\Model\Layout;
-use Fxp\Component\Mailer\Model\LayoutTranslation;
-use Fxp\Component\Mailer\Model\Mail;
-use Fxp\Component\Mailer\Model\MailTranslation;
+use Fxp\Component\Mailer\Model\TemplateLayout;
+use Fxp\Component\Mailer\Model\TemplateLayoutTranslation;
+use Fxp\Component\Mailer\Model\TemplateMail;
+use Fxp\Component\Mailer\Model\TemplateMailTranslation;
 
 /**
  * Config of template classes.
@@ -40,10 +40,10 @@ class ConfigTemplate
      * @param string $mailTranslationClass   The class name of mail translation
      */
     public function __construct(
-        string $layoutClass = Layout::class,
-        string $mailClass = Mail::class,
-        string $layoutTranslationClass = LayoutTranslation::class,
-        string $mailTranslationClass = MailTranslation::class
+        string $layoutClass = TemplateLayout::class,
+        string $mailClass = TemplateMail::class,
+        string $layoutTranslationClass = TemplateLayoutTranslation::class,
+        string $mailTranslationClass = TemplateMailTranslation::class
     ) {
         $this->layoutClass = $layoutClass;
         $this->mailClass = $mailClass;

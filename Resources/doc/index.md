@@ -1,62 +1,40 @@
 Getting Started With Fxp MailerBundle
-=========================================
-
-## Prerequisites
-
-This version of the bundle requires Symfony 3.
+=====================================
 
 ## Installation
 
 Installation is a quick, 6 step process:
 
 1. Download the bundle using composer
-2. Enable the bundle
-3. Create your entity classes
-4. Configure your application's config.yml
-5. Update your database schema
-6. Configure the bundle
+2. Create your entity classes (optional)
+3. Configure your application's config.yml
+4. Update your database schema
+5. Configure the bundle
 
 ### Step 1: Download the bundle using composer
 
-Tell composer to download the bundle by running the command:
+In applications using [Symfony Flex](https://symfony.com/doc/current/setup/flex.html), run this command to install
+the security feature before using it:
 
-```bash
-$ composer require fxp/mailer-bundle
+```
+$ composer require fxp/security-bundle
 ```
 
-Composer will install the bundle to your project's `vendor/fxp` directory.
-
-### Step 2: Enable the bundle
-
-Enable the bundle in the kernel:
-
-```php
-// app/AppKernel.php
-
-public function registerBundles()
-{
-    $bundles = array(
-        // ...
-        new Fxp\Bundle\MailerBundle\FxpMailerBundle(),
-    );
-}
-```
-
-### Step 3: Create your entity classes
+### Step 2: Create your entity classes (optional)
 
 #### Create the Layout class
 
-You can use `Fxp\Component\Mailer\Entity\Layout` class or create the entity class:
+You can use `Fxp\Component\Mailer\Entity\TemplateLayout` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/Layout.php
 
-namespace Acme\CoreBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Fxp\Component\Mailer\Model\Layout as BaseLayout;
+use Fxp\Component\Mailer\Model\TemplateLayout as BaseTemplateLayout;
 
-class Layout extends BaseLayout
+class TemplateLayout extends BaseTemplateLayout
 {
     /**
      * @var int|null
@@ -86,16 +64,16 @@ class Layout extends BaseLayout
 
 #### Create the Layout translation class
 
-You can use `Fxp\Component\Mailer\Entity\LayoutTranslation` class or create the entity class:
+You can use `Fxp\Component\Mailer\Entity\TemplateLayoutTranslation` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/LayoutTranslation.php
 
-namespace Acme\CoreBundle\Entity;
+namespace App\Entity;
 
-use Fxp\Component\Mailer\Model\LayoutTranslation as BaseLayoutTranslation;
+use Fxp\Component\Mailer\Model\TemplateLayoutTranslation as BaseTemplateLayoutTranslation;
 
-class LayoutTranslation extends BaseLayoutTranslation
+class TemplateLayoutTranslation extends BaseTemplateLayoutTranslation
 {
     /**
      * @var int|null
@@ -116,17 +94,17 @@ class LayoutTranslation extends BaseLayoutTranslation
 
 #### Create the Mail class
 
-You can use `Fxp\Component\Mailer\Entity\Mail` class or create the entity class:
+You can use `Fxp\Component\Mailer\Entity\TemplateMail` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/Mail.php
 
-namespace Acme\CoreBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Fxp\Component\Mailer\Model\Mail as BaseMail;
+use Fxp\Component\Mailer\Model\TemplateMail as BaseTemplateMail;
 
-class Mail extends BaseMail
+class TemplateMail extends BaseTemplateMail
 {
     /**
      * @var int|null
@@ -155,16 +133,16 @@ class Mail extends BaseMail
 
 #### Create the mail translation class
 
-You can use `Fxp\Component\Mailer\Entity\MailTranslation` class or create the entity class:
+You can use `Fxp\Component\Mailer\Entity\TemplateMailTranslation` class or create the entity class:
 
 ``` php
 // src/Acme/CoreBundle/Entity/MailTranslation.php
 
-namespace Acme\CoreBundle\Entity;
+namespace App\Entity;
 
-use Fxp\Component\Mailer\Model\MailTranslation as BaseMailTranslation;
+use Fxp\Component\Mailer\Model\TemplateMailTranslation as BaseTemplateMailTranslation;
 
-class MailTranslation extends BaseMailTranslation
+class TemplateMailTranslation extends BaseTemplateMailTranslation
 {
     /**
      * @var int|null
@@ -192,7 +170,7 @@ class MailTranslation extends BaseMailTranslation
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="Acme\CoreBundle\Entity\Layout" table="layout">
+    <entity name="App\Entity\TemplateLayout" table="template_layout">
 
         <indexes>
             <index name="layout_name_idx" columns="name" />
@@ -230,7 +208,7 @@ class MailTranslation extends BaseMailTranslation
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="Acme\CoreBundle\Entity\LayoutTranslation" table="layout_translation">
+    <entity name="App\Entity\TemplateLayoutTranslation" table="template_layout_translation">
 
         <unique-constraints>
             <unique-constraint columns="layout_id,locale" name="layout_translation_unique_locale_idx" />
@@ -257,7 +235,7 @@ class MailTranslation extends BaseMailTranslation
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="Acme\CoreBundle\Entity\Mail" table="mail">
+    <entity name="App\Entity\TemplateMail" table="template_mail">
 
         <indexes>
             <index name="mail_name_idx" columns="name" />
@@ -293,7 +271,7 @@ class MailTranslation extends BaseMailTranslation
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="Acme\CoreBundle\Entity\MailTranslation" table="mail_translation">
+    <entity name="App\Entity\TemplateMailTranslation" table="template_mail_translation">
 
         <unique-constraints>
             <unique-constraint columns="mail_id,locale" name="mail_translation_unique_locale_idx" />
@@ -313,28 +291,25 @@ class MailTranslation extends BaseMailTranslation
 
 ### Step 4: Configure your application's config.yml
 
-Add the following configuration to your `config.yml`.
+Add the interface in Doctrine's target entities resolver:
 
 ```yaml
-# app/config/config.yml
-fxp_mailer:
-    layout_class: Acme\CoreBundle\Entity\Layout
-    mail_class:   Acme\CoreBundle\Entity\Mail
+# config/packages/doctrine.yaml``
+doctrine:
+    # ...
+    orm:
+        resolve_target_entities:
+            Fxp\Component\Mailer\Model\TemplateLayoutInterface: App\Entity\TemplateLayout # the FQCN of your template layout entity
+            Fxp\Component\Mailer\Model\TemplateLayoutTranslationInterface: App\Entity\TemplateLayoutTranslation # the FQCN of your template layout translation entity
+            Fxp\Component\Mailer\Model\TemplateMailInterface: App\Entity\TemplateMail # the FQCN of your template mail entity
+            Fxp\Component\Mailer\Model\TemplateMailTranslationInterface: App\Entity\TemplateMailTranslation # the FQCN of your template mail translation entity
 ```
 
-### Step 5: Update your database schema
+Also, make sure to make and run a migration for the new entities:
 
-```bash
-$ php app/console doctrine:schema:update --force
 ```
-
-### Step 6: Configure the bundle
-
-You can override the default configuration adding `fxp_mailer` tree in `app/config/config.yml`.
-For see the reference of Fxp Mailer Configuration, execute command:
-
-```bash
-$ php app/console config:dump-reference FxpMailerBundle
+$ php bin/console make:migration
+$ php bin/console doctrine:migrations:migrate
 ```
 
 ### Next Steps

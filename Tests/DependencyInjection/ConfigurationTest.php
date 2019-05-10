@@ -12,8 +12,8 @@
 namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection;
 
 use Fxp\Bundle\MailerBundle\DependencyInjection\Configuration;
-use Fxp\Component\Mailer\Model\LayoutInterface;
-use Fxp\Component\Mailer\Model\MailInterface;
+use Fxp\Component\Mailer\Model\TemplateLayoutInterface;
+use Fxp\Component\Mailer\Model\TemplateMailInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -81,8 +81,8 @@ final class ConfigurationTest extends TestCase
     protected static function getBundleDefaultConfig()
     {
         return [
-            'layout_class' => LayoutInterface::class,
-            'mail_class' => MailInterface::class,
+            'layout_class' => TemplateLayoutInterface::class,
+            'mail_class' => TemplateMailInterface::class,
             'layout_templates' => [],
             'mail_templates' => [],
             'filters' => [

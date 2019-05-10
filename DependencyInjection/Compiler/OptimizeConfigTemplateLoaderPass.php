@@ -16,29 +16,29 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Replace all services with the tags "fxp_mailer.loader.layout_config" and
- * "fxp_mailer.loader.mail_config" by "fxp_mailer.loader.layout_array" service
- * and "fxp_mailer.loader.mail_array" service.
+ * Replace all services with the tags "fxp_mailer.loader.template_layout_config" and
+ * "fxp_mailer.loader.template_mail_config" by "fxp_mailer.loader.template_layout_array" service
+ * and "fxp_mailer.loader.template_mail_array" service.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class OptimizeConfigLoaderPass implements CompilerPassInterface
+class OptimizeConfigTemplateLoaderPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('fxp_mailer.loader.layout_config')
-                || !$container->hasDefinition('fxp_mailer.loader.mail_config')) {
+        if (!$container->hasDefinition('fxp_mailer.loader.template_layout_config')
+                || !$container->hasDefinition('fxp_mailer.loader.template_mail_config')) {
             return;
         }
 
         $this->optimize($container, 'layout');
         $this->optimize($container, 'mail');
 
-        $container->removeDefinition('fxp_mailer.loader.mail_config');
-        $container->removeDefinition('fxp_mailer.loader.layout_config');
+        $container->removeDefinition('fxp_mailer.loader.template_mail_config');
+        $container->removeDefinition('fxp_mailer.loader.template_layout_config');
     }
 
     /**
@@ -49,7 +49,7 @@ class OptimizeConfigLoaderPass implements CompilerPassInterface
      */
     protected function optimize(ContainerBuilder $container, string $type): void
     {
-        $serviceId = sprintf('fxp_mailer.loader.%s_config', $type);
+        $serviceId = sprintf('fxp_mailer.loader.template_%s_config', $type);
         $def = $container->getDefinition($serviceId);
 
         ContainerUtil::addTemplates($container, $type, $def->getArgument(0));

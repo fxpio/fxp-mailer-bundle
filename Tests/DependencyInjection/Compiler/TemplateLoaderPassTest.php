@@ -11,20 +11,20 @@
 
 namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection\Compiler;
 
-use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\OptimizeConfigLoaderPass;
+use Fxp\Bundle\MailerBundle\DependencyInjection\Compiler\TemplateLoaderPass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Tests for optimize config loader pass.
+ * Tests for loader pass.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  *
  * @internal
  */
-final class OptimizeConfigLoaderPassTest extends KernelTestCase
+final class TemplateLoaderPassTest extends KernelTestCase
 {
     /**
      * @var string
@@ -37,15 +37,15 @@ final class OptimizeConfigLoaderPassTest extends KernelTestCase
     protected $fs;
 
     /**
-     * @var OptimizeConfigLoaderPass
+     * @var TemplateLoaderPass
      */
     protected $pass;
 
     protected function setUp(): void
     {
-        $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_optimize_loader_config_pass';
+        $this->rootDir = sys_get_temp_dir().'/fxp_mailer_bundle_loader_pass';
         $this->fs = new Filesystem();
-        $this->pass = new OptimizeConfigLoaderPass();
+        $this->pass = new TemplateLoaderPass();
     }
 
     protected function tearDown(): void
@@ -59,8 +59,8 @@ final class OptimizeConfigLoaderPassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $this->pass->process($container);
-        $this->assertFalse($container->has('fxp_mailer.loader.layout_config'));
-        $this->assertFalse($container->has('fxp_mailer.loader.mail_config'));
+        $this->assertFalse($container->has('fxp_mailer.loader.template_layout_chain'));
+        $this->assertFalse($container->has('fxp_mailer.loader.template_mail_chain'));
     }
 
     /**
