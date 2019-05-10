@@ -44,7 +44,7 @@ class TemplatePass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The layout or mail type
      */
-    protected function addTemplate(ContainerBuilder $container, $type): void
+    protected function addTemplate(ContainerBuilder $container, string $type): void
     {
         $templates = [];
         $tagName = sprintf('fxp_mailer.%s', $type);

@@ -52,7 +52,7 @@ class OptimizeTwigLoaderPass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The layout or mail type
      */
-    protected function optimize(ContainerBuilder $container, $type): void
+    protected function optimize(ContainerBuilder $container, string $type): void
     {
         $templateConfig = new ConfigTemplate(TwigLayout::class, TwigMail::class, TwigLayoutTranslation::class, TwigMailTranslation::class);
         $serviceId = sprintf('fxp_mailer.loader.%s_twig', $type);

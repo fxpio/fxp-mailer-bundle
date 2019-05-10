@@ -12,6 +12,8 @@
 namespace Fxp\Bundle\MailerBundle\DependencyInjection;
 
 use Fxp\Component\Mailer\MailTypes;
+use Fxp\Component\Mailer\Model\LayoutInterface;
+use Fxp\Component\Mailer\Model\MailInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -26,7 +28,7 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('fxp_mailer');
         /** @var ArrayNodeDefinition $rootNode */
@@ -34,8 +36,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('layout_class')->defaultValue('Fxp\Component\Mailer\Model\LayoutInterface')->end()
-            ->scalarNode('mail_class')->defaultValue('Fxp\Component\Mailer\Model\MailInterface')->end()
+            ->scalarNode('layout_class')->defaultValue(LayoutInterface::class)->end()
+            ->scalarNode('mail_class')->defaultValue(MailInterface::class)->end()
             ->append($this->getLayoutTemplatesNode())
             ->append($this->getMailTemplatesNode())
             ->append($this->getTransportNode())
@@ -46,7 +48,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    protected function getLayoutTemplatesNode()
+    protected function getLayoutTemplatesNode(): ArrayNodeDefinition
     {
         $treeBuilder = new TreeBuilder('layout_templates');
         /** @var ArrayNodeDefinition $node */
@@ -87,7 +89,7 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function getMailTemplatesNode()
+    protected function getMailTemplatesNode(): ArrayNodeDefinition
     {
         $treeBuilder = new TreeBuilder('mail_templates');
         /** @var ArrayNodeDefinition $node */
@@ -134,7 +136,7 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function getTransportNode()
+    protected function getTransportNode(): ArrayNodeDefinition
     {
         $treeBuilder = new TreeBuilder('transports');
         /** @var ArrayNodeDefinition $node */
@@ -156,7 +158,7 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function getSwiftMailerEmbedImageNode()
+    protected function getSwiftMailerEmbedImageNode(): ArrayNodeDefinition
     {
         $treeBuilder = new TreeBuilder('embed_image');
         /** @var ArrayNodeDefinition $node */
@@ -173,7 +175,7 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function getSwiftMailerDkimSignerNode()
+    protected function getSwiftMailerDkimSignerNode(): ArrayNodeDefinition
     {
         $treeBuilder = new TreeBuilder('dkim_signer');
         /** @var ArrayNodeDefinition $node */
@@ -191,7 +193,7 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function getFilterNode()
+    protected function getFilterNode(): ArrayNodeDefinition
     {
         $treeBuilder = new TreeBuilder('filters');
         /** @var ArrayNodeDefinition $node */
@@ -208,7 +210,7 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    protected function getFilterTypeNode($type)
+    protected function getFilterTypeNode(string $type): ArrayNodeDefinition
     {
         $treeBuilder = new TreeBuilder($type.'s');
         /** @var ArrayNodeDefinition $node */
@@ -220,9 +222,9 @@ class Configuration implements ConfigurationInterface
             ->prototype('variable')
             ->treatNullLike([])
             ->validate()
-            ->ifTrue(function ($v) {
-                        return !\is_array($v);
-                    })
+            ->ifTrue(static function ($v) {
+                return !\is_array($v);
+            })
             ->thenInvalid('The fxp_mailer.filters.'.$type.'s config %s must be either null or an array.')
             ->end()
             ->end()

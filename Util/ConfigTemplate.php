@@ -40,10 +40,10 @@ class ConfigTemplate
      * @param string $mailTranslationClass   The class name of mail translation
      */
     public function __construct(
-        $layoutClass = Layout::class,
-        $mailClass = Mail::class,
-        $layoutTranslationClass = LayoutTranslation::class,
-        $mailTranslationClass = MailTranslation::class
+        string $layoutClass = Layout::class,
+        string $mailClass = Mail::class,
+        string $layoutTranslationClass = LayoutTranslation::class,
+        string $mailTranslationClass = MailTranslation::class
     ) {
         $this->layoutClass = $layoutClass;
         $this->mailClass = $mailClass;
@@ -56,7 +56,7 @@ class ConfigTemplate
      *
      * @return string
      */
-    public function getLayoutClass()
+    public function getLayoutClass(): string
     {
         return $this->layoutClass;
     }
@@ -66,7 +66,7 @@ class ConfigTemplate
      *
      * @return string
      */
-    public function getMailClass()
+    public function getMailClass(): string
     {
         return $this->mailClass;
     }
@@ -76,7 +76,7 @@ class ConfigTemplate
      *
      * @return string
      */
-    public function getLayoutTranslationClass()
+    public function getLayoutTranslationClass(): string
     {
         return $this->layoutTranslationClass;
     }
@@ -86,7 +86,7 @@ class ConfigTemplate
      *
      * @return string
      */
-    public function getMailTranslationClass()
+    public function getMailTranslationClass(): string
     {
         return $this->mailTranslationClass;
     }
@@ -98,7 +98,7 @@ class ConfigTemplate
      *
      * @return string
      */
-    public function getTemplateClass($type)
+    public function getTemplateClass(string $type): string
     {
         return 'layout' === $type ? $this->getLayoutClass() : $this->getMailClass();
     }
@@ -110,7 +110,7 @@ class ConfigTemplate
      *
      * @return string
      */
-    public function getTemplateTranslationClass($type)
+    public function getTemplateTranslationClass(string $type): string
     {
         return 'layout' === $type ? $this->getLayoutTranslationClass() : $this->getMailTranslationClass();
     }

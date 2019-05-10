@@ -42,7 +42,7 @@ class FilterPass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The filter type
      */
-    protected function addFilters(ContainerBuilder $container, $type): void
+    protected function addFilters(ContainerBuilder $container, string $type): void
     {
         $filters = [];
         $tagName = sprintf('fxp_mailer.%s_filter', $type);
@@ -57,7 +57,7 @@ class FilterPass implements CompilerPassInterface
         // sort by priority and flatten
         if (\count($filters) > 0) {
             krsort($filters);
-            $filters = \call_user_func_array('array_merge', $filters);
+            $filters = array_merge(...$filters);
         }
 
         $container->getDefinition($registryName)->replaceArgument($pos, $filters);

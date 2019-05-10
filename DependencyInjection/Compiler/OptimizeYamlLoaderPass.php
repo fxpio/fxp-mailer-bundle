@@ -48,7 +48,7 @@ class OptimizeYamlLoaderPass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The layout or mail type
      */
-    protected function optimize(ContainerBuilder $container, $type): void
+    protected function optimize(ContainerBuilder $container, string $type): void
     {
         $serviceId = sprintf('fxp_mailer.loader.%s_yaml', $type);
         $def = $container->getDefinition($serviceId);
@@ -71,7 +71,7 @@ class OptimizeYamlLoaderPass implements CompilerPassInterface
      *
      * @return array
      */
-    protected function createConfig(ContainerBuilder $container, array $templateConfig)
+    protected function createConfig(ContainerBuilder $container, array $templateConfig): array
     {
         $file = ContainerUtil::getRealFile($container, $templateConfig['file']);
         $config = Yaml::parse(file_get_contents($file));

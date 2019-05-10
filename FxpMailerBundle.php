@@ -30,14 +30,14 @@ class FxpMailerBundle extends Bundle
 {
     /**
      * {@inheritdoc}
+     *
+     * @throws
      */
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
-        $ormCompilerClass = 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
-
-        if (class_exists($ormCompilerClass)) {
+        if (class_exists(DoctrineOrmMappingsPass::class)) {
             $ref = new \ReflectionClass($this);
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver(

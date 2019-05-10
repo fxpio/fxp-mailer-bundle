@@ -32,9 +32,9 @@ abstract class ContainerUtil
      * @param array               $templates The template configs of layouts
      * @param null|ConfigTemplate $config    The template configurator
      */
-    public static function addTemplates(ContainerBuilder $container, $type, array $templates, ConfigTemplate $config = null): void
+    public static function addTemplates(ContainerBuilder $container, string $type, array $templates, ?ConfigTemplate $config = null): void
     {
-        $config = null === $config ? new ConfigTemplate() : $config;
+        $config = $config ?? new ConfigTemplate();
 
         foreach ($templates as $template) {
             $def = new Definition($config->getTemplateClass($type));
@@ -62,9 +62,9 @@ abstract class ContainerUtil
      * @param string              $name         The name of template
      * @param null|ConfigTemplate $config       The template configurator
      */
-    public static function addTemplateTranslations(ContainerBuilder $container, Definition $def, $defId, $type, array $translations, $name, ConfigTemplate $config = null): void
+    public static function addTemplateTranslations(ContainerBuilder $container, Definition $def, string $defId, string $type, array $translations, string $name, ?ConfigTemplate $config = null): void
     {
-        $config = null === $config ? new ConfigTemplate() : $config;
+        $config = $config ?? new ConfigTemplate();
 
         foreach ($translations as $translation) {
             $transDef = new Definition($config->getTemplateTranslationClass($type));
@@ -95,7 +95,7 @@ abstract class ContainerUtil
      * @param string     $field   The field name
      * @param null|mixed $default The default value
      */
-    public static function addArgumentValue(Definition $def, $method, array $config, $field, $default = null): void
+    public static function addArgumentValue(Definition $def, string $method, array $config, string $field, $default = null): void
     {
         $value = \array_key_exists($field, $config) ? $config[$field] : $default;
 
@@ -123,9 +123,11 @@ abstract class ContainerUtil
      * @param ContainerBuilder $container The container
      * @param string           $file      The filename
      *
+     * @throws
+     *
      * @return string
      */
-    public static function getRealFile(ContainerBuilder $container, $file)
+    public static function getRealFile(ContainerBuilder $container, string $file): string
     {
         $file = $container->getParameterBag()->resolveValue($file);
 
@@ -154,7 +156,7 @@ abstract class ContainerUtil
      * @param string     $type     The template type
      * @param array      $template The template config
      */
-    protected static function addTemplateValues(Definition $def, $type, array $template): void
+    protected static function addTemplateValues(Definition $def, string $type, array $template): void
     {
         static::addArgumentValue($def, 'setName', $template, 'name');
         static::addArgumentValue($def, 'setLabel', $template, 'label');

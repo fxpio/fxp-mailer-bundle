@@ -53,6 +53,8 @@ class FxpMailerExtension extends Extension
      * Load the configs.
      *
      * @param Loader\XmlFileLoader $loader The loader
+     *
+     * @throws
      */
     protected function loadConfigs(Loader\XmlFileLoader $loader): void
     {
@@ -69,6 +71,8 @@ class FxpMailerExtension extends Extension
      * @param ContainerBuilder     $container The container
      * @param Loader\XmlFileLoader $loader    The config loader
      * @param array                $config    The config
+     *
+     * @throws
      */
     protected function configureTransport(ContainerBuilder $container, Loader\XmlFileLoader $loader, array $config): void
     {
@@ -105,7 +109,7 @@ class FxpMailerExtension extends Extension
      * @param array            $templates The template configs of layouts
      * @param Reference        $reference The reference
      */
-    protected function addTemplates(ContainerBuilder $container, $type, $class, array $templates, $reference = null): void
+    protected function addTemplates(ContainerBuilder $container, string $type, string $class, array $templates, ?Reference $reference = null): void
     {
         $loaderTypes = [];
 
@@ -133,11 +137,13 @@ class FxpMailerExtension extends Extension
      * @param Loader\XmlFileLoader $loader    The xml loader
      * @param string               $type      The filter type
      * @param array[]              $filters   The filters configs
+     *
+     * @throws
      */
     protected function addFilters(
         ContainerBuilder $container,
         Loader\XmlFileLoader $loader,
-        $type,
+        string $type,
         array $filters
     ): void {
         foreach ($filters as $name => $filter) {
@@ -157,7 +163,7 @@ class FxpMailerExtension extends Extension
      *
      * @return string
      */
-    protected function getWebDir(ContainerBuilder $container, $webDir = null)
+    protected function getWebDir(ContainerBuilder $container, ?string $webDir = null): string
     {
         if (null === $webDir) {
             $projectDir = $container->getParameter('kernel.project_dir');

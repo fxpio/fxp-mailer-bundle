@@ -44,7 +44,7 @@ class LoaderPass implements CompilerPassInterface
      * @param ContainerBuilder $container The container
      * @param string           $type      The layout or mail type
      */
-    protected function chainLoader(ContainerBuilder $container, $type): void
+    protected function chainLoader(ContainerBuilder $container, string $type): void
     {
         $loaders = [];
         $tagName = sprintf('fxp_mailer.%s_loader', $type);
@@ -58,7 +58,7 @@ class LoaderPass implements CompilerPassInterface
         // sort by priority and flatten
         if (\count($loaders) > 0) {
             krsort($loaders);
-            $loaders = \call_user_func_array('array_merge', $loaders);
+            $loaders = array_merge(...$loaders);
         }
 
         $container->getDefinition($chainLoaderName)->replaceArgument(0, $loaders);
