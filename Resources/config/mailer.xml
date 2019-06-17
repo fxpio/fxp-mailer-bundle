@@ -5,10 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="fxp_mailer.mailer" class="Fxp\Component\Mailer\Mailer" public="true">
-            <argument type="service" id="fxp_mailer.mail_templater" />
+        <service id="fxp_mailer.mailer"
+                 class="Fxp\Component\Mailer\Mailer"
+                 public="true">
             <argument type="collection" />
-            <argument type="service" id="event_dispatcher" />
         </service>
+
+        <service id="Fxp\Component\Mailer\Mailer" alias="fxp_mailer.mailer" />
+        <service id="Fxp\Component\Mailer\MailerInterface" alias="fxp_mailer.mailer" />
     </services>
 </container>

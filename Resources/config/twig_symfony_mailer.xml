@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="fxp_mailer.twig.symfony_mailer.sandbox_body_renderer"
+                 class="Fxp\Component\Mailer\Mime\SandboxBodyRenderer"
+                 decorates="twig.mime_body_renderer"
+                 public="false">
+            <argument type="service" id="fxp_mailer.twig.symfony_mailer.sandbox_body_renderer.inner" />
+            <argument type="service" id="fxp_mailer.sandbox_templater" />
+        </service>
+
+        <service id="fxp_mailer.twig.symfony_mailer.unstrict_body_renderer"
+                 class="Fxp\Component\Mailer\Twig\Mime\UnstrictBodyRenderer"
+                 decorates="twig.mime_body_renderer"
+                 public="false">
+            <argument type="service" id="fxp_mailer.twig.symfony_mailer.unstrict_body_renderer.inner" />
+            <argument type="service" id="twig" />
+        </service>
+    </services>
+</container>

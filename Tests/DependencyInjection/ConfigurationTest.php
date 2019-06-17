@@ -12,8 +12,6 @@
 namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection;
 
 use Fxp\Bundle\MailerBundle\DependencyInjection\Configuration;
-use Fxp\Component\Mailer\Model\TemplateLayoutInterface;
-use Fxp\Component\Mailer\Model\TemplateMailInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -34,75 +32,31 @@ final class ConfigurationTest extends TestCase
         $this->assertEquals(array_merge([], self::getBundleDefaultConfig()), $config);
     }
 
-    public function testFilterConfig(): void
-    {
-        $valid = [
-            'filters' => [
-                'templates' => [
-                    'css_to_styles' => [],
-                ],
-                'transports' => [],
-            ],
-        ];
-        $config = [
-            'filters' => [
-                'templates' => [
-                    'css_to_styles' => [],
-                ],
-            ],
-        ];
-
-        $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), [$config]);
-
-        $this->assertEquals(array_merge(self::getBundleDefaultConfig(), $valid), $config);
-    }
-
-    public function testInvalidFilterConfig(): void
-    {
-        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The fxp_mailer.filters.templates config 42 must be either null or an array.');
-
-        $config = [
-            'filters' => [
-                'templates' => [
-                    'css_to_styles' => 42,
-                ],
-            ],
-        ];
-
-        $processor = new Processor();
-        $processor->processConfiguration(new Configuration(), [$config]);
-    }
-
     /**
      * @return array
      */
-    protected static function getBundleDefaultConfig()
+    protected static function getBundleDefaultConfig(): array
     {
         return [
-            'layout_class' => TemplateLayoutInterface::class,
-            'mail_class' => TemplateMailInterface::class,
-            'layout_templates' => [],
-            'mail_templates' => [],
-            'filters' => [
-                'templates' => [],
-                'transports' => [],
-            ],
-            'transports' => [
-                'swiftmailer' => [
-                    'embed_image' => [
-                        'enabled' => false,
-                        'host_pattern' => '/(.*)+/',
-                        'web_dir' => null,
+            'twig' => [
+                'sandbox' => [
+                    'security_policy' => [
+                        'override' => false,
+                        'allowed_tags' => [],
+                        'allowed_filters' => [],
+                        'allowed_methods' => [],
+                        'allowed_properties' => [],
+                        'allowed_functions' => [],
                     ],
-                    'dkim_signer' => [
-                        'enabled' => false,
-                        'private_key_path' => null,
-                        'domain' => null,
-                        'selector' => null,
+                    'available_namespaces' => [
+                        'doctrine_template_messages',
                     ],
                 ],
+                'loaders' => [
+                    'doctrine' => false,
+                ],
+                'enable_unstrict_variables' => true,
+                'default_locale' => null,
             ],
         ];
     }

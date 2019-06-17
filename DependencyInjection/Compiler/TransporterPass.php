@@ -12,17 +12,16 @@
 namespace Fxp\Bundle\MailerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Adds all services with the tags "fxp_mailer.transport" as arguments of
- * the "fxp_mailer.mailer" service.
- *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class TransportPass implements CompilerPassInterface
+class TransporterPass implements CompilerPassInterface
 {
+    use PriorityTaggedServiceTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -32,12 +31,12 @@ class TransportPass implements CompilerPassInterface
             return;
         }
 
-        $transports = [];
+        $loaders = [];
 
-        foreach ($container->findTaggedServiceIds('fxp_mailer.transport') as $serviceId => $tags) {
-            $transports[] = new Reference($serviceId);
+        foreach ($this->findAndSortTaggedServices('fxp_mailer.transporter', $container) as $service) {
+            $loaders[] = $service;
         }
 
-        $container->getDefinition('fxp_mailer.mailer')->replaceArgument(1, $transports);
+        $container->getDefinition('fxp_mailer.mailer')->replaceArgument(0, $loaders);
     }
 }

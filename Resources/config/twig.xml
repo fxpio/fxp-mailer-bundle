@@ -5,13 +5,46 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="twig.extension.fxp_mailer.templater"
-                 class="Fxp\Component\Mailer\Twig\Extension\TemplaterExtension"
+        <service id="fxp_mailer.twig.loader.sandbox"
+                 class="Fxp\Component\Mailer\Twig\Loader\SandboxLoader"
+                 public="false">
+            <tag name="twig.loader" priority="900" />
+            <argument type="service" id="fxp_mailer.sandbox_templater" />
+            <argument type="collection" />
+        </service>
+
+        <service id="fxp_mailer.twig.loader.filesystem_template"
+                 class="Fxp\Component\Mailer\Twig\Loader\FilesystemTemplateLoader"
+                 public="false">
+            <tag name="twig.loader" priority="800" />
+            <argument>%kernel.project_dir%</argument>
+            <argument>en</argument>
+        </service>
+
+        <service id="fxp_mailer.sandbox_templater"
+                 class="Fxp\Component\Mailer\Mime\SandboxTemplater"
+                 public="true">
+            <argument type="service" id="fxp_mailer.twig.extension.sandbox" />
+        </service>
+
+        <service id="Fxp\Component\Mailer\Mime\SandboxTemplater" alias="fxp_mailer.sandbox_templater" />
+        <service id="Fxp\Component\Mailer\Mime\SandboxTemplaterInterface" alias="fxp_mailer.sandbox_templater" />
+
+        <service id="fxp_mailer.twig.extension.sandbox"
+                 class="Twig\Extension\SandboxExtension"
                  public="false">
             <tag name="twig.extension" />
-            <argument type="service" id="fxp_mailer.loader.template_layout_chain" />
-            <argument type="service" id="translator" />
-            <property name="container" type="service" id="service_container" />
+            <argument type="service" id="fxp_mailer.twig.sandbox.security_policy" />
+        </service>
+
+        <service id="fxp_mailer.twig.sandbox.security_policy"
+                 class="Twig\Sandbox\SecurityPolicy"
+                 public="false">
+            <argument type="collection"/>
+            <argument type="collection"/>
+            <argument type="collection"/>
+            <argument type="collection"/>
+            <argument type="collection"/>
         </service>
     </services>
 </container>

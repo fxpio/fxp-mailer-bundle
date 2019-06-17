@@ -5,9 +5,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="fxp_mailer.transport.swiftmailer" class="Fxp\Component\Mailer\Transport\SwiftMailerTransport" public="false">
-            <tag name="fxp_mailer.transport" />
-            <argument type="service" id="swiftmailer.mailer" />
+        <service id="fxp_mailer.twig.loader.doctrine_template"
+                 class="Fxp\Component\Mailer\Doctrine\Twig\Loader\DoctrineTemplateLoader"
+                 public="false">
+            <tag name="twig.loader" priority="1000" />
+            <argument type="service" id="doctrine" />
         </service>
     </services>
 </container>

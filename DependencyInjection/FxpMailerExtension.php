@@ -11,14 +11,14 @@
 
 namespace Fxp\Bundle\MailerBundle\DependencyInjection;
 
-use Fxp\Component\Mailer\Loader\ConfigTemplateLayoutLoader;
-use Fxp\Component\Mailer\Loader\ConfigTemplateMailLoader;
+use Fxp\Component\Mailer\TwigSecurityPolicies;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Mailer\Mailer;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -37,139 +37,119 @@ class FxpMailerExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        // model classes
-        $container->setParameter('fxp_mailer.layout_class', $config['layout_class']);
-        $container->setParameter('fxp_mailer.mail_class', $config['mail_class']);
-
-        $this->loadConfigs($loader);
-        $this->configureTransport($container, $loader, $config);
-        $this->addTemplates($container, 'layout', ConfigTemplateLayoutLoader::class, $config['layout_templates']);
-        $this->addTemplates($container, 'mail', ConfigTemplateMailLoader::class, $config['mail_templates'], new Reference('fxp_mailer.loader.template_layout_chain'));
-        $this->addFilters($container, $loader, 'template', $config['filters']['templates']);
-        $this->addFilters($container, $loader, 'transport', $config['filters']['transports']);
+        $this->configureMailer($loader);
+        $this->configureTwig($container, $loader, $config['twig']);
     }
 
     /**
-     * Load the configs.
-     *
-     * @param Loader\XmlFileLoader $loader The loader
+     * @param LoaderInterface $loader
      *
      * @throws
      */
-    protected function loadConfigs(Loader\XmlFileLoader $loader): void
+    private function configureMailer(LoaderInterface $loader): void
     {
         $loader->load('mailer.xml');
-        $loader->load('templater.xml');
-        $loader->load('filter.xml');
-        $loader->load('doctrine_loader.xml');
-        $loader->load('twig.xml');
+
+        if (class_exists(Mailer::class)) {
+            $loader->load('mailer_symfony_mailer.xml');
+        }
     }
 
     /**
-     * Configure the transport.
-     *
-     * @param ContainerBuilder     $container The container
-     * @param Loader\XmlFileLoader $loader    The config loader
-     * @param array                $config    The config
+     * @param ContainerBuilder $container
+     * @param LoaderInterface  $loader
+     * @param array            $config
      *
      * @throws
      */
-    protected function configureTransport(ContainerBuilder $container, Loader\XmlFileLoader $loader, array $config): void
+    private function configureTwig(ContainerBuilder $container, LoaderInterface $loader, array $config): void
     {
-        if (class_exists('Swift_Message')) {
-            $loader->load('transport_swiftmailer.xml');
+        if (class_exists(TwigBundle::class)) {
+            $loader->load('twig.xml');
 
-            if ($config['transports']['swiftmailer']['dkim_signer']['enabled']) {
-                $loader->load('transport_swiftmailer_dkim_signer.xml');
-                $dkimConfig = $config['transports']['swiftmailer']['dkim_signer'];
-                $prefix = 'fxp_mailer.transport.swiftmailer.dkim_signer.';
-                $container->setParameter($prefix.'private_key_path', $dkimConfig['private_key_path']);
-                $container->setParameter($prefix.'domain', $dkimConfig['domain']);
-                $container->setParameter($prefix.'selector', $dkimConfig['selector']);
-            }
-
-            if ($config['transports']['swiftmailer']['embed_image']['enabled']) {
-                $loader->load('transport_swiftmailer_embed_image.xml');
-                $embedConfig = $config['transports']['swiftmailer']['embed_image'];
-                $prefix = 'fxp_mailer.transport.swiftmailer.embed_image.';
-                $container->setParameter($prefix.'web_dir', $this->getWebDir($container, $embedConfig['web_dir']));
-                $container->setParameter($prefix.'host_pattern', $embedConfig['host_pattern']);
-            }
+            $this->configureTwigSandbox($container, $config['sandbox']);
+            $this->configureTwigEmail($container, $loader, $config);
+            $this->configureTwigDefaultLocale($container, $config);
+            $this->configureTwigLoaders($loader, $config['loaders']);
         }
     }
 
-    /**
-     * Add the templates.
-     *
-     * Not attached with tag because removing on the optimization.
-     *
-     * @param ContainerBuilder $container The container
-     * @param string           $type      The template type
-     * @param string           $class     The class name of config loader
-     * @param array            $templates The template configs of layouts
-     * @param Reference        $reference The reference
-     */
-    protected function addTemplates(ContainerBuilder $container, string $type, string $class, array $templates, ?Reference $reference = null): void
+    private function configureTwigSandbox(ContainerBuilder $container, array $config): void
     {
-        $loaderTypes = [];
+        $securityPolicy = $this->mergeSecurityPolicy($config['security_policy']);
+        $container->getDefinition('fxp_mailer.twig.sandbox.security_policy')
+            ->replaceArgument(0, $securityPolicy['allowed_tags'])
+            ->replaceArgument(1, $securityPolicy['allowed_filters'])
+            ->replaceArgument(2, $securityPolicy['allowed_methods'])
+            ->replaceArgument(3, $securityPolicy['allowed_properties'])
+            ->replaceArgument(4, $securityPolicy['allowed_functions'])
+        ;
 
-        foreach ($templates as $template) {
-            $loader = $template['loader'] ?? 'config';
-            $loaderTypes[$loader][] = $template;
-        }
-
-        foreach ($loaderTypes as $loader => $loaderTemplate) {
-            $def = new Definition($class);
-            $def->setArguments([$loaderTemplate]);
-
-            if (null !== $reference) {
-                $def->addArgument($reference);
-            }
-
-            $container->setDefinition(sprintf('fxp_mailer.loader.template_%s_%s', $type, $loader), $def);
-        }
+        $container->getDefinition('fxp_mailer.twig.loader.sandbox')
+            ->replaceArgument(1, $config['available_namespaces'])
+        ;
     }
 
     /**
-     * Add the filters.
-     *
-     * @param ContainerBuilder     $container The container
-     * @param Loader\XmlFileLoader $loader    The xml loader
-     * @param string               $type      The filter type
-     * @param array[]              $filters   The filters configs
+     * @param ContainerBuilder $container
+     * @param LoaderInterface  $loader
+     * @param array            $config
      *
      * @throws
      */
-    protected function addFilters(
-        ContainerBuilder $container,
-        Loader\XmlFileLoader $loader,
-        string $type,
-        array $filters
-    ): void {
-        foreach ($filters as $name => $filter) {
-            $loader->load('filters/'.$type.'s/'.$name.'.xml');
+    private function configureTwigEmail(ContainerBuilder $container, LoaderInterface $loader, array $config): void
+    {
+        if (class_exists(Mailer::class)) {
+            $loader->load('twig_symfony_mailer.xml');
 
-            foreach ($filter as $key => $value) {
-                $container->setParameter('fxp_mailer.filter.'.$type.'.'.$name.'.'.$key, $value);
+            if (!$config['enable_unstrict_variables']) {
+                $container->removeDefinition('fxp_mailer.twig.symfony_mailer.unstrict_body_renderer');
             }
         }
     }
 
-    /**
-     * Get the web directory.
-     *
-     * @param ContainerBuilder $container The container
-     * @param null|string      $webDir    The web directory
-     *
-     * @return string
-     */
-    protected function getWebDir(ContainerBuilder $container, ?string $webDir = null): string
+    private function configureTwigDefaultLocale(ContainerBuilder $container, array $config): void
     {
-        if (null === $webDir) {
-            $projectDir = $container->getParameter('kernel.project_dir');
-            $webDir = is_dir($projectDir.'/public') ? $projectDir.'/public' : $projectDir.'/web';
+        $defaultLocale = $config['default_locale'];
+
+        foreach (['locale_fallback', 'locale', 'default_locale'] as $parameter) {
+            if ($container->hasParameter($parameter)) {
+                $defaultLocale = $parameter;
+
+                break;
+            }
         }
 
-        return $webDir;
+        if (null !== $defaultLocale) {
+            $container->getDefinition('fxp_mailer.twig.loader.filesystem_template')
+                ->replaceArgument(1, '%'.$defaultLocale.'%')
+            ;
+        }
+    }
+
+    /**
+     * @param LoaderInterface $loader
+     * @param array           $config
+     *
+     * @throws
+     */
+    private function configureTwigLoaders(LoaderInterface $loader, array $config): void
+    {
+        if ($config['doctrine']) {
+            $loader->load('twig_doctrine.xml');
+        }
+    }
+
+    private function mergeSecurityPolicy(array $config): array
+    {
+        if (!$config['override']) {
+            $config['allowed_tags'] = array_unique(array_merge(TwigSecurityPolicies::ALLOWED_TAGS, $config['allowed_tags']));
+            $config['allowed_filters'] = array_unique(array_merge(TwigSecurityPolicies::ALLOWED_FILTERS, $config['allowed_filters']));
+            $config['allowed_methods'] = array_merge(TwigSecurityPolicies::ALLOWED_METHODS, $config['allowed_methods']);
+            $config['allowed_properties'] = array_merge(TwigSecurityPolicies::ALLOWED_PROPERTIES, $config['allowed_properties']);
+            $config['allowed_functions'] = array_unique(array_merge(TwigSecurityPolicies::ALLOWED_FUNCTIONS, $config['allowed_functions']));
+        }
+
+        return $config;
     }
 }

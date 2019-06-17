@@ -5,9 +5,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="fxp_mailer.filter.template.css_to_styles"
-                 class="Fxp\Component\Mailer\Filter\Template\CssToStylesFilter">
-            <tag name="fxp_mailer.template_filter" />
+        <service id="fxp_mailer.transporter.symfony_mailer_email"
+                 class="Fxp\Component\Mailer\Transporter\EmailTransporter"
+                 public="false">
+            <tag name="fxp_mailer.transporter" />
+            <argument type="service" id="mailer.mailer" />
         </service>
     </services>
 </container>

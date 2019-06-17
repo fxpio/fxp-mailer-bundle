@@ -7,16 +7,14 @@ Fxp Mailer Bundle
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/fxpio/fxp-mailer-bundle/master.svg)](https://scrutinizer-ci.com/g/fxpio/fxp-mailer-bundle?branch=master)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/8e1937d0-1e2d-464f-88d8-076c3a6b8ec5.svg)](https://insight.sensiolabs.com/projects/8e1937d0-1e2d-464f-88d8-076c3a6b8ec5)
 
-The Fxp MailerBundle is a manager for render and send an mail template with different
-transport (email, mail, fax, ...).
+The Fxp Mailer is a manager to render and send an mail template with different
+transporter (email, sms, etc...).
 
 Features include:
 
 - All features of [Fxp Mailer](https://github.com/fxpio/fxp-mailer)
-- Compiler pass of template mail and transport filters
-- Compiler pass of layout and mail loaders
-- Compiler pass of layout and mail
-- Compiler pass of transport
+- Compiler pass of transporter to add your custom transporter
+- Default configuration of Twig Sandbox Security Policies (overridable)
 
 Documentation
 -------------

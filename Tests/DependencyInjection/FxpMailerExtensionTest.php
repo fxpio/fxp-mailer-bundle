@@ -16,11 +16,12 @@ use Fxp\Bundle\MailerBundle\DependencyInjection\FxpMailerExtension;
 use Fxp\Bundle\MailerBundle\FxpMailerBundle;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
- * Tests for symfony extension.
+ * Tests for symfony extension configuration.
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  *
@@ -39,110 +40,96 @@ final class FxpMailerExtensionTest extends TestCase
     {
         $container = $this->createContainer();
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.mail_templater'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_layout_chain'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_mail_chain'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_layout_array'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_mail_array'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.template_layout_config'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.template_mail_config'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.template_layout_yaml'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.loader.template_mail_yaml'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.mailer'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.loader.sandbox'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.loader.filesystem_template'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.sandbox_templater'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.extension.sandbox'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.sandbox.security_policy'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.sandbox_body_renderer'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.unstrict_body_renderer'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.transporter.symfony_mailer_email'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.twig.loader.doctrine_template'));
     }
 
-    public function testAddTemplates(): void
+    public function testExtensionLoaderWithDoctrineEnabled(): void
     {
         $container = $this->createContainer([
-            [
-                'layout_templates' => [
-                    [
-                        'name' => 'layout-test',
-                        'loader' => 'config',
-                    ],
-                ],
-                'mail_templates' => [
-                    [
-                        'name' => 'mail-test',
-                        'loader' => 'config',
-                        'layout' => 'layout-test',
+            'fxp_mailer' => [
+                'twig' => [
+                    'loaders' => [
+                        'doctrine' => true,
                     ],
                 ],
             ],
         ]);
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_layout_array'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.loader.template_mail_array'));
-
-        $layout = $container->getDefinition('fxp_mailer.loader.template_layout_array');
-        $this->assertCount(1, $layout->getArguments());
-        $this->assertCount(1, $layout->getArgument(0));
-
-        $mail = $container->getDefinition('fxp_mailer.loader.template_mail_array');
-        $this->assertCount(2, $mail->getArguments());
-        $this->assertCount(1, $mail->getArgument(0));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.loader.doctrine_template'));
     }
 
-    public function testAddFilters(): void
+    public function testExtensionLoaderWithUnstrictBodyRendererDisabled(): void
     {
         $container = $this->createContainer([
-            [
-                'filters' => [
-                    'templates' => [
-                        'css_to_styles' => [
-                            'foo' => 'bar',
-                            'bar' => 'foo',
-                        ],
-                    ],
+            'fxp_mailer' => [
+                'twig' => [
+                    'enable_unstrict_variables' => false,
                 ],
             ],
         ]);
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.filter.template.css_to_styles'));
-        $this->assertTrue($container->hasParameter('fxp_mailer.filter.template.css_to_styles.foo'));
-        $this->assertTrue($container->hasParameter('fxp_mailer.filter.template.css_to_styles.bar'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.sandbox_body_renderer'));
+        $this->assertFalse($container->hasDefinition('fxp_mailer.twig.symfony_mailer.unstrict_body_renderer'));
     }
 
-    public function testEnableSwiftMailerEmbedImagePlugin(): void
+    public function getFallbackLocales(): array
     {
+        return [
+            ['en', null, null],
+            ['en', null, 'custom_fallback'],
+            ['%locale_fallback%', null, 'locale_fallback'],
+            ['%locale%', null, 'locale'],
+            ['%default_locale%', null, 'default_locale'],
+        ];
+    }
+
+    /**
+     * @dataProvider getFallbackLocales
+     *
+     * @param string      $expected
+     * @param null|string $value
+     * @param null|string $parameter
+     */
+    public function testExtensionLoaderWithCustomFallbackForFilesystemTemplate(
+        string $expected,
+        ?string $value,
+        ?string $parameter = null
+    ): void {
+        \Locale::setDefault('fr_FR');
+        $parameters = null === $parameter ? [] : [
+            $parameter => $value,
+        ];
+
         $container = $this->createContainer([
-            [
-                'transports' => [
-                    'swiftmailer' => [
-                        'embed_image' => true,
-                    ],
+            'fxp_mailer' => [
+                'twig' => [
+                    'default_locale' => null === $parameter ? $value : null,
                 ],
             ],
-        ]);
+        ], $parameters);
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.transport.swiftmailer.embed_image_plugin'));
+        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.loader.filesystem_template'));
+        $def = $container->getDefinition('fxp_mailer.twig.loader.filesystem_template');
+        $defArgs = $def->getArguments();
+        $this->assertCount(2, $defArgs);
+        $this->assertSame($expected, $defArgs[1]);
     }
 
-    public function testEnableSwiftMailerDkimSignerPlugin(): void
-    {
-        $container = $this->createContainer([
-            [
-                'transports' => [
-                    'swiftmailer' => [
-                        'dkim_signer' => [
-                            'enabled' => true,
-                            'private_key_path' => 'private_key_path',
-                            'domain' => 'domain',
-                            'selector' => 'selector',
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-
-        $this->assertTrue($container->hasDefinition('fxp_mailer.transport.swiftmailer.dkim_signer_plugin'));
-    }
-
-    protected function createContainer(array $configs = [])
+    protected function createContainer(array $configs = [], array $parameters = []): ContainerBuilder
     {
         $container = new ContainerBuilder(new ParameterBag([
             'kernel.bundles' => [
-                'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
-                'FxpMailerBundle' => 'Fxp\\Bundle\\MailerBundle\\FxpMailerBundle',
+                'FrameworkBundle' => FrameworkBundle::class,
+                'FxpMailerBundle' => FxpMailerBundle::class,
             ],
             'kernel.bundles_metadata' => [],
             'kernel.cache_dir' => sys_get_temp_dir().'/fxp_mailer_bundle',
@@ -153,6 +140,8 @@ final class FxpMailerExtensionTest extends TestCase
             'kernel.root_dir' => sys_get_temp_dir().'/fxp_mailer_bundle/app',
             'kernel.charset' => 'UTF-8',
         ]));
+
+        $container->getParameterBag()->add($parameters);
 
         $sfExt = new FrameworkExtension();
         $doctrineExt = new DoctrineExtension();
@@ -184,7 +173,7 @@ final class FxpMailerExtensionTest extends TestCase
         return $container;
     }
 
-    protected function getDoctrineConfig()
+    protected function getDoctrineConfig(): array
     {
         return [
             'dbal' => [
