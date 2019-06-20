@@ -48,7 +48,7 @@ final class TransporterPassTest extends KernelTestCase
         $container = $this->getContainer();
 
         $this->pass->process($container);
-        $this->assertFalse($container->has('fxp_mailer.mailer'));
+        static::assertFalse($container->has('fxp_mailer.mailer'));
     }
 
     public function testProcessWithAddTransporters(): void
@@ -59,7 +59,7 @@ final class TransporterPassTest extends KernelTestCase
 
         $container->setDefinition('fxp_mailer.mailer', $mailerDef);
 
-        $this->assertCount(0, $mailerDef->getArgument(0));
+        static::assertCount(0, $mailerDef->getArgument(0));
 
         // add mocks
         $transporter = new Definition(TransporterInterface::class);
@@ -70,7 +70,7 @@ final class TransporterPassTest extends KernelTestCase
         // test
         $this->pass->process($container);
 
-        $this->assertCount(1, $mailerDef->getArgument(0));
+        static::assertCount(1, $mailerDef->getArgument(0));
     }
 
     /**

@@ -29,7 +29,7 @@ final class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[]]);
 
-        $this->assertEquals(array_merge([], self::getBundleDefaultConfig()), $config);
+        static::assertEquals(array_merge([], self::getBundleDefaultConfig()), $config);
     }
 
     /**

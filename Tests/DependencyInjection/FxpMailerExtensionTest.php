@@ -33,23 +33,23 @@ final class FxpMailerExtensionTest extends TestCase
     {
         $container = $this->createContainer();
 
-        $this->assertTrue($container->hasExtension('fxp_mailer'));
+        static::assertTrue($container->hasExtension('fxp_mailer'));
     }
 
     public function testExtensionLoader(): void
     {
         $container = $this->createContainer();
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.mailer'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.loader.sandbox'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.loader.filesystem_template'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.sandbox_templater'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.extension.sandbox'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.sandbox.security_policy'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.sandbox_body_renderer'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.unstrict_body_renderer'));
-        $this->assertTrue($container->hasDefinition('fxp_mailer.transporter.symfony_mailer_email'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.twig.loader.doctrine_template'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.mailer'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.loader.sandbox'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.loader.filesystem_template'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.sandbox_templater'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.extension.sandbox'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.sandbox.security_policy'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.sandbox_body_renderer'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.unstrict_body_renderer'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.transporter.symfony_mailer_email'));
+        static::assertFalse($container->hasDefinition('fxp_mailer.twig.loader.doctrine_template'));
     }
 
     public function testExtensionLoaderWithDoctrineEnabled(): void
@@ -64,7 +64,7 @@ final class FxpMailerExtensionTest extends TestCase
             ],
         ]);
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.loader.doctrine_template'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.loader.doctrine_template'));
     }
 
     public function testExtensionLoaderWithUnstrictBodyRendererDisabled(): void
@@ -77,8 +77,8 @@ final class FxpMailerExtensionTest extends TestCase
             ],
         ]);
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.sandbox_body_renderer'));
-        $this->assertFalse($container->hasDefinition('fxp_mailer.twig.symfony_mailer.unstrict_body_renderer'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.symfony_mailer.sandbox_body_renderer'));
+        static::assertFalse($container->hasDefinition('fxp_mailer.twig.symfony_mailer.unstrict_body_renderer'));
     }
 
     public function getFallbackLocales(): array
@@ -117,11 +117,11 @@ final class FxpMailerExtensionTest extends TestCase
             ],
         ], $parameters);
 
-        $this->assertTrue($container->hasDefinition('fxp_mailer.twig.loader.filesystem_template'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.loader.filesystem_template'));
         $def = $container->getDefinition('fxp_mailer.twig.loader.filesystem_template');
         $defArgs = $def->getArguments();
-        $this->assertCount(2, $defArgs);
-        $this->assertSame($expected, $defArgs[1]);
+        static::assertCount(2, $defArgs);
+        static::assertSame($expected, $defArgs[1]);
     }
 
     protected function createContainer(array $configs = [], array $parameters = []): ContainerBuilder
