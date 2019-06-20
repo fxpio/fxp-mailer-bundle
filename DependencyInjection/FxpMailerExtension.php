@@ -12,6 +12,8 @@
 namespace Fxp\Bundle\MailerBundle\DependencyInjection;
 
 use Fxp\Component\Mailer\TwigSecurityPolicies;
+use Fxp\Component\SmsSender\SmsSender;
+use Fxp\Component\SmsSender\Twig\Mime\TemplatedSms;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -38,6 +40,7 @@ class FxpMailerExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $this->configureMailer($loader);
+        $this->configureSmsSender($container, $loader, $config['sms_sender']);
         $this->configureTwig($container, $loader, $config['twig']);
     }
 
@@ -52,6 +55,27 @@ class FxpMailerExtension extends Extension
 
         if (class_exists(Mailer::class)) {
             $loader->load('mailer_symfony_mailer.xml');
+        }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param LoaderInterface  $loader
+     * @param array            $config
+     *
+     * @throws
+     */
+    private function configureSmsSender(ContainerBuilder $container, LoaderInterface $loader, array $config): void
+    {
+        if (class_exists(SmsSender::class)) {
+            $loader->load('fxp_sms_sender.xml');
+            $loader->load('mailer_fxp_sms_sender.xml');
+
+            if (class_exists(TemplatedSms::class)) {
+                $loader->load('twig_fxp_sms_sender.xml');
+            }
+
+            $container->getDefinition('fxp_sms_sender.transport')->setArgument(0, $config['dsn']);
         }
     }
 

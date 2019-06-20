@@ -34,11 +34,27 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
+            ->append($this->getSmsSenderNode())
             ->append($this->getTwigNode())
             ->end()
         ;
 
         return $treeBuilder;
+    }
+
+    protected function getSmsSenderNode(): ArrayNodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('sms_sender');
+        /** @var ArrayNodeDefinition $node */
+        $node = $treeBuilder->getRootNode();
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('dsn')->defaultValue('sms://null')->end()
+            ->end()
+        ;
+
+        return $node;
     }
 
     protected function getTwigNode(): ArrayNodeDefinition

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="fxp_mailer.transporter.fxp_sms_sender"
+                 class="Fxp\Component\Mailer\Transporter\SmsTransporter"
+                 public="false">
+            <tag name="fxp_mailer.transporter" />
+            <argument type="service" id="fxp_sms_sender.sender" />
+        </service>
+    </services>
+</container>

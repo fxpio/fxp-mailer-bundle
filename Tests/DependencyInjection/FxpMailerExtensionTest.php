@@ -14,6 +14,7 @@ namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
 use Fxp\Bundle\MailerBundle\DependencyInjection\FxpMailerExtension;
 use Fxp\Bundle\MailerBundle\FxpMailerBundle;
+use Fxp\Component\SmsSender\SmsSenderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -65,6 +66,30 @@ final class FxpMailerExtensionTest extends TestCase
         ]);
 
         static::assertTrue($container->hasDefinition('fxp_mailer.twig.loader.doctrine_template'));
+    }
+
+    public function testExtensionLoaderWithSmsSender(): void
+    {
+        $container = $this->createContainer([
+            'fxp_mailer' => [
+                'sms_sender' => [
+                    'dsn' => 'sms://null',
+                ],
+            ],
+        ]);
+
+        static::assertTrue($container->hasDefinition('fxp_sms_sender.sender'));
+        static::assertTrue($container->hasDefinition('fxp_sms_sender.transport'));
+        static::assertTrue($container->hasDefinition('fxp_sms_sender.messenger.message_handler'));
+        static::assertTrue($container->hasAlias('sms_sender'));
+        static::assertTrue($container->hasAlias(SmsSenderInterface::class));
+
+        static::assertTrue($container->hasDefinition('fxp_mailer.transporter.fxp_sms_sender'));
+
+        static::assertTrue($container->hasDefinition('fxp_sms_sender.twig.mailer.message_listener'));
+        static::assertTrue($container->hasDefinition('fxp_sms_sender.twig.mime_body_renderer'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.fxp_sms_sender.sandbox_body_renderer'));
+        static::assertTrue($container->hasDefinition('fxp_mailer.twig.fxp_sms_sender.unstrict_body_renderer'));
     }
 
     public function testExtensionLoaderWithUnstrictBodyRendererDisabled(): void

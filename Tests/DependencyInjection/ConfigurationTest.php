@@ -38,6 +38,9 @@ final class ConfigurationTest extends TestCase
     protected static function getBundleDefaultConfig(): array
     {
         return [
+            'sms_sender' => [
+                'dsn' => 'sms://null',
+            ],
             'twig' => [
                 'sandbox' => [
                     'security_policy' => [
