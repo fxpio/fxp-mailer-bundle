@@ -17,21 +17,21 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 $email = (new TemplatedEmail())
     // email config
-    ->htmlTemplate('@doctrine_template_messages/welcome')
+    ->htmlTemplate('@user_templates/welcome')
 ;
 ```
 
 To select manually the locale, you must add the valid locale in the path
-(example `@doctrine_template_messages/<LOCALE>/<TEMPLATE_NAME>`) like:
+(example `@user_templates/<LOCALE>/<TEMPLATE_NAME>`) like:
 
 ```php
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 $email = (new TemplatedEmail())
     // email config
-    ->htmlTemplate('@doctrine_template_messages/fr_FR/welcome')
+    ->htmlTemplate('@user_templates/fr_FR/welcome')
     // or
-    ->htmlTemplate('@doctrine_template_messages/fr/welcome')
+    ->htmlTemplate('@user_templates/fr/welcome')
 ;
 ```
 
@@ -49,11 +49,11 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 $email = (new TemplatedEmail())
     // email config
-    ->htmlTemplate('@doctrine_template_messages/email/fr_FR/welcome')
+    ->htmlTemplate('@user_templates/email/fr_FR/welcome')
     // or
-    ->htmlTemplate('@doctrine_template_messages/fr/email/welcome')
+    ->htmlTemplate('@user_templates/fr/email/welcome')
     // or
-    ->htmlTemplate('@doctrine_template_messages/email/welcome')
+    ->htmlTemplate('@user_templates/email/welcome')
 ;
 ```
 
@@ -67,12 +67,12 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 $email = (new TemplatedEmail())
     // email config
-    ->htmlTemplate('@doctrine_template_messages/email/fr_FR/path/in/template/name')
+    ->htmlTemplate('@user_templates/email/fr_FR/path/in/template/name')
     // or
-    ->htmlTemplate('@doctrine_template_messages/fr/email/path/in/template/name')
+    ->htmlTemplate('@user_templates/fr/email/path/in/template/name')
     // or
-    ->htmlTemplate('@doctrine_template_messages/email/path/in/template/name')
+    ->htmlTemplate('@user_templates/email/path/in/template/name')
     // or without type filter
-    ->htmlTemplate('@doctrine_template_messages//path/in/template/name')
+    ->htmlTemplate('@user_templates//path/in/template/name')
 ;
 ```

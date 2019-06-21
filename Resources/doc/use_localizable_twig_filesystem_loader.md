@@ -16,21 +16,21 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 $email = (new TemplatedEmail())
     // email config
-    ->htmlTemplate('@template_messages/emails/welcome/welcome.html.twig')
+    ->htmlTemplate('@templates/emails/welcome/welcome.html.twig')
 ;
 ```
 
 To select manually the locale, you must add the valid locale in the filename
-(example `@template_messages/<PATH_IN_TEMPLATES_DIR>/<NAME>.<LOCALE>.html.twig`) like:
+(example `@templates/<PATH_IN_TEMPLATES_DIR>/<NAME>.<LOCALE>.html.twig`) like:
 
 ```php
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 $email = (new TemplatedEmail())
     // email config
-    ->htmlTemplate('@template_messages/emails/welcome/welcome.fr_FR.html.twig')
+    ->htmlTemplate('@templates/emails/welcome/welcome.fr_FR.html.twig')
     // or
-    ->htmlTemplate('@template_messages/emails/welcome/welcome.fr.html.twig')
+    ->htmlTemplate('@templates/emails/welcome/welcome.fr.html.twig')
 ;
 ```
 

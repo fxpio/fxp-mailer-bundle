@@ -85,7 +85,7 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->append($this->getTwigSandboxSecurityPolicyNode())
             ->arrayNode('available_namespaces')
-            ->defaultValue(['doctrine_template_messages'])
+            ->defaultValue(['user_templates'])
             ->scalarPrototype()->end()
             ->end()
             ->end()

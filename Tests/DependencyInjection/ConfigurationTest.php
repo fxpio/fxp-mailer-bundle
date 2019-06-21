@@ -52,7 +52,7 @@ final class ConfigurationTest extends TestCase
                         'allowed_functions' => [],
                     ],
                     'available_namespaces' => [
-                        'doctrine_template_messages',
+                        'user_templates',
                     ],
                 ],
                 'loaders' => [

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fxpio/fxp-mailer.git",
-                "reference": "674affab69bb38d0c1589965ddc8049e36c8313a"
+                "reference": "eb8a87ae1ef9f25e51cc033652f6ba83c2db6fbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fxpio/fxp-mailer/zipball/674affab69bb38d0c1589965ddc8049e36c8313a",
-                "reference": "674affab69bb38d0c1589965ddc8049e36c8313a",
+                "url": "https://api.github.com/repos/fxpio/fxp-mailer/zipball/eb8a87ae1ef9f25e51cc033652f6ba83c2db6fbc",
+                "reference": "eb8a87ae1ef9f25e51cc033652f6ba83c2db6fbc",
                 "shasum": ""
             },
             "require": {
@@ -70,7 +70,7 @@
                 "template",
                 "twig"
             ],
-            "time": "2019-06-20T16:22:39+00:00"
+            "time": "2019-06-21T10:30:20+00:00"
         },
         {
             "name": "psr/cache",
@@ -2901,12 +2901,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fxpio/fxp-sms-sender.git",
-                "reference": "8f6acc111e561a670794bf73342d418efaa3c8ab"
+                "reference": "be2cf157d39d53bf4572a57706ebd2ea2efc509a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fxpio/fxp-sms-sender/zipball/8f6acc111e561a670794bf73342d418efaa3c8ab",
-                "reference": "8f6acc111e561a670794bf73342d418efaa3c8ab",
+                "url": "https://api.github.com/repos/fxpio/fxp-sms-sender/zipball/be2cf157d39d53bf4572a57706ebd2ea2efc509a",
+                "reference": "be2cf157d39d53bf4572a57706ebd2ea2efc509a",
                 "shasum": ""
             },
             "require": {
@@ -2951,7 +2951,7 @@
             "keywords": [
                 "sms"
             ],
-            "time": "2019-06-20T15:20:17+00:00"
+            "time": "2019-06-21T10:13:06+00:00"
         },
         {
             "name": "fxp/twig-sms-sender",
