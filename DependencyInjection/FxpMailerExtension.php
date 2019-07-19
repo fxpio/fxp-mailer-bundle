@@ -12,6 +12,8 @@
 namespace Fxp\Bundle\MailerBundle\DependencyInjection;
 
 use Fxp\Component\Mailer\TwigSecurityPolicies;
+use Fxp\Component\SmsSender\Bridge\Amazon\Transport\SnsTransportFactory;
+use Fxp\Component\SmsSender\Bridge\Twilio\Transport\TwilioTransportFactory;
 use Fxp\Component\SmsSender\SmsSender;
 use Fxp\Component\SmsSender\Twig\Mime\TemplatedSms;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -69,13 +71,25 @@ class FxpMailerExtension extends Extension
     {
         if (class_exists(SmsSender::class)) {
             $loader->load('fxp_sms_sender.xml');
+            $loader->load('fxp_sms_sender_transports.xml');
             $loader->load('mailer_fxp_sms_sender.xml');
 
             if (class_exists(TemplatedSms::class)) {
                 $loader->load('twig_fxp_sms_sender.xml');
             }
 
-            $container->getDefinition('fxp_sms_sender.transport')->setArgument(0, $config['dsn']);
+            $container->getDefinition('fxp_sms_sender.default_transport')->setArgument(0, $config['dsn']);
+
+            $classToServices = [
+                SnsTransportFactory::class => 'fxp_sms_sender.transport_factory.amazon',
+                TwilioTransportFactory::class => 'fxp_sms_sender.transport_factory.twilio',
+            ];
+
+            foreach ($classToServices as $class => $service) {
+                if (!class_exists($class)) {
+                    $container->removeDefinition($service);
+                }
+            }
         }
     }
 

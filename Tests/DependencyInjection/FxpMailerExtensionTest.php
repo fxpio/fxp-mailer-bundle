@@ -79,7 +79,7 @@ final class FxpMailerExtensionTest extends TestCase
         ]);
 
         static::assertTrue($container->hasDefinition('fxp_sms_sender.sender'));
-        static::assertTrue($container->hasDefinition('fxp_sms_sender.transport'));
+        static::assertTrue($container->hasDefinition('fxp_sms_sender.default_transport'));
         static::assertTrue($container->hasDefinition('fxp_sms_sender.messenger.message_handler'));
         static::assertTrue($container->hasAlias('sms_sender'));
         static::assertTrue($container->hasAlias(SmsSenderInterface::class));

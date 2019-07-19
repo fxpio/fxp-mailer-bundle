@@ -8,30 +8,31 @@
         <service id="fxp_sms_sender.sender"
                  class="Fxp\Component\SmsSender\SmsSender"
                  public="true">
-            <argument type="service" id="fxp_sms_sender.transport" />
+            <argument type="service" id="fxp_sms_sender.default_transport" />
             <argument type="service" id="messenger.default_bus" on-invalid="ignore" />
         </service>
 
         <service id="sms_sender" alias="fxp_sms_sender.sender" />
         <service id="Fxp\Component\SmsSender\SmsSenderInterface" alias="fxp_sms_sender.sender" />
 
-        <service id="fxp_sms_sender.transport"
-                 class="Fxp\Component\SmsSender\Transport\TransportInterface"
-                 public="false">
-            <factory class="Fxp\Component\SmsSender\Transport" method="fromDsn" />
-            <argument /> <!-- env(SMS_SENDER_DSN) -->
-            <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="http_client" on-invalid="ignore" />
-            <argument type="service" id="logger" on-invalid="ignore" />
+        <service id="fxp_sms_sender.transport_factory" class="Fxp\Component\SmsSender\Transport">
+            <argument type="tagged" tag="fxp_sms_sender.transport_factory" />
         </service>
 
-        <service id="Fxp\Component\SmsSender\Transport\TransportInterface" alias="fxp_sms_sender.transport" />
+        <service id="fxp_sms_sender.default_transport"
+                 class="Fxp\Component\SmsSender\Transport\TransportInterface"
+                 public="false">
+            <factory service="fxp_sms_sender.transport_factory" method="fromString" />
+            <argument /> <!-- env(SMS_SENDER_DSN) -->
+        </service>
+
+        <service id="Fxp\Component\SmsSender\Transport\TransportInterface" alias="fxp_sms_sender.default_transport" />
 
         <service id="fxp_sms_sender.messenger.message_handler"
                  class="Fxp\Component\SmsSender\Messenger\MessageHandler"
                  public="false">
             <tag name="messenger.message_handler" />
-            <argument type="service" id="fxp_sms_sender.transport" />
+            <argument type="service" id="fxp_sms_sender.default_transport" />
         </service>
     </services>
 </container>
