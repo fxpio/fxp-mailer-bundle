@@ -21,7 +21,7 @@
     "require-dev": {
         "doctrine/doctrine-bundle": "^1.9.0",
         "doctrine/orm": "^2.6.0",
-        "fxp/sms-sender": "^2.0.0",
+        "fxp/sms-sender-bundle": "^2.0.0",
         "fxp/twig-sms-sender": "^2.0.0",
         "symfony/mailer": "^4.3.0",
         "symfony/twig-bundle": "^4.3.0"

@@ -14,6 +14,8 @@ namespace Fxp\Bundle\MailerBundle\Tests\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
 use Fxp\Bundle\MailerBundle\DependencyInjection\FxpMailerExtension;
 use Fxp\Bundle\MailerBundle\FxpMailerBundle;
+use Fxp\Bundle\SmsSenderBundle\DependencyInjection\FxpSmsSenderExtension;
+use Fxp\Bundle\SmsSenderBundle\FxpSmsSenderBundle;
 use Fxp\Component\SmsSender\SmsSenderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
@@ -70,11 +72,9 @@ final class FxpMailerExtensionTest extends TestCase
 
     public function testExtensionLoaderWithSmsSender(): void
     {
-        $container = $this->createContainer([
-            'fxp_mailer' => [
-                'sms_sender' => [
-                    'dsn' => 'sms://null',
-                ],
+        $container = $this->createContainer([], [], [
+            'fxp_sms_sender' => [
+                'dsn' => 'sms://null',
             ],
         ]);
 
@@ -86,7 +86,7 @@ final class FxpMailerExtensionTest extends TestCase
 
         static::assertTrue($container->hasDefinition('fxp_mailer.transporter.fxp_sms_sender'));
 
-        static::assertTrue($container->hasDefinition('fxp_sms_sender.twig.mailer.message_listener'));
+        static::assertTrue($container->hasDefinition('fxp_sms_sender.twig.message_listener'));
         static::assertTrue($container->hasDefinition('fxp_sms_sender.twig.mime_body_renderer'));
         static::assertTrue($container->hasDefinition('fxp_mailer.twig.fxp_sms_sender.sandbox_body_renderer'));
         static::assertTrue($container->hasDefinition('fxp_mailer.twig.fxp_sms_sender.unstrict_body_renderer'));
@@ -149,7 +149,7 @@ final class FxpMailerExtensionTest extends TestCase
         static::assertSame($expected, $defArgs[1]);
     }
 
-    protected function createContainer(array $configs = [], array $parameters = []): ContainerBuilder
+    protected function createContainer(array $configs = [], array $parameters = [], array $smsSenderConfigs = []): ContainerBuilder
     {
         $container = new ContainerBuilder(new ParameterBag([
             'kernel.bundles' => [
@@ -170,17 +170,23 @@ final class FxpMailerExtensionTest extends TestCase
 
         $sfExt = new FrameworkExtension();
         $doctrineExt = new DoctrineExtension();
+        $smsSenderExt = new FxpSmsSenderExtension();
         $extension = new FxpMailerExtension();
 
         $container->registerExtension($sfExt);
         $container->registerExtension($doctrineExt);
+        $container->registerExtension($smsSenderExt);
         $container->registerExtension($extension);
 
         $sfExt->load([[]], $container);
         $doctrineExt->load([$this->getDoctrineConfig()], $container);
+        $smsSenderExt->load($smsSenderConfigs, $container);
         $extension->load($configs, $container);
 
+        $smsSenderBundle = new FxpSmsSenderBundle();
         $bundle = new FxpMailerBundle();
+
+        $smsSenderBundle->build($container);
         $bundle->build($container);
 
         $optimizationPasses = [];

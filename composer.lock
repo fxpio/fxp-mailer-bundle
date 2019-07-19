@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4c874f02e4921c3a2d051b0eeb5c651",
+    "content-hash": "45cb663b527f8be0c6718e7cff7f3f3f",
     "packages": [
         {
             "name": "fxp/mailer",
@@ -2953,6 +2953,61 @@
                 "sms"
             ],
             "time": "2019-07-19T13:24:46+00:00"
+        },
+        {
+            "name": "fxp/sms-sender-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fxpio/fxp-sms-sender-bundle.git",
+                "reference": "cee2b9c98bf9dbf6e1914b72851d501cb8324bb1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fxpio/fxp-sms-sender-bundle/zipball/cee2b9c98bf9dbf6e1914b72851d501cb8324bb1",
+                "reference": "cee2b9c98bf9dbf6e1914b72851d501cb8324bb1",
+                "shasum": ""
+            },
+            "require": {
+                "fxp/sms-sender": "^2.0.0",
+                "php": "^7.1.0",
+                "symfony/framework-bundle": "^4.2.0"
+            },
+            "require-dev": {
+                "fxp/twig-sms-sender": "^2.0.0",
+                "symfony/twig-bundle": "^4.3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fxp\\Bundle\\SmsSenderBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Pluchino",
+                    "email": "francois.pluchino@gmail.com"
+                }
+            ],
+            "description": "A powerful system for creating and sending SMS",
+            "homepage": "https://github.com/fxpio/fxp-sms-sender-bundle",
+            "keywords": [
+                "bundle",
+                "sms"
+            ],
+            "time": "2019-07-19T15:26:23+00:00"
         },
         {
             "name": "fxp/twig-sms-sender",
